@@ -1,20 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../Controller/splash_controller.dart';
-
-class Splash extends StatefulWidget {
-  @override
-  _SplashState createState() => _SplashState();
-}
-
-class _SplashState extends State<Splash> {
-  @override
-  void initState() {
-    super.initState();
-    SplashController(context);
-  }
-
+class Lockscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +12,7 @@ class _SplashState extends State<Splash> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.30,
+              height: MediaQuery.of(context).size.height * 0.30, 
             ),
             Image.asset(
               'assets/img/WhatsAppIcon.png',
@@ -49,11 +36,14 @@ class _SplashState extends State<Splash> {
                 Text(
                   'FACEBOOK',
                   style: TextStyle(
-                    color: const Color(0xFF02B099),
+                    color: Color(0xFF02B099),
                     fontSize: 20.sp,
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
             ),
           ],
         ),
