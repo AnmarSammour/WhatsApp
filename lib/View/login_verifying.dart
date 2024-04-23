@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../Model/login_verifyingc_model .dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
 
 class LoginVerifying extends StatelessWidget {
-  final LoginVerifyingModel loginVerifyingModel;
-
-  LoginVerifying({required this.loginVerifyingModel});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,9 +14,10 @@ class LoginVerifying extends StatelessWidget {
             Text(
               'Verifying your number',
               style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Color(0xFF02B099),
-                  fontWeight: FontWeight.bold),
+                fontSize: 16.sp,
+                color: Color(0xFF02B099),
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
@@ -48,31 +45,26 @@ class LoginVerifying extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.07),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                buildOtpTextField(),
-                SizedBox(width: 8),
-                buildOtpTextField(),
-                SizedBox(width: 8),
-                buildOtpTextField(),
-                SizedBox(width: 24),
-                buildOtpTextField(),
-                SizedBox(width: 8),
-                buildOtpTextField(),
-                SizedBox(width: 8),
-                buildOtpTextField(),
-              ],
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+            Center(
+              child: OTPTextField(
+                length: 6,
+                width: MediaQuery.of(context).size.width,
+                textFieldAlignment: MainAxisAlignment.center,
+                fieldWidth: 10,
+                fieldStyle: FieldStyle.underline,
+                style: TextStyle(fontSize: 16.sp),
+                margin: EdgeInsets.all(8),
+              ),
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
             Container(
-              width: 150,
+              width: 160.w,
               height: 2.h,
               color: Colors.grey,
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-            Text(
+            const Text(
               'Enter 6-digit code',
               textAlign: TextAlign.center,
             ),
@@ -89,31 +81,6 @@ class LoginVerifying extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildOtpTextField() {
-    return Container(
-      width: 10,
-      height: 20,
-      child: TextField(
-        textAlign: TextAlign.center,
-        maxLength: 1,
-        keyboardType: TextInputType.number,
-        style: TextStyle(fontSize: 16),
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          counterText: '',
-        ),
-        onChanged: (value) {
-          if (value.length > 1) {
-            value = value.substring(0, 1);
-          }
-        },
-      ),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey)),
       ),
     );
   }

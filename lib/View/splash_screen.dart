@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../Controller/login_controller.dart';
 import '../View/login_screen.dart'; 
 
 class Splash extends StatefulWidget {
@@ -16,7 +15,7 @@ class _SplashState extends State<Splash> {
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LogIn(controller: LogInController())), 
+        MaterialPageRoute(builder: (context) => LogIn()), 
       );
     });
   }

@@ -1,28 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../Controller/login_controller.dart';
+import 'package:country_picker/country_picker.dart';
 import '../Model/country_model.dart';
 import '../Model/login_verifyingc_model .dart';
+import '../View/login_verifying.dart';
 
 class LogIn extends StatefulWidget {
-  final LogInController controller;
-
-  LogIn({required this.controller});
-
   @override
   _LogInState createState() => _LogInState();
 }
 
 class _LogInState extends State<LogIn> {
   late CountryModel selectedCountry;
-LoginVerifyingModel loginVerifyingModel = LoginVerifyingModel(
-  phoneNumber: '',
-  verificationCode: '',
-);
+
+  LoginVerifyingModel loginVerifyingModel = LoginVerifyingModel(
+    phoneNumber: '',
+    verificationCode: '',
+  );
+
   @override
   void initState() {
     super.initState();
-    selectedCountry = widget.controller.selectedCountry;
+    selectedCountry =
+        CountryModel(countryCode: '970', countryName: 'Palestine');
+  }
+
+  void showCountryPickerDialog(
+      BuildContext context, Function(CountryModel) onSelect) {
+    showCountryPicker(
+      context: context,
+      onSelect: (Country country) {
+        setState(() {
+          selectedCountry = CountryModel(
+            countryCode: country.phoneCode,
+            countryName: country.name,
+          );
+        });
+        onSelect(selectedCountry);
+      },
+    );
+  }
+
+  void navigateToLoginVerifyingPage(
+      BuildContext context, LoginVerifyingModel model) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginVerifying(),
+      ),
+    );
   }
 
   @override
@@ -72,7 +98,7 @@ LoginVerifyingModel loginVerifyingModel = LoginVerifyingModel(
             SizedBox(height: MediaQuery.of(context).size.height * 0.04),
             GestureDetector(
               onTap: () {
-                widget.controller.showCountryPickerDialog(context, (country) {
+                showCountryPickerDialog(context, (country) {
                   setState(() {
                     selectedCountry = country;
                   });
@@ -163,7 +189,7 @@ LoginVerifyingModel loginVerifyingModel = LoginVerifyingModel(
                 alignment: Alignment.bottomCenter,
                 child: ElevatedButton(
                   onPressed: () {
-                    widget.controller.navigateToLoginVerifyingPage(context,loginVerifyingModel);
+                    navigateToLoginVerifyingPage(context, loginVerifyingModel);
                   },
                   style: ButtonStyle(
                     backgroundColor:
