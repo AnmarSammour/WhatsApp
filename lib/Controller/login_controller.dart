@@ -5,7 +5,7 @@ import '../Model/login_verifyingc_model .dart';
 import '../View/login_verifying.dart';
 
 class LogInController {
-  late CountryModel selectedCountry =
+  CountryModel selectedCountry =
       CountryModel(countryCode: '970', countryName: 'Palestine');
 
   void showCountryPickerDialog(BuildContext context, Function(CountryModel) onSelect) {
