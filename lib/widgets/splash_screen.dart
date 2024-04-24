@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../View/login_screen.dart'; 
+
+import 'login_screen.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -12,10 +13,11 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
+    // Set a timer to navigate to the login screen after 3 seconds
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LogIn()), 
+        MaterialPageRoute(builder: (context) => LogIn()),
       );
     });
   }
@@ -32,6 +34,7 @@ class _SplashState extends State<Splash> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.30,
             ),
+            // Display the app icon
             Image.asset(
               'assets/img/WhatsAppIcon.png',
               width: 100.w,

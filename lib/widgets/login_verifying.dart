@@ -4,6 +4,11 @@ import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
 class LoginVerifying extends StatelessWidget {
+  final String countryCode;
+  final String phoneNumber;
+
+  LoginVerifying({required this.countryCode, required this.phoneNumber});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +31,9 @@ class LoginVerifying extends StatelessWidget {
               text: TextSpan(
                 style: TextStyle(fontSize: 13.sp, color: Colors.black),
                 children: [
-                  const TextSpan(
+                  TextSpan(
                     text:
-                        'We have sent an SMS with a code to +970 xx-xxx-xxxx.',
+                        'We have sent an SMS with a code to +$countryCode $phoneNumber',
                   ),
                   WidgetSpan(
                     child: GestureDetector(
@@ -36,7 +41,7 @@ class LoginVerifying extends StatelessWidget {
                       child: Text(
                         'Wrong number?',
                         style: TextStyle(
-                          color: const Color(0xFF02B099),
+                          color: Color(0xFF02B099),
                           fontSize: 16.sp,
                         ),
                       ),
@@ -47,6 +52,7 @@ class LoginVerifying extends StatelessWidget {
             ),
             SizedBox(height: MediaQuery.of(context).size.height * 0.03),
             Center(
+              // OTPTextField for entering verification code
               child: OTPTextField(
                 length: 6,
                 width: MediaQuery.of(context).size.width,
