@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/view/splach/custom_splach_foter.dart';
-import 'package:whatsapp/view/splach/custom_splach_img.dart';
+import 'package:whatsapp/view/splach/widgets/custom_splach_foter.dart';
+import 'package:whatsapp/view/splach/widgets/custom_splach_img.dart';
 
 class SplachViewBody extends StatelessWidget {
   const SplachViewBody({
