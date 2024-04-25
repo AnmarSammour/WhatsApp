@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
-import '../Controller/cubit/login_cubit.dart';
-import '../data/login_model.dart';
+import '../controller/cubit/login_cubit.dart';
+import '../model/login_model.dart';
 import 'login_verifying.dart';
 
 class LogIn extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/view/splach/splach_view.dart';
-import 'Controller/cubit/login_cubit.dart';
+import 'controller/cubit/login_cubit.dart';
 
 void main() {
   runApp(MyApp());

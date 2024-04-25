@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-
-import '../../data/login_model.dart';
+import 'package:whatsapp/model/login_model.dart';
 
 part 'login_cubit_state.dart';
 
