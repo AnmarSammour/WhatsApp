@@ -5,14 +5,14 @@ import 'package:whatsapp/view/splach/widgets/splach_view_body.dart';
 
 import '../../widgets/login_screen.dart';
 
-class SpachView extends StatefulWidget {
-  const SpachView({super.key});
+class SplachView extends StatefulWidget {
+  const SplachView({super.key});
 
   @override
-  State<SpachView> createState() => _SpachViewState();
+  State<SplachView> createState() => _SplachViewState();
 }
 
-class _SpachViewState extends State<SpachView> {
+class _SplachViewState extends State<SplachView> {
   @override
   void initState() {
     super.initState();
