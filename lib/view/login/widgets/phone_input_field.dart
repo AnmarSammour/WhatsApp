@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/model/login_model.dart';
 import 'package:whatsapp/view/login/widgets/country_picker_button.dart';
 
-class CombinedInputField extends StatelessWidget {
+class PhoneInputField extends StatelessWidget {
   final LoginModel selectedCountry;
 
-  const CombinedInputField({
+  const PhoneInputField({
     Key? key,
     required this.selectedCountry,
   }) : super(key: key);
