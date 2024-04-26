@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:whatsapp/view/login/login_view.dart';
 import 'package:whatsapp/view/splach/widgets/splach_view_body.dart';
-
-import '../../widgets/login_screen.dart';
 
 class SplachView extends StatefulWidget {
   const SplachView({super.key});
@@ -20,7 +18,7 @@ class _SplachViewState extends State<SplachView> {
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LogIn()),
+        MaterialPageRoute(builder: (context) => LoginView()),
       );
     });
   }
