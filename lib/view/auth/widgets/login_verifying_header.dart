@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginVerifyingHeader extends StatelessWidget {
-  const LoginVerifyingHeader({super.key});
+class LoginverifyingHeader extends StatelessWidget {
+  const LoginverifyingHeader({super.key});
 
   @override
   Widget build(BuildContext context) {
