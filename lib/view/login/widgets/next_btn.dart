@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/widgets/login_verifying.dart';
+import 'package:whatsapp/view/auth/login_verifying_view.dart';
 
 class NextButton extends StatelessWidget {
   final LoginModel selectedCountry;
@@ -24,7 +24,7 @@ class NextButton extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => LoginVerifying(
+                  builder: (context) => LoginVerifyingView(
                     countryCode: selectedCountry.countryCode,
                     phoneNumber: selectedCountry.phoneNum,
                   ),
