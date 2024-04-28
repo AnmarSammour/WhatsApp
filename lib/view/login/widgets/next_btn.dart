@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/view/auth/login_verifying_view.dart';
+import 'package:whatsapp/view/login/widgets/register_function.dart';
+import 'package:whatsapp/view/widgets/ProgressIndicator.dart';
 
 class NextButton extends StatelessWidget {
   final LoginModel selectedCountry;
+  final GlobalKey<FormState> phoneFormKey; // تعريف المفتاح هنا
 
-  const NextButton({
+  NextButton({
     Key? key,
     required this.selectedCountry,
+    required this.phoneFormKey,
   }) : super(key: key);
 
   @override
@@ -19,17 +22,9 @@ class NextButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             if (selectedCountry.phoneNum.length == 9) {
-              print("Phone Number: ${selectedCountry.phoneNum}");
-              print("Country Code: ${selectedCountry.countryCode}");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginVerifyingView(
-                    countryCode: selectedCountry.countryCode,
-                    phoneNumber: selectedCountry.phoneNum,
-                  ),
-                ),
-              );
+              ProgressIndicatorWidget().showProgressIndicator(context);
+              // تمرير المفتاح هنا
+              RegisterFunction(phoneFormKey: phoneFormKey).register(context);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

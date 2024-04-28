@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
+// ignore: must_be_immutable
 class OTPTxtField extends StatelessWidget {
-  const OTPTxtField({super.key});
+  late String otpCode;
+
+  OTPTxtField({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Center(
-          // OTPTextField for entering verification code
-          child: OTPTextField(
-            length: 6,
-            width: MediaQuery.of(context).size.width,
-            textFieldAlignment: MainAxisAlignment.center,
-            fieldWidth: 10,
-            fieldStyle: FieldStyle.underline,
-            style: TextStyle(fontSize: 16.sp),
-            margin: EdgeInsets.all(8),
+          // PinCodeTextField for entering verification code
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40.w),
+            child: PinCodeTextField(
+              length: 6,
+              mainAxisAlignment: MainAxisAlignment.center,
+              textStyle: TextStyle(fontSize: 16.sp),
+              pinTheme: PinTheme(
+                shape: PinCodeFieldShape.underline,
+                inactiveColor: Colors.grey,
+                activeColor: Colors.black,
+                fieldWidth: 10.w,
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (value) {
+                print(value);
+              },
+              onCompleted: (submitedCode) {
+                otpCode = submitedCode;
+              },
+              separatorBuilder: (context, index) => SizedBox(width: 10.w),
+              appContext: context,
+            ),
           ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         Container(
           width: 160.w,
           height: 2.h,

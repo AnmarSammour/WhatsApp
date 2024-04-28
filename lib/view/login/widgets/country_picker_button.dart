@@ -1,7 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp/controller/cubit/login_cubit.dart';
+import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 import 'package:whatsapp/model/login_model.dart';
 
 class CountryPickerButton {
@@ -14,7 +14,8 @@ class CountryPickerButton {
             countryName: country.name,
             phoneNum: '',
           );
-          BlocProvider.of<LoginCubit>(context).selectCountry(selectedCountry);
+          BlocProvider.of<PhoneAuthCubit>(context)
+              .selectCountry(selectedCountry);
         });
   }
 }

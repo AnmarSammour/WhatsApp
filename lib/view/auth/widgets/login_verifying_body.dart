@@ -18,6 +18,7 @@ class LoginVerifyingBody extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       child: Column(
         children: [
+          SizedBox(height: MediaQuery.of(context).size.height * 0.06),
           LoginverifyingHeader(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           PhoneNumberText(
