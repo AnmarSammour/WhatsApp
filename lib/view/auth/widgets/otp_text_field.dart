@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 
-// ignore: must_be_immutable
-class OTPTxtField extends StatelessWidget {
-  late String otpCode;
+class OTPTxtField extends StatefulWidget {
+  @override
+  _OTPTxtFieldState createState() => _OTPTxtFieldState();
+}
 
-  OTPTxtField({Key? key});
+class _OTPTxtFieldState extends State<OTPTxtField> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _checkAndSubmitOTP(String otpCode) {
+    if (otpCode.length == 6) {
+      // If OTP code is complete, submit it
+      _login(context, otpCode);
+    }
+  }
+
+  void _login(BuildContext context, String otpCode) {
+    BlocProvider.of<PhoneAuthCubit>(context).submitOTP(otpCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +47,10 @@ class OTPTxtField extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                print(value);
+                // Call function to check and submit OTP
+                _checkAndSubmitOTP(value);
               },
-              onCompleted: (submitedCode) {
-                otpCode = submitedCode;
-              },
+            
               separatorBuilder: (context, index) => SizedBox(width: 10.w),
               appContext: context,
             ),

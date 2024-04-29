@@ -3,21 +3,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 import 'package:whatsapp/view/home/home_view.dart';
 import 'package:whatsapp/view/login/login_view.dart';
 import 'package:whatsapp/view/splach/splach_view.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: 'key',
-      appId: 'id',
-      messagingSenderId: 'sendid',
-      projectId: 'myapp',
-      storageBucket: 'myapp-b9yt18.appspot.com',
-    ),
+    options: DefaultFirebaseOptions.currentPlatform,
   );
 
   runApp(MyApp());

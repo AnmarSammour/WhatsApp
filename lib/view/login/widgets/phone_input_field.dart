@@ -86,12 +86,12 @@ class PhoneInputField extends StatelessWidget {
                 child: TextField(
                   onChanged: (value) {
                     // Validate phone number length
-                    if (value.length == 9) {
-                      selectedCountry.phoneNum = value;
-                    } else {
-                      // Reset phone number if it's not 9 digits
-                      selectedCountry.phoneNum = '';
-                    }
+                    // if (value.length == 9) {
+                    //   selectedCountry.phoneNum = value;
+                    // } else {
+                    //   // Reset phone number if it's not 9 digits
+                    //   selectedCountry.phoneNum = '';
+                    // }
                   },
                   keyboardType:
                       TextInputType.number, // Allow only numerical input

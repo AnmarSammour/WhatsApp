@@ -10,7 +10,7 @@ dependencies:
   bloc: ^8.1.4
   country_picker: ^2.0.25
   firebase_auth: ^4.17.8
-  firebase_core: ^2.16.0
+  firebase_core: ^2.16.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
