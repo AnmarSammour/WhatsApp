@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/model/login_model.dart';
 import 'package:whatsapp/view/login/widgets/country_picker_button.dart';
 
-class PhoneInputField extends StatelessWidget {
+class PhoneInputField extends StatefulWidget {
   final LoginModel selectedCountry;
 
   const PhoneInputField({
@@ -12,8 +13,24 @@ class PhoneInputField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _PhoneInputFieldState createState() => _PhoneInputFieldState();
+}
+
+class _PhoneInputFieldState extends State<PhoneInputField> {
+  late TextEditingController _phoneNumberController;
+
+  bool _isInvalid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneNumberController = TextEditingController(text: "595351929");
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // GestureDetector for selecting country
+    ScreenUtil.init(context);
+
     return GestureDetector(
       onTap: () {
         CountryPickerButton.show(context);
@@ -21,13 +38,13 @@ class PhoneInputField extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             height: 48.h,
             child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    selectedCountry.countryName,
+                    widget.selectedCountry.countryName,
                     style: TextStyle(fontSize: 16.sp),
                     textAlign: TextAlign.center,
                   ),
@@ -50,7 +67,6 @@ class PhoneInputField extends StatelessWidget {
                 flex: 1,
                 child: Column(
                   children: [
-                    // Display country code
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -64,7 +80,7 @@ class PhoneInputField extends StatelessWidget {
                             style: TextStyle(color: Colors.grey),
                           ),
                           TextSpan(
-                            text: selectedCountry.countryCode,
+                            text: widget.selectedCountry.countryCode,
                             style: TextStyle(fontSize: 16.sp),
                           ),
                         ],
@@ -83,26 +99,41 @@ class PhoneInputField extends StatelessWidget {
               SizedBox(width: 8.w),
               Expanded(
                 flex: 2,
-                child: TextField(
-                  onChanged: (value) {
-                    // Validate phone number length
-                    // if (value.length == 9) {
-                    //   selectedCountry.phoneNum = value;
-                    // } else {
-                    //   // Reset phone number if it's not 9 digits
-                    //   selectedCountry.phoneNum = '';
-                    // }
-                  },
-                  keyboardType:
-                      TextInputType.number, // Allow only numerical input
+                child: TextFormField(
+                  controller: _phoneNumberController,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(9),
+                  ],
                   decoration: InputDecoration(
-                    hintText: 'phone number',
+                    hintText: "Phone Number",
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFF02B099),
                       ),
                     ),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Phone number cannot be empty';
+                    } else if (value.length != 9) {
+                      return 'Phone number must be 9 digits';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    setState(() {
+                      _isInvalid = value.length != 9;
+                    });
+                  },
+                  onFieldSubmitted: (value) {
+                    // Check if the entered phone number is valid
+                    if (!_isInvalid) {
+                      // Update the phone number in selectedCountry
+                      widget.selectedCountry.phoneNum = value;
+                    }
+                  },
                 ),
               ),
             ],

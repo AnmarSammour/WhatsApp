@@ -18,8 +18,9 @@ class _OTPTxtFieldState extends State<OTPTxtField> {
 
   void _checkAndSubmitOTP(String otpCode) {
     if (otpCode.length == 6) {
-      // If OTP code is complete, submit it
-      _login(context, otpCode);
+      setState(() {
+        _login(context, otpCode);
+      });
     }
   }
 
@@ -50,7 +51,6 @@ class _OTPTxtFieldState extends State<OTPTxtField> {
                 // Call function to check and submit OTP
                 _checkAndSubmitOTP(value);
               },
-            
               separatorBuilder: (context, index) => SizedBox(width: 10.w),
               appContext: context,
             ),

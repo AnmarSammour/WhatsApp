@@ -13,8 +13,10 @@ class ErrorOccurred extends PhoneAuthState {
   ErrorOccurred({required this.errorMsg});
 }
 
+// When the user submits the phone number
 class PhoneNumberSubmited extends PhoneAuthState {}
 
+// When the user verifies the OTP
 class PhoneOTPVerified extends PhoneAuthState {}
 
 class CountrySelectedState extends PhoneAuthState {
@@ -22,3 +24,4 @@ class CountrySelectedState extends PhoneAuthState {
 
   CountrySelectedState(this.selectedCountry);
 }
+

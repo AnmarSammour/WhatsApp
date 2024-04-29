@@ -4,10 +4,14 @@ import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 
 class RegisterFunction {
   final GlobalKey<FormState> phoneFormKey;
-  late String phoneNumber;
-  late String countryCode;
+  String phoneNumber;
+  String countryCode;
 
-  RegisterFunction({required this.phoneFormKey});
+  RegisterFunction({
+    required this.phoneFormKey,
+    required this.countryCode,
+    required this.phoneNumber,
+  });
 
   Future<void> register(BuildContext context) async {
     if (!phoneFormKey.currentState!.validate()) {
@@ -17,7 +21,7 @@ class RegisterFunction {
       Navigator.pop(context);
       phoneFormKey.currentState!.save();
       BlocProvider.of<PhoneAuthCubit>(context)
-          .submitPhoneNumber("970", "569225219");
+          .submitPhoneNumber(countryCode, "595351929");
     }
   }
 }

@@ -45,9 +45,10 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              initialRoute: snapshot.data ?? '/',
+              initialRoute: '/splach',
+              home: SplachView(),
               routes: {
-                '/': (context) => SplachView(),
+                '/splach': (context) => SplachView(),
                 '/login': (context) => LoginView(),
                 '/home': (context) => HomeView(),
               },

@@ -6,7 +6,7 @@ import 'package:whatsapp/view/widgets/ProgressIndicator.dart';
 
 class NextButton extends StatelessWidget {
   final LoginModel selectedCountry;
-  final GlobalKey<FormState> phoneFormKey; 
+  final GlobalKey<FormState> phoneFormKey;
 
   NextButton({
     Key? key,
@@ -22,11 +22,13 @@ class NextButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             // if (selectedCountry.phoneNum.length == 9) {
-              ProgressIndicatorWidget().showProgressIndicator(context);
-              
-              RegisterFunction(phoneFormKey: phoneFormKey).register(context);
-            // }
-            // else {
+              ProgressIndicatorWidget.show(context);
+              RegisterFunction(
+                phoneFormKey: phoneFormKey,
+                countryCode: selectedCountry.countryCode,
+                phoneNumber: selectedCountry.phoneNum,
+              ).register(context);
+            // } else {
             //   ScaffoldMessenger.of(context).showSnackBar(
             //     SnackBar(
             //       content: Text('Please enter a 9-digit phone number.'),
