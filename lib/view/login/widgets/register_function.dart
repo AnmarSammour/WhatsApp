@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
+import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
 
 class RegisterFunction {
   final GlobalKey<FormState> phoneFormKey;

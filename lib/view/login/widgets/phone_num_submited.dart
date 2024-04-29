@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
-import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/view/auth/login_verifying_view.dart';
-import 'package:whatsapp/view/widgets/ProgressIndicator.dart';
+import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
+import '../../../model/login_model.dart';
+import '../../auth/login_verifying_view.dart';
+import '../../widgets/ProgressIndicator.dart';
 
 class PhoneSubmitWidget extends StatelessWidget {
   final LoginModel selectedCountry;

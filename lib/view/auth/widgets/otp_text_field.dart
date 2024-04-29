@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
+import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
 
 class OTPTxtField extends StatefulWidget {
   @override

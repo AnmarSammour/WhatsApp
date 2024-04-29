@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/view/login/widgets/register_function.dart';
-import 'package:whatsapp/view/widgets/ProgressIndicator.dart';
+import '../../../model/login_model.dart';
+import 'register_function.dart';
+import '../../widgets/ProgressIndicator.dart';
 
 class NextButton extends StatelessWidget {
   final LoginModel selectedCountry;

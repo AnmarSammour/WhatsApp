@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/view/auth/widgets/login_verifying_header.dart';
-import 'package:whatsapp/view/auth/widgets/otp_text_field.dart';
-import 'package:whatsapp/view/auth/widgets/phone_verification_listener.dart';
+import 'login_verifying_header.dart';
+import 'otp_text_field.dart';
+import 'phone_verification_listener.dart';
 import 'phone_number_text.dart';
 import 'code_description_text.dart';
 import 'resend_code_text.dart';

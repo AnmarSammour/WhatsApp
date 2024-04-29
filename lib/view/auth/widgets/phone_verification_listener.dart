@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
-import 'package:whatsapp/view/home/home_view.dart';
+import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
+import '../../home/home_view.dart';
 
 class PhoneVerificationListener extends StatelessWidget {
   @override

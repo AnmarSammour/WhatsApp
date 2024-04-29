@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
-import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/view/login/widgets/login_header.dart';
-import 'package:whatsapp/view/login/widgets/next_btn.dart';
-import 'package:whatsapp/view/login/widgets/phone_input_field.dart';
-import 'package:whatsapp/view/login/widgets/phone_num_submited.dart';
+import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
+import '../../../model/login_model.dart';
+import 'login_header.dart';
+import 'next_btn.dart';
+import 'phone_input_field.dart';
+import 'phone_num_submited.dart';
 
 class LoginViewBody extends StatelessWidget {
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();

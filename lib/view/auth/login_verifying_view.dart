@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/view/auth/widgets/login_verifying_body.dart';
+import 'widgets/login_verifying_body.dart';
 
 class LoginVerifyingView extends StatelessWidget {
   final String countryCode;

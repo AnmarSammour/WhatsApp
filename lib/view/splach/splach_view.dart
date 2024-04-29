@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:whatsapp/view/login/login_view.dart';
-import 'package:whatsapp/view/splach/widgets/splach_view_body.dart';
+import '../login/login_view.dart';
+import 'widgets/splach_view_body.dart';
 
 class SplachView extends StatefulWidget {
   const SplachView({super.key});

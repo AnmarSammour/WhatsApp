@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/view/login/widgets/country_picker_button.dart';
+import '../../../model/login_model.dart';
+import 'country_picker_button.dart';
 
 class PhoneInputField extends StatefulWidget {
   final LoginModel selectedCountry;

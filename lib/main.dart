@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
-import 'package:whatsapp/view/home/home_view.dart';
-import 'package:whatsapp/view/login/login_view.dart';
-import 'package:whatsapp/view/splach/splach_view.dart';
+import 'controller/cubit/phone_auth/phone_auth_cubit.dart';
+import 'view/home/home_view.dart';
+import 'view/login/login_view.dart';
+import 'view/splach/splach_view.dart';
 
 import 'firebase_options.dart';
 
@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         }
 
-        // استخدم القيمة المحددة لـ initialRoute هنا
         return ScreenUtilInit(
           designSize: Size(360, 640),
           builder: (context, _) => BlocProvider(
