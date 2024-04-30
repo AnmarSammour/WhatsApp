@@ -21,7 +21,7 @@ class RegisterFunction {
       Navigator.pop(context);
       phoneFormKey.currentState!.save();
       BlocProvider.of<PhoneAuthCubit>(context)
-          .submitPhoneNumber(countryCode, "595351929");
+          .submitPhoneNumber(countryCode, phoneNumber);
     }
   }
 }

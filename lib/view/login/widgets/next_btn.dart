@@ -7,11 +7,13 @@ import '../../widgets/ProgressIndicator.dart';
 class NextButton extends StatelessWidget {
   final LoginModel selectedCountry;
   final GlobalKey<FormState> phoneFormKey;
+  final bool isInvalid;
 
   NextButton({
     Key? key,
     required this.selectedCountry,
     required this.phoneFormKey,
+    required this.isInvalid, 
   }) : super(key: key);
 
   @override
@@ -21,20 +23,13 @@ class NextButton extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: ElevatedButton(
           onPressed: () {
-            // if (selectedCountry.phoneNum.length == 9) {
               ProgressIndicatorWidget.show(context);
               RegisterFunction(
                 phoneFormKey: phoneFormKey,
                 countryCode: selectedCountry.countryCode,
                 phoneNumber: selectedCountry.phoneNum,
               ).register(context);
-            // } else {
-            //   ScaffoldMessenger.of(context).showSnackBar(
-            //     SnackBar(
-            //       content: Text('Please enter a 9-digit phone number.'),
-            //     ),
-            //   );
-            // }
+            
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(const Color(0xFF02B099)),

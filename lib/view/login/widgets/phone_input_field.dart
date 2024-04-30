@@ -6,10 +6,12 @@ import 'country_picker_button.dart';
 
 class PhoneInputField extends StatefulWidget {
   final LoginModel selectedCountry;
+  final void Function(String) onPhoneNumberChanged; 
 
   const PhoneInputField({
     Key? key,
     required this.selectedCountry,
+    required this.onPhoneNumberChanged,
   }) : super(key: key);
 
   @override
@@ -19,12 +21,10 @@ class PhoneInputField extends StatefulWidget {
 class _PhoneInputFieldState extends State<PhoneInputField> {
   late TextEditingController _phoneNumberController;
 
-  bool _isInvalid = false;
-
   @override
   void initState() {
     super.initState();
-    _phoneNumberController = TextEditingController(text: "595351929");
+    _phoneNumberController = TextEditingController();
   }
 
   @override
@@ -124,14 +124,15 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                   },
                   onChanged: (value) {
                     setState(() {
-                      _isInvalid = value.length != 9;
+                      widget.onPhoneNumberChanged(
+                          value); // Invoke the callback function
                     });
                   },
                   onFieldSubmitted: (value) {
                     // Check if the entered phone number is valid
-                    if (!_isInvalid) {
+                    if (value.length == 9) {
                       // Update the phone number in selectedCountry
-                      widget.selectedCountry.phoneNum = value;
+                      widget.onPhoneNumberChanged(value);
                     }
                   },
                 ),

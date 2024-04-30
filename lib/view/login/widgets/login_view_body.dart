@@ -8,8 +8,14 @@ import 'next_btn.dart';
 import 'phone_input_field.dart';
 import 'phone_num_submited.dart';
 
-class LoginViewBody extends StatelessWidget {
+class LoginViewBody extends StatefulWidget {
+  @override
+  _LoginViewBodyState createState() => _LoginViewBodyState();
+}
+
+class _LoginViewBodyState extends State<LoginViewBody> {
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
+  bool _isInvalid = false; 
 
   @override
   Widget build(BuildContext context) {
@@ -20,28 +26,37 @@ class LoginViewBody extends StatelessWidget {
             ? state.selectedCountry
             : LoginModel(
                 countryCode: '970', countryName: 'Palestine', phoneNum: '');
+
         return Scaffold(
-          body:  Form(
-          key: phoneFormKey,
-          child:  Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                LoginHeader(),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                PhoneInputField(selectedCountry: selectedCountry),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                NextButton(
-                  selectedCountry: selectedCountry, phoneFormKey: phoneFormKey,
-                ),
-                PhoneSubmitWidget(selectedCountry: selectedCountry),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-              ],
+          body: Form(
+            key: phoneFormKey,
+            child: Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.06),
+                  LoginHeader(),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  PhoneInputField(
+                    selectedCountry: selectedCountry,
+                    onPhoneNumberChanged: (phoneNumber) {
+                      selectedCountry.phoneNum =
+                          phoneNumber; // Update the phone number
+                    },
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                  NextButton(
+                    selectedCountry: selectedCountry,
+                    phoneFormKey: phoneFormKey,
+                    isInvalid: _isInvalid,
+                  ),
+                  PhoneSubmitWidget(selectedCountry: selectedCountry),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                ],
+              ),
             ),
           ),
-        ),
         );
       },
     );
