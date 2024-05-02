@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/controller/cubit/login_cubit.dart';
+import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 import 'package:whatsapp/model/login_model.dart';
 import 'package:whatsapp/view/login/widgets/login_header.dart';
 import 'package:whatsapp/view/login/widgets/next_btn.dart';
@@ -10,7 +10,7 @@ import 'package:whatsapp/view/login/widgets/phone_input_field.dart';
 class LoginViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
       builder: (context, state) {
         // Initialize selectedCountry with the state's selected country if available, else with default values
         LoginModel selectedCountry = state is CountrySelectedState

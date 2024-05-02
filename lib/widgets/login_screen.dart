@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:country_picker/country_picker.dart';
-import '../controller/cubit/login_cubit.dart';
+import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 import '../model/login_model.dart';
 import 'login_verifying.dart';
 
 class LogIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<PhoneAuthCubit, PhoneAuthState>(
       builder: (context, state) {
         // Initialize selectedCountry with the state's selected country if available, else with default values
         LoginModel selectedCountry = state is CountrySelectedState
@@ -197,7 +197,7 @@ class LogIn extends StatelessWidget {
           countryName: country.name,
           phoneNum: '',
         );
-        BlocProvider.of<LoginCubit>(context).selectCountry(selectedCountry);
+        BlocProvider.of<PhoneAuthCubit>(context).selectCountry(selectedCountry);
       },
     );
   }
