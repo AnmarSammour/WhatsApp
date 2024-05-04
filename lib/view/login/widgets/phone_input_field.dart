@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/model/login_model.dart';
 import 'package:whatsapp/view/login/widgets/country_picker_button.dart';
 
-class PhoneInputField extends StatelessWidget {
+class PhoneInputField extends StatefulWidget {
   final LoginModel selectedCountry;
 
   const PhoneInputField({
@@ -12,8 +12,14 @@ class PhoneInputField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _PhoneInputFieldState createState() => _PhoneInputFieldState();
+}
+
+class _PhoneInputFieldState extends State<PhoneInputField> {
+  late String phoneNumber = '';
+
+  @override
   Widget build(BuildContext context) {
-    // GestureDetector for selecting country
     return GestureDetector(
       onTap: () {
         CountryPickerButton.show(context);
@@ -27,7 +33,7 @@ class PhoneInputField extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    selectedCountry.countryName,
+                    widget.selectedCountry.countryName,
                     style: TextStyle(fontSize: 16.sp),
                     textAlign: TextAlign.center,
                   ),
@@ -50,7 +56,6 @@ class PhoneInputField extends StatelessWidget {
                 flex: 1,
                 child: Column(
                   children: [
-                    // Display country code
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -64,7 +69,7 @@ class PhoneInputField extends StatelessWidget {
                             style: TextStyle(color: Colors.grey),
                           ),
                           TextSpan(
-                            text: selectedCountry.countryCode,
+                            text: widget.selectedCountry.countryCode,
                             style: TextStyle(fontSize: 16.sp),
                           ),
                         ],
@@ -85,18 +90,16 @@ class PhoneInputField extends StatelessWidget {
                 flex: 2,
                 child: TextField(
                   onChanged: (value) {
-                    // Validate phone number length
-                    if (value.length == 9) {
-                      selectedCountry.phoneNum = value;
-                    } else {
-                      // Reset phone number if it's not 9 digits
-                      selectedCountry.phoneNum = '';
-                    }
+                    setState(() {
+                      phoneNumber = value;
+                      if (phoneNumber.length == 9) {
+                        widget.selectedCountry.phoneNum = phoneNumber;
+                      }
+                    });
                   },
-                  keyboardType:
-                      TextInputType.number, // Allow only numerical input
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: 'phone number',
+                    hintText: 'Phone Number',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xFF02B099),
