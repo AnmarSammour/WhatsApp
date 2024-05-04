@@ -13,7 +13,7 @@ class NextButton extends StatelessWidget {
     Key? key,
     required this.selectedCountry,
     required this.phoneFormKey,
-    required this.isInvalid, 
+    required this.isInvalid,
   }) : super(key: key);
 
   @override
@@ -23,13 +23,14 @@ class NextButton extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: ElevatedButton(
           onPressed: () {
-              ProgressIndicatorWidget.show(context);
-              RegisterFunction(
-                phoneFormKey: phoneFormKey,
-                countryCode: selectedCountry.countryCode,
-                phoneNumber: selectedCountry.phoneNum,
-              ).register(context);
-            
+            print("Phone Number: ${selectedCountry.phoneNum}");
+            print("Country Code: ${selectedCountry.countryCode}");
+            ProgressIndicatorWidget.show(context);
+            RegisterFunction(
+              phoneFormKey: phoneFormKey,
+              countryCode: selectedCountry.countryCode,
+              phoneNumber: selectedCountry.phoneNum,
+            ).register(context);
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(const Color(0xFF02B099)),

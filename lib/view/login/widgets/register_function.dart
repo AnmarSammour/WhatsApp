@@ -24,4 +24,9 @@ class RegisterFunction {
           .submitPhoneNumber(countryCode, phoneNumber);
     }
   }
+
+  Future<void> resendCode(BuildContext context) async {
+    BlocProvider.of<PhoneAuthCubit>(context)
+        .submitPhoneNumber(countryCode, phoneNumber);
+  }
 }

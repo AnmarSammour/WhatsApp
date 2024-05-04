@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/view/login/login_view.dart';
+import 'package:whatsapp/view/login/widgets/boxwhats.dart';
 
-class PhoneNumberText extends StatelessWidget {
-  final String countryCode;
-  final String phoneNumber;
-
-  PhoneNumberText({required this.countryCode, required this.phoneNumber});
-
+class WhatsMynum extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
@@ -17,19 +12,21 @@ class PhoneNumberText extends StatelessWidget {
         children: [
           TextSpan(
             text:
-                'We have sent an SMS with a code to +$countryCode $phoneNumber',
+                'WhatsApp will need to verify your phone number. Carrier charges may apply. ',
           ),
           WidgetSpan(
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => LoginView(),
-                  ),
+                showDialog(
+                  context: context,
+                  barrierDismissible: false, 
+                  builder: (BuildContext context) {
+                    return BoxWhats();
+                  },
                 );
               },
               child: Text(
-                'Wrong number?',
+                'What\'s my number?',
                 style: TextStyle(
                   color: Color(0xFF02B099),
                   fontSize: 16.sp,

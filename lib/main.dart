@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,47 +22,23 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: _getInitialRoute(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // أو أي عنصر تحميل آخر
-        }
-
-        if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        }
-
-        return ScreenUtilInit(
-          designSize: Size(360, 640),
-          builder: (context, _) => BlocProvider(
-            create: (context) => PhoneAuthCubit(),
-            child: MaterialApp(
-              title: 'Flutter Demo',
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              initialRoute: '/splach',
-              home: SplachView(),
-              routes: {
-                '/splach': (context) => SplachView(),
-                '/login': (context) => LoginView(),
-                '/home': (context) => HomeView(),
-              },
-            ),
+    return ScreenUtilInit(
+      designSize: Size(360, 640),
+      builder: (context, _) => BlocProvider(
+        create: (context) => PhoneAuthCubit(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
           ),
-        );
-      },
+          home: SplachView(), 
+          routes: {
+            '/login': (context) => LoginView(),
+            '/home': (context) => HomeView(),
+          },
+        ),
+      ),
     );
-  }
-
-  Future<String> _getInitialRoute() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return '/login';
-    } else {
-      return '/home';
-    }
   }
 }

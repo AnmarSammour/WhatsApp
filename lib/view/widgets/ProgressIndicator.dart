@@ -1,54 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProgressIndicatorWidget {
   static void show(BuildContext context) {
     showDialog(
-      barrierColor: Colors.white.withOpacity(0),
+      barrierColor: Colors.white.withOpacity(0.5),
       barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        content: Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        shadowColor: Colors.black, 
+        content: Container(
+          width: 30.w,
+          height: 30.h,
+          child: Row(
+            children: [
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
+              SizedBox(width: 16),
+              Text(
+                'Connecting...',
+                style: TextStyle(color: Colors.black),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-
-// class ProgressIndicatorWidget {
-//   // This function displays a progress indicator in an AlertDialog
-//   void showProgressIndicator(BuildContext context) {
-//     AlertDialog alertDialog = const AlertDialog(
-//       backgroundColor: Colors.transparent,
-//       elevation: 0,
-//       content: Center(
-//         child: CircularProgressIndicator(
-//           valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-//         ),
-//       ),
-//     );
-
-//     // Show the AlertDialog with the CircularProgressIndicator
-//     showDialog(
-//       barrierColor: Colors.white.withOpacity(0),
-//       barrierDismissible: false,
-//       context: context,
-//       builder: (context) {
-//         return alertDialog;
-//       },
-//     );
-//   }
-// }

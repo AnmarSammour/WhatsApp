@@ -14,7 +14,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   void selectCountry(LoginModel country) {
     emit(CountrySelectedState(country));
   }
-
+  
   // Sending the phone number to Firebase
   Future<void> submitPhoneNumber(String countryCode, String phoneNumber) async {
     emit(Loading());

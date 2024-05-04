@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:whatsapp/model/login_model.dart';
 import 'login_verifying_header.dart';
 import 'otp_text_field.dart';
 import 'phone_verification_listener.dart';
@@ -7,10 +8,12 @@ import 'phone_number_text.dart';
 import 'code_description_text.dart';
 import 'resend_code_text.dart';
 
+// ignore: must_be_immutable
 class LoginVerifyingBody extends StatelessWidget {
   final String countryCode;
   final String phoneNumber;
-
+  final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
+  late LoginModel selectedCountry;
   LoginVerifyingBody({required this.countryCode, required this.phoneNumber});
 
   @override
@@ -32,7 +35,10 @@ class LoginVerifyingBody extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           CodeDescriptionText(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          ResendCodeText(),
+          ResendCodeText(
+            selectedCountry: selectedCountry,
+            phoneFormKey: phoneFormKey,
+          ),
         ],
       ),
     );

@@ -8,7 +8,8 @@ import '../../widgets/ProgressIndicator.dart';
 class PhoneSubmitWidget extends StatelessWidget {
   final LoginModel selectedCountry;
 
-  const PhoneSubmitWidget({super.key, required this.selectedCountry});
+  const PhoneSubmitWidget({Key? key, required this.selectedCountry})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
