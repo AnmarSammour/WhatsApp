@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
 
-class OTPTxtField extends StatelessWidget {
-  OTPTxtField({Key? key});
+class OTPTxtField extends StatefulWidget {
+  @override
+  _OTPTxtFieldState createState() => _OTPTxtFieldState();
+}
+
+class _OTPTxtFieldState extends State<OTPTxtField> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _checkAndSubmitOTP(String otpCode) {
+    if (otpCode.length == 6) {
+      setState(() {
+        _login(context, otpCode);
+      });
+    }
+  }
+
+  void _login(BuildContext context, String otpCode) {
+    BlocProvider.of<PhoneAuthCubit>(context).submitOTP(otpCode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +48,9 @@ class OTPTxtField extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
               onChanged: (value) {
-                print(value);
+                // Call function to check and submit OTP
+                _checkAndSubmitOTP(value);
               },
-              onCompleted: (value) {},
               separatorBuilder: (context, index) => SizedBox(width: 10.w),
               appContext: context,
             ),
