@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDs4b6gwNgbZcMV1V2N4EV5OLHDdhRpqrw',
-    appId: '1:881847864275:web:7c1cfb5d57f01d74dabd26',
-    messagingSenderId: '881847864275',
-    projectId: 'whatsapp-e9878',
-    authDomain: 'whatsapp-e9878.firebaseapp.com',
-    storageBucket: 'whatsapp-e9878.appspot.com',
-    measurementId: 'G-FLJ519VF1E',
+    apiKey: 'AIzaSyDx8HRvQ-BRJRAxjSx6dLgxtjPfx0_rfJs',
+    appId: '1:766450133190:web:19800ad06e608192d10fc7',
+    messagingSenderId: '766450133190',
+    projectId: 'whatsapp-87bab',
+    authDomain: 'whatsapp-87bab.firebaseapp.com',
+    storageBucket: 'whatsapp-87bab.appspot.com',
+    measurementId: 'G-YZZX7QVGCH',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBGffILP-WPGi0KwmqQEEyVsP-Z9o4R2iU',
-    appId: '1:881847864275:android:91a8b44644afc233dabd26',
-    messagingSenderId: '881847864275',
-    projectId: 'whatsapp-e9878',
-    storageBucket: 'whatsapp-e9878.appspot.com',
+    apiKey: 'AIzaSyD-zBJLNcrpGW6nHIDE-sVEKhukzmLbf_M',
+    appId: '1:766450133190:android:0d6e5cdf4414e82ed10fc7',
+    messagingSenderId: '766450133190',
+    projectId: 'whatsapp-87bab',
+    storageBucket: 'whatsapp-87bab.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBWVRJEG5iWsgqpKlLU0_iQpZwkQt5nQRA',
-    appId: '1:881847864275:ios:aabfddf0cfe261b0dabd26',
-    messagingSenderId: '881847864275',
-    projectId: 'whatsapp-e9878',
-    storageBucket: 'whatsapp-e9878.appspot.com',
+    apiKey: 'AIzaSyCEnJnk5Y53Txe0hqIlUI9fg0q1OALG-XI',
+    appId: '1:766450133190:ios:4f61119cc4bcc2f2d10fc7',
+    messagingSenderId: '766450133190',
+    projectId: 'whatsapp-87bab',
+    storageBucket: 'whatsapp-87bab.appspot.com',
     iosBundleId: 'com.example.whatsapp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBWVRJEG5iWsgqpKlLU0_iQpZwkQt5nQRA',
-    appId: '1:881847864275:ios:aabfddf0cfe261b0dabd26',
-    messagingSenderId: '881847864275',
-    projectId: 'whatsapp-e9878',
-    storageBucket: 'whatsapp-e9878.appspot.com',
+    apiKey: 'AIzaSyCEnJnk5Y53Txe0hqIlUI9fg0q1OALG-XI',
+    appId: '1:766450133190:ios:4f61119cc4bcc2f2d10fc7',
+    messagingSenderId: '766450133190',
+    projectId: 'whatsapp-87bab',
+    storageBucket: 'whatsapp-87bab.appspot.com',
     iosBundleId: 'com.example.whatsapp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDs4b6gwNgbZcMV1V2N4EV5OLHDdhRpqrw',
-    appId: '1:881847864275:web:522af769e768c84edabd26',
-    messagingSenderId: '881847864275',
-    projectId: 'whatsapp-e9878',
-    authDomain: 'whatsapp-e9878.firebaseapp.com',
-    storageBucket: 'whatsapp-e9878.appspot.com',
-    measurementId: 'G-SKMNVPYD9S',
+    apiKey: 'AIzaSyDx8HRvQ-BRJRAxjSx6dLgxtjPfx0_rfJs',
+    appId: '1:766450133190:web:70a9b1659c67c206d10fc7',
+    messagingSenderId: '766450133190',
+    projectId: 'whatsapp-87bab',
+    authDomain: 'whatsapp-87bab.firebaseapp.com',
+    storageBucket: 'whatsapp-87bab.appspot.com',
+    measurementId: 'G-VFDW0KZJC0',
   );
+
 }
