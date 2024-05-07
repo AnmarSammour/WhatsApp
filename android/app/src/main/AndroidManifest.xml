@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    android:name="androidx.multidex.MultiDexApplication"
     <application
         android:label="whatsapp"
         android:name="${applicationName}"
