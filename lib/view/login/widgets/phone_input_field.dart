@@ -88,7 +88,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
               SizedBox(width: 8.w),
               Expanded(
                 flex: 2,
-                child: TextField(
+                child: TextFormField(
                   onChanged: (value) {
                     setState(() {
                       phoneNumber = value;
@@ -97,7 +97,6 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                       }
                     });
                   },
-                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: 'Phone Number',
                     border: UnderlineInputBorder(
@@ -106,6 +105,26 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                       ),
                     ),
                   ),
+                  keyboardType: TextInputType.phone,
+                  maxLength: 9,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Phone number cannot be empty';
+                    } else if (value.length != 9) {
+                      return 'Phone number must be 9 digits';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    phoneNumber = value!;
+                  },
+                  onFieldSubmitted: (value) {
+                    // Check if the entered phone number is valid
+                    if (value.length == 9) {
+                      // Update the phone number in selectedCountry
+                    (value);
+                    }
+                  },
                 ),
               ),
             ],
