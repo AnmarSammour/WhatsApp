@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "766450133190",
-    "project_id": "whatsapp-87bab",
-    "storage_bucket": "whatsapp-87bab.appspot.com"
+    "project_number": "349167961199",
+    "project_id": "whatsapp-4c3bd",
+    "storage_bucket": "whatsapp-4c3bd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:766450133190:android:0d6e5cdf4414e82ed10fc7",
+        "mobilesdk_app_id": "1:349167961199:android:27dc4e2118fb07920af99a",
         "android_client_info": {
           "package_name": "com.example.whatsapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD-zBJLNcrpGW6nHIDE-sVEKhukzmLbf_M"
+          "current_key": "AIzaSyBR5X7_tfJWOgEP_0IoKG7EJ6xNfgnYULk"
         }
       ],
       "services": {
