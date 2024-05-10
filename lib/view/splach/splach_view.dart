@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:whatsapp/view/login/login_view.dart';
-import 'package:whatsapp/view/splach/widgets/splach_view_body.dart';
+import 'widgets/splach_view_body.dart';
 
 class SplachView extends StatefulWidget {
   const SplachView({super.key});
@@ -14,13 +14,18 @@ class _SplachViewState extends State<SplachView> {
   @override
   void initState() {
     super.initState();
-    // Set a timer to navigate to the login screen after 3 seconds
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginView()),
-      );
+      checkLoggedInUser();
     });
+  }
+
+  void checkLoggedInUser() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      Navigator.pushReplacementNamed(context, '/chat');
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   @override
