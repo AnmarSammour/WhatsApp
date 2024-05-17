@@ -24,14 +24,14 @@ class PhoneNumberText extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => LoginView(),
+                    builder: (context) => const LoginView(),
                   ),
                 );
               },
               child: Text(
                 'Wrong number?',
                 style: TextStyle(
-                  color: Color(0xFF02B099),
+                  color: const Color(0xFF02B099),
                   fontSize: 16.sp,
                 ),
               ),

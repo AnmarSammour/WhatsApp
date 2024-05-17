@@ -13,7 +13,8 @@ class LoginVerifyingBody extends StatelessWidget {
   final String countryCode;
   final String phoneNumber;
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
-  late LoginModel selectedCountry;
+  late LoginModel selectedCountry = LoginModel(countryCode: '', countryName: ''); // تعيين قيمة افتراضية
+
   LoginVerifyingBody({required this.countryCode, required this.phoneNumber});
 
   @override

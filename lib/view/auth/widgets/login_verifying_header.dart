@@ -10,7 +10,7 @@ class LoginverifyingHeader extends StatelessWidget {
       'Verifying your number',
       style: TextStyle(
         fontSize: 16.sp,
-        color: Color(0xFF02B099),
+        color: const Color(0xFF02B099),
         fontWeight: FontWeight.bold,
       ),
       textAlign: TextAlign.center,

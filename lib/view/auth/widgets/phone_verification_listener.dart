@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:whatsapp/view/user_info/user_info_view.dart';
 import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
 
 class PhoneVerificationListener extends StatelessWidget {
@@ -13,7 +12,7 @@ class PhoneVerificationListener extends StatelessWidget {
       listener: (context, state) {
         if (state is PhoneOTPVerified) {
           Navigator.pop(context);
-           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserInfoPage()));
+          Navigator.pushReplacementNamed(context, '/userinfo');
         }
 
         if (state is ErrorOccurred) {
