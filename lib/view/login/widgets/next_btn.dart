@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/model/login_model.dart';
-import 'package:whatsapp/view/auth/login_verifying_view.dart';
+import '../../../model/login_model.dart';
+import 'register_function.dart';
+import '../../widgets/ProgressIndicator.dart';
 
 class NextButton extends StatelessWidget {
   final LoginModel selectedCountry;
+  final GlobalKey<FormState> phoneFormKey;
+  final bool isInvalid;
 
-  const NextButton({
+  NextButton({
     Key? key,
     required this.selectedCountry,
+    required this.phoneFormKey,
+    required this.isInvalid,
   }) : super(key: key);
 
   @override
@@ -18,25 +23,14 @@ class NextButton extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: ElevatedButton(
           onPressed: () {
-            if (selectedCountry.phoneNum.length == 9) {
-              print("Phone Number: ${selectedCountry.phoneNum}");
-              print("Country Code: ${selectedCountry.countryCode}");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginVerifyingView(
-                    countryCode: selectedCountry.countryCode,
-                    phoneNumber: selectedCountry.phoneNum,
-                  ),
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Please enter a 9-digit phone number.'),
-                ),
-              );
-            }
+            print("Phone Number: ${selectedCountry.phoneNum}");
+            print("Country Code: ${selectedCountry.countryCode}");
+            ProgressIndicatorWidget.show(context);
+            RegisterFunction(
+              phoneFormKey: phoneFormKey,
+              countryCode: selectedCountry.countryCode,
+              phoneNumber: selectedCountry.phoneNum,
+            ).register(context);
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(const Color(0xFF02B099)),

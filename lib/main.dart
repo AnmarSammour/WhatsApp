@@ -17,7 +17,6 @@ void main() async {
   // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-    name: 'whatsapp-8c4dc',
   );
   runApp(MyApp());
 }

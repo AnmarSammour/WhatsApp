@@ -38,7 +38,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Icon(
+                const Icon(
                   Icons.arrow_drop_down,
                   color: Color(0xFF02B099),
                 ),
@@ -47,7 +47,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
           ),
           Divider(
             height: 2.h,
-            color: Color(0xFF02B099),
+            color: const Color(0xFF02B099),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +64,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                           color: Colors.black,
                         ),
                         children: [
-                          TextSpan(
+                          const TextSpan(
                             text: '+ ',
                             style: TextStyle(color: Colors.grey),
                           ),
@@ -75,20 +75,20 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.008),
                     Container(
-                      height: 2.h,
+                      height: MediaQuery.of(context).size.height * 0.002,
                       width: 40.w,
-                      color: Color(0xFF02B099),
-                      margin: EdgeInsets.only(bottom: 1.h),
+                      color: const Color(0xFF02B099),
+                      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.001),
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.016),
               Expanded(
                 flex: 2,
-                child: TextField(
+                child: TextFormField(
                   onChanged: (value) {
                     setState(() {
                       phoneNumber = value;
@@ -97,8 +97,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                       }
                     });
                   },
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Phone Number',
                     border: UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -106,6 +105,26 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                       ),
                     ),
                   ),
+                  keyboardType: TextInputType.phone,
+                  maxLength: 9,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Phone number cannot be empty';
+                    } else if (value.length != 9) {
+                      return 'Phone number must be 9 digits';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    phoneNumber = value!;
+                  },
+                  onFieldSubmitted: (value) {
+                    // Check if the entered phone number is valid
+                    if (value.length == 9) {
+                      // Update the phone number in selectedCountry
+                      (value);
+                    }
+                  },
                 ),
               ),
             ],

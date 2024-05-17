@@ -10,7 +10,7 @@ class WhatsMynum extends StatelessWidget {
       text: TextSpan(
         style: TextStyle(fontSize: 13.sp, color: Colors.black),
         children: [
-          TextSpan(
+          const TextSpan(
             text:
                 'WhatsApp will need to verify your phone number. Carrier charges may apply. ',
           ),
@@ -28,7 +28,7 @@ class WhatsMynum extends StatelessWidget {
               child: Text(
                 'What\'s my number?',
                 style: TextStyle(
-                  color: Color(0xFF02B099),
+                  color: const Color(0xFF02B099),
                   fontSize: 16.sp,
                 ),
               ),
