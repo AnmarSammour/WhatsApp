@@ -10,17 +10,17 @@ class ProgressIndicatorWidget {
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
         elevation: 0.5,
-        shadowColor: Colors.black, 
-        content: Container(
+        shadowColor: Colors.black,
+        content: SizedBox(
           width: 30.w,
           height: 30.h,
           child: Row(
             children: [
-              CircularProgressIndicator(
+              const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
               ),
-              SizedBox(width: 16),
-              Text(
+              SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+              const Text(
                 'Connecting...',
                 style: TextStyle(color: Colors.black),
               ),
