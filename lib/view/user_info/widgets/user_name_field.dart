@@ -9,9 +9,18 @@ class UserNameField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(
-        hintText: 'Enter your name',
-        border: OutlineInputBorder(),
+      decoration: const InputDecoration(
+        hintText: 'Type your name here',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFF02B099),
+          ),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xFF02B099),
+          ),
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
