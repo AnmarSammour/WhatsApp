@@ -32,11 +32,11 @@ class _UserImagePickerState extends State<UserImagePicker> {
       onTap: _pickImage,
       child: CircleAvatar(
         radius: 75,
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.grey[200],
         backgroundImage: _image != null ? FileImage(_image!) : null,
         child: _image == null
-            ? Icon(
-                Icons.person,
+            ? const Icon(
+                Icons.add_a_photo,
                 size: 75,
                 color: Colors.grey,
               )
