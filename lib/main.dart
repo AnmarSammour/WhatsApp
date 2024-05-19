@@ -2,14 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:whatsapp/view/Chat/chat_screen_view.dart';
-import 'package:whatsapp/view/user_info/user_info_view.dart';
-
-import 'controller/cubit/phone_auth/phone_auth_cubit.dart';
-import 'view/login/login_view.dart';
-import 'view/splach/splach_view.dart';
-
-import 'firebase_options.dart';
+import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
+import 'package:whatsapp/firebase_options.dart';
+import 'package:whatsapp/app_routes.dart';
 
 void main() async {
   //Initialize widget binding before configuring Firebase
@@ -37,12 +32,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue, // Set the primary color theme
           ),
-          home: SplachView(), //initial screen to the splash view
-          routes: {
-            '/login': (context) => LoginView(),
-            '/userinfo': (context) => UserInfo(),
-            '/chat': (context) => ChatScreen(),
-          },
+          initialRoute: AppRoutes.splash, //initial screen to the splash view
+          onGenerateRoute: AppRoutes.generateRoute,
         ),
       ),
     );
