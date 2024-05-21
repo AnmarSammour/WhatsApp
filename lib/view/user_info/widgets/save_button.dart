@@ -33,8 +33,9 @@ class SaveButton extends StatelessWidget {
                 imageUrl: '',
                 id: user.uid,
                 phoneNumber: '',
+                active: true,
+                lastSeen: DateTime.now().millisecondsSinceEpoch,
               );
-
               String? imageUrl;
               if (image != null) {
                 imageUrl = await uploadImageToFirestore(image!);
