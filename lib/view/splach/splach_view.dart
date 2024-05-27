@@ -22,7 +22,7 @@ class _SplachViewState extends State<SplachView> {
   void checkLoggedInUser() {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      Navigator.pushReplacementNamed(context, '/chat');
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       Navigator.pushReplacementNamed(context, '/login');
     }
