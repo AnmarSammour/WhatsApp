@@ -22,7 +22,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => UserInfo());
       case chat:
         return MaterialPageRoute(builder: (_) => ChatScreen());
-      case chat:
+      case home:
         return MaterialPageRoute(builder: (_) => HomeView());
       default:
         return MaterialPageRoute(
