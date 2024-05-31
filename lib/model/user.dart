@@ -6,7 +6,7 @@ class UserModel extends Equatable {
   final String name;
   final String imageUrl;
   final bool active;
-  final int lastSeen;
+  final DateTime lastSeen;
   final String phoneNumber;
   final String status;
 
@@ -24,13 +24,25 @@ class UserModel extends Equatable {
     final data = snapshot.data() as Map<String, dynamic>?;
 
     return UserModel(
-      id: data?['uid'] ?? '', // Assuming 'uid' is the unique identifier in Firestore
+      id: data?['uid'] ?? '',
       name: data?['name'] ?? '',
-      phoneNumber: data?['phoneNumber'] ?? '',
-      active: data?['isOnline'] ?? false, // Mapping 'isOnline' to 'active'
-      imageUrl: data?['profileUrl'] ?? '',
+      phoneNumber: data?['phone'] ?? '',
+      active: data?['isOnline'] ?? false,
+      imageUrl: data?['imageUrl'] ?? '',
       status: data?['status'] ?? "Hey there! I am Using WhatsApp Clone.",
-      lastSeen: data?['lastSeen'] ?? 0, // Assuming 'lastSeen' is an int
+      lastSeen: (data?['lastSeen'] as Timestamp).toDate(),
+    );
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'],
+      name: map['name'],
+      imageUrl: map['imageUrl'],
+      active: map['active'],
+      lastSeen: map['lastSeen'].toDate(),
+      phoneNumber: map['phone'],
+      status: map['status'],
     );
   }
 
@@ -38,16 +50,16 @@ class UserModel extends Equatable {
     return {
       "uid": id,
       "name": name,
-      "phoneNumber": phoneNumber,
-      "isOnline": active, // Mapping 'active' to 'isOnline'
-      "profileUrl": imageUrl,
+      "phone": phoneNumber,
+      "isOnline": active,
+      "imageUrl": imageUrl,
       "status": status,
-      "lastSeen": lastSeen,
+      "lastSeen": Timestamp.fromDate(lastSeen),
     };
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         id,
         name,
         imageUrl,
