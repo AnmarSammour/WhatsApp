@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:whatsapp/model/user.dart';
 
 import '../../../model/login_model.dart';
 part 'phone_auth_state.dart';
@@ -14,7 +17,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   void selectCountry(LoginModel country) {
     emit(CountrySelectedState(country));
   }
-  
+
   // Sending the phone number to Firebase
   Future<void> submitPhoneNumber(String countryCode, String phoneNumber) async {
     emit(Loading());
@@ -73,4 +76,32 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
       emit(ErrorOccurred(errorMsg: error.toString())); // An error occurred
     }
   }
+
+  Future<void> submitProfileInfo({
+    required String name,
+    required String profileUrl,
+  }) async {
+    try {
+      final FirebaseRepository repository = FirebaseRepository();
+      await repository.getCreateCurrentUser(UserModel(
+        name: name,
+        imageUrl: '',
+        id: '',
+        phoneNumber: '',
+        active: true,
+        lastSeen: DateTime.now(),
+      ));
+      emit(PhoneAuthSuccess());
+    } on SocketException catch (_) {
+      emit(PhoneAuthFailure());
+    } catch (_) {
+      emit(PhoneAuthFailure());
+    }
+  }
+
+  Future<void> getCreateCurrentUser(UserModel user) async {}
+}
+
+class FirebaseRepository {
+  Future<void> getCreateCurrentUser(UserModel user) async {}
 }

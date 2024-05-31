@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 import 'package:whatsapp/controller/cubit/user/user_cubit.dart';
 import 'package:whatsapp/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +22,13 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _submitProfileInfo() {
+      if (nameController.text.isNotEmpty) {
+        BlocProvider.of<PhoneAuthCubit>(context)
+            .submitProfileInfo(profileUrl: "", name: nameController.text);
+      }
+    }
+
     return ElevatedButton(
       onPressed: () async {
         if (formKey.currentState?.validate() ?? false) {
@@ -28,20 +36,22 @@ class SaveButton extends StatelessWidget {
           if (name.isNotEmpty) {
             User? user = FirebaseAuth.instance.currentUser;
             if (user != null) {
-              UserModel newUser = UserModel(
-                name: name,
-                imageUrl: '',
-                id: user.uid,
-                phoneNumber: '',
-                active: true,
-                lastSeen: DateTime.now().millisecondsSinceEpoch,
-              );
               String? imageUrl;
               if (image != null) {
                 imageUrl = await uploadImageToFirestore(image!);
               }
 
-              await addUserToFirestore(newUser, imageUrl);
+              UserModel newUser = UserModel(
+                name: name,
+                imageUrl: imageUrl ?? '',
+                id: user.uid,
+                phoneNumber: user.phoneNumber ?? '',
+                active: true,
+                lastSeen: DateTime.now(),
+                status: 'Hey there! I am Using WhatsApp Clone.',
+              );
+
+              await addUserToFirestore(newUser);
 
               BlocProvider.of<UserCubit>(context).updateUser(newUser, image);
 
@@ -54,6 +64,7 @@ class SaveButton extends StatelessWidget {
             }
           }
         }
+        _submitProfileInfo();
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
@@ -78,13 +89,12 @@ class SaveButton extends StatelessWidget {
     }
   }
 
-  Future<void> addUserToFirestore(UserModel user, String? imageUrl) async {
+  Future<void> addUserToFirestore(UserModel user) async {
     try {
-      await FirebaseFirestore.instance.collection('users').doc(user.id).set({
-        'name': user.name,
-        'imageUrl': imageUrl ?? '',
-        'phoneNumber': user.phoneNumber,
-      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.id)
+          .set(user.toDocument());
     } catch (e) {
       print('Error adding user to Firestore: $e');
       rethrow;

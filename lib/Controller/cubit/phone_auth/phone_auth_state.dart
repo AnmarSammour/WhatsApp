@@ -25,3 +25,11 @@ class CountrySelectedState extends PhoneAuthState {
   CountrySelectedState(this.selectedCountry);
 }
 
+class PhoneAuthSuccess extends PhoneAuthState {
+  List<Object> get props => [];
+}
+class PhoneAuthFailure extends PhoneAuthState {
+  List<Object> get props => [];
+}
+
+
