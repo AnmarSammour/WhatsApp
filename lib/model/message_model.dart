@@ -1,45 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'package:whatsapp/enum/message_enum.dart';
 
-class MessageModel {
-  final String senderId;
-  final String receiverId;
-  final String textMessage;
-  final MessageType type;
-  final DateTime timeSent;
+class MessageModel extends Equatable {
+  final String senderName;
+  final String senderUID;
+  final String recipientName;
+  final String recipientUID;
+  final MessageType messageType;
+  final String message;
   final String messageId;
-  final bool isSeen;
+  final Timestamp time;
 
-  MessageModel({
-    required this.senderId,
-    required this.receiverId,
-    required this.textMessage,
-    required this.type,
-    required this.timeSent,
+  const MessageModel({
+    required this.senderName,
+    required this.senderUID,
+    required this.recipientName,
+    required this.recipientUID,
+    required this.messageType,
+    required this.message,
     required this.messageId,
-    required this.isSeen,
+    required this.time,
   });
 
-  factory MessageModel.fromMap(Map<String, dynamic> map) {
+  factory MessageModel.fromSnapShot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
     return MessageModel(
-      senderId: map["senderId"],
-      receiverId: map["receiverId"],
-      textMessage: map["textMessage"],
-      type: (map["type"] as String).toEnum(),
-      timeSent: DateTime.fromMillisecondsSinceEpoch(map["timeSent"]),
-      messageId: map["messageId"],
-      isSeen: map["isSeen"] ?? false,
+      senderName: data['senderName'],
+      senderUID: data['sederUID'],
+      recipientName: data['recipientName'],
+      recipientUID: data['recipientUID'],
+      messageType: MessageType.values[data['messageType']],
+      message: data['message'],
+      messageId: data['messageId'],
+      time: data['time'],
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toDocument() {
     return {
-      "senderId": senderId,
-      "receiverId": receiverId,
-      "textMessage": textMessage,
-      "type": type.type,
-      "timeSent": timeSent.millisecondsSinceEpoch,
+      "senderName": senderName,
+      "sederUID": senderUID,
+      "recipientName": recipientName,
+      "recipientUID": recipientUID,
+      "messageType": messageType.index,
+      "message": message,
       "messageId": messageId,
-      "isSeen": isSeen,
+      "time": time,
     };
   }
+
+  @override
+  List<Object> get props => [
+    senderName,
+    senderUID,
+    recipientName,
+    recipientUID,
+    messageType,
+    message,
+    messageId,
+    time,
+  ];
 }
