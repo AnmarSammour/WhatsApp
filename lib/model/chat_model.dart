@@ -7,7 +7,7 @@ class ChatModel extends Equatable {
   final String recipientName;
   final String recipientUID;
   final String channelId;
-  final String profileURL;
+  final String imageUrl;
   final String recipientPhoneNumber;
   final String senderPhoneNumber;
   final String recentTextMessage;
@@ -21,7 +21,7 @@ class ChatModel extends Equatable {
     required this.recipientName,
     required this.recipientUID,
     required this.channelId,
-    required this.profileURL,
+    required this.imageUrl,
     required this.recipientPhoneNumber,
     required this.senderPhoneNumber,
     required this.recentTextMessage,
@@ -44,7 +44,7 @@ class ChatModel extends Equatable {
       isArchived: data['isArchived'],
       isRead: data['isRead'],
       recentTextMessage: data['recentTextMessage'],
-      profileURL: data['profileURL'],
+      imageUrl: data['imageUrl'],
     );
   }
 
@@ -55,7 +55,7 @@ class ChatModel extends Equatable {
       "recipientName": recipientName,
       "recipientUID": recipientUID,
       "channelId": channelId,
-      "profileURL": profileURL,
+      "imageUrl": imageUrl,
       "recipientPhoneNumber": recipientPhoneNumber,
       "senderPhoneNumber": senderPhoneNumber,
       "recentTextMessage": recentTextMessage,
@@ -72,7 +72,7 @@ class ChatModel extends Equatable {
         recipientName,
         recipientUID,
         channelId,
-        profileURL,
+        imageUrl,
         recipientPhoneNumber,
         senderPhoneNumber,
         recentTextMessage,
