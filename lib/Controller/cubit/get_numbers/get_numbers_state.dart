@@ -1,10 +1,31 @@
-part of 'get_numbers_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:whatsapp/model/contact_model.dart';
 
-sealed class GetNumbersState extends Equatable {
+abstract class GetNumbersState extends Equatable {
   const GetNumbersState();
 
   @override
   List<Object> get props => [];
 }
 
-final class GetNumbersInitial extends GetNumbersState {}
+class GetNumbersInitial extends GetNumbersState {}
+
+class GetNumbersLoading extends GetNumbersState {}
+
+class GetNumbersLoaded extends GetNumbersState {
+  final List<ContactModel> contacts;
+
+  const GetNumbersLoaded({required this.contacts});
+
+  @override
+  List<Object> get props => [contacts];
+}
+
+class GetNumbersFailure extends GetNumbersState {
+  final String error;
+
+  const GetNumbersFailure(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
