@@ -9,7 +9,6 @@ class MessageModel extends Equatable {
   final String recipientUID;
   final MessageType messageType;
   final String message;
-  final String messageId;
   final Timestamp time;
 
   const MessageModel({
@@ -19,7 +18,6 @@ class MessageModel extends Equatable {
     required this.recipientUID,
     required this.messageType,
     required this.message,
-    required this.messageId,
     required this.time,
   });
 
@@ -32,7 +30,6 @@ class MessageModel extends Equatable {
       recipientUID: data['recipientUID'],
       messageType: MessageType.values[data['messageType']],
       message: data['message'],
-      messageId: data['messageId'],
       time: data['time'],
     );
   }
@@ -45,7 +42,6 @@ class MessageModel extends Equatable {
       "recipientUID": recipientUID,
       "messageType": messageType.index,
       "message": message,
-      "messageId": messageId,
       "time": time,
     };
   }
@@ -58,7 +54,6 @@ class MessageModel extends Equatable {
         recipientUID,
         messageType,
         message,
-        messageId,
         time,
       ];
 }

@@ -21,11 +21,12 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     required String message,
     required String recipientPhoneNumber,
     required String senderPhoneNumber,
+    required String imageUrl,
   }) async {
     try {
       final channelId =
-          await _getOneToOneSingleUserChannelId(senderId, recipientId);
-      await _sendTextMessageToRepository(
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+      await _sendTextMessage(
         MessageModel(
           senderName: senderName,
           senderUID: senderId,
@@ -33,27 +34,24 @@ class CommunicationCubit extends Cubit<CommunicationState> {
           recipientUID: recipientId,
           messageType: MessageType.text,
           message: message,
-          messageId: "",
           time: Timestamp.now(),
         ),
         channelId,
       );
-      await _addToMyChat(
-        ChatModel(
-          time: Timestamp.now(),
-          senderName: senderName,
-          senderUID: senderId,
-          senderPhoneNumber: senderPhoneNumber,
-          recipientName: recipientName,
-          recipientUID: recipientId,
-          recipientPhoneNumber: recipientPhoneNumber,
-          recentTextMessage: message,
-          imageUrl: "",
-          isRead: true,
-          isArchived: false,
-          channelId: channelId,
-        ),
-      );
+      await _addToMyChat(ChatModel(
+        time: Timestamp.now(),
+        senderName: senderName,
+        senderUID: senderId,
+        senderPhoneNumber: senderPhoneNumber,
+        recipientName: recipientName,
+        recipientUID: recipientId,
+        recipientPhoneNumber: recipientPhoneNumber,
+        recentTextMessage: message,
+        imageUrl: imageUrl,
+        isRead: true,
+        isArchived: false,
+        channelId: channelId,
+      ));
     } on SocketException catch (_) {
       emit(CommunicationFailure());
     } catch (_) {
@@ -61,14 +59,16 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     }
   }
 
-  Future<void> getMessages(
-      {required String senderId, required String recipientId}) async {
+  Future<void> getMessages({
+    required String senderId,
+    required String recipientId,
+  }) async {
     emit(CommunicationLoading());
     try {
       final channelId =
-          await _getOneToOneSingleUserChannelId(senderId, recipientId);
-      final messagesStreamData = getMessagesFromRepository(channelId);
-      messagesStreamData.listen((messages) {
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+      final messagesStream = _getMessages(channelId);
+      messagesStream.listen((messages) {
         emit(CommunicationLoaded(messages: messages));
       });
     } on SocketException catch (_) {
@@ -78,57 +78,73 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     }
   }
 
-  Future<String> _getOneToOneSingleUserChannelId(
+  Future<String> _getOneToOneSingleUserChatChannel(
       String uid, String otherUid) async {
+    try {
+      final existingChannel = await _getExistingChannel(uid, otherUid);
+      if (existingChannel != null) {
+        return existingChannel;
+      } else {
+        final channelId = ChatModel.generateChannelId(uid, otherUid);
+        await firestore.collection('chats').doc(channelId).set({
+          'uids': [uid, otherUid],
+        });
+        return channelId;
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String?> _getExistingChannel(String uid, String otherUid) async {
     try {
       final querySnapshot = await firestore
           .collection('chats')
-          .where('uids', arrayContains: uid)
-          .get();
-      for (var doc in querySnapshot.docs) {
-        if ((doc.data()['uids'] as List).contains(otherUid)) {
-          return doc.id;
-        }
+          .where('uids', arrayContains: [uid, otherUid]).get();
+      if (querySnapshot.docs.isNotEmpty) {
+        return querySnapshot.docs.first.id;
       }
-      final newChannel = await firestore.collection('chats').add({
-        'uids': [uid, otherUid]
-      });
-      return newChannel.id;
+      return null;
     } catch (e) {
-      throw Exception("Failed to get chat channel ID");
+      rethrow;
     }
   }
 
-  Future<void> _addToMyChat(ChatModel myChatEntity) async {
-    try {
-      await firestore.collection('my_chats').add(myChatEntity.toDocument());
-    } catch (e) {
-      throw Exception("Failed to add to my chat");
-    }
-  }
-
-  Future<void> _sendTextMessageToRepository(
+  Future<void> _sendTextMessage(
       MessageModel textMessageEntity, String channelId) async {
     try {
       await firestore
-          .collection('chats/$channelId/messages')
-          .add(textMessageEntity.toDocument());
-      await firestore
           .collection('chats')
           .doc(channelId)
-          .update({'lastMessage': textMessageEntity.toDocument()});
+          .collection('messages')
+          .add(textMessageEntity.toDocument());
     } catch (e) {
-      throw Exception("Failed to send text message");
+      rethrow;
     }
   }
 
-  Stream<List<MessageModel>> getMessagesFromRepository(String channelId) {
+  Stream<List<MessageModel>> _getMessages(String channelId) {
     return firestore
-        .collection('chats/$channelId/messages')
-        .orderBy('time', descending: true)
+        .collection('chats')
+        .doc(channelId)
+        .collection('messages')
+        .orderBy('time')
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
             .map((doc) => MessageModel.fromSnapShot(doc))
             .toList());
+  }
+
+  Future<void> _addToMyChat(ChatModel myChatEntity) async {
+    try {
+      await firestore
+          .collection('myChats')
+          .doc(myChatEntity.senderUID)
+          .collection('chats')
+          .doc(myChatEntity.channelId)
+          .set(myChatEntity.toDocument());
+    } catch (e) {
+      rethrow;
+    }
   }
 }
