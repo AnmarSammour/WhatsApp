@@ -27,7 +27,7 @@ class UserModel extends Equatable {
       id: data?['uid'] ?? '',
       name: data?['name'] ?? '',
       phoneNumber: data?['phone'] ?? '',
-      active: data?['isOnline'] ?? false,
+      active: data?['active'] ?? false,
       imageUrl: data?['imageUrl'] ?? '',
       status: data?['status'] ?? "Hey there! I am Using WhatsApp Clone.",
       lastSeen: (data?['lastSeen'] as Timestamp).toDate(),
@@ -36,7 +36,7 @@ class UserModel extends Equatable {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      id: map['id'],
+      id: map['uid'],
       name: map['name'],
       imageUrl: map['imageUrl'],
       active: map['active'],
@@ -51,7 +51,7 @@ class UserModel extends Equatable {
       "uid": id,
       "name": name,
       "phone": phoneNumber,
-      "isOnline": active,
+      "active": active,
       "imageUrl": imageUrl,
       "status": status,
       "lastSeen": Timestamp.fromDate(lastSeen),

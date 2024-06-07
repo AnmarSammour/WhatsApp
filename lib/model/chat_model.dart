@@ -65,6 +65,10 @@ class ChatModel extends Equatable {
     };
   }
 
+  static String generateChannelId(String uid1, String uid2) {
+    return uid1.hashCode <= uid2.hashCode ? '$uid1-$uid2' : '$uid2-$uid1';
+  }
+
   @override
   List<Object> get props => [
         senderName,

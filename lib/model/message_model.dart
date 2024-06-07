@@ -27,7 +27,7 @@ class MessageModel extends Equatable {
     final data = snapshot.data() as Map<String, dynamic>;
     return MessageModel(
       senderName: data['senderName'],
-      senderUID: data['sederUID'],
+      senderUID: data['senderUID'],
       recipientName: data['recipientName'],
       recipientUID: data['recipientUID'],
       messageType: MessageType.values[data['messageType']],
@@ -40,7 +40,7 @@ class MessageModel extends Equatable {
   Map<String, dynamic> toDocument() {
     return {
       "senderName": senderName,
-      "sederUID": senderUID,
+      "senderUID": senderUID,
       "recipientName": recipientName,
       "recipientUID": recipientUID,
       "messageType": messageType.index,
@@ -52,13 +52,13 @@ class MessageModel extends Equatable {
 
   @override
   List<Object> get props => [
-    senderName,
-    senderUID,
-    recipientName,
-    recipientUID,
-    messageType,
-    message,
-    messageId,
-    time,
-  ];
+        senderName,
+        senderUID,
+        recipientName,
+        recipientUID,
+        messageType,
+        message,
+        messageId,
+        time,
+      ];
 }
