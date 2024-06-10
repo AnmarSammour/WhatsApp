@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:whatsapp/controller/cubit/communication/communication_state.dart';
 import 'package:whatsapp/model/chat_model.dart';
 import 'package:whatsapp/model/message_model.dart';
@@ -10,8 +10,10 @@ import 'package:whatsapp/enum/message_enum.dart';
 
 class CommunicationCubit extends Cubit<CommunicationState> {
   final FirebaseFirestore firestore;
+  final FirebaseStorage storage;
 
-  CommunicationCubit({required this.firestore}) : super(CommunicationInitial());
+  CommunicationCubit({required this.firestore, required this.storage})
+      : super(CommunicationInitial());
 
   Future<void> sendTextMessage({
     required String senderName,
@@ -26,7 +28,7 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     try {
       final channelId =
           await _getOneToOneSingleUserChatChannel(senderId, recipientId);
-      await _sendTextMessage(
+      await _sendMessage(
         MessageModel(
           senderName: senderName,
           senderUID: senderId,
@@ -59,10 +61,65 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     }
   }
 
-  Future<void> getMessages({
+  Future<void> sendImageMessage({
+    required String senderName,
     required String senderId,
     required String recipientId,
+    required String recipientName,
+    required File imageFile,
+    required String recipientPhoneNumber,
+    required String senderPhoneNumber,
+    required String imageUrl,
+    required String caption, 
   }) async {
+    try {
+      final channelId =
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+      final imageUrl = await _uploadImage(channelId, imageFile);
+      final message = imageUrl + (caption.isNotEmpty ? '\n$caption' : '');
+      await _sendMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          recipientName: recipientName,
+          recipientUID: recipientId,
+          messageType: MessageType.image,
+          message: message,
+          time: Timestamp.now(),
+        ),
+        channelId,
+      );
+      await _addToMyChat(ChatModel(
+        time: Timestamp.now(),
+        senderName: senderName,
+        senderUID: senderId,
+        senderPhoneNumber: senderPhoneNumber,
+        recipientName: recipientName,
+        recipientUID: recipientId,
+        recipientPhoneNumber: recipientPhoneNumber,
+        recentTextMessage: "Image",
+        imageUrl: imageUrl,
+        isRead: true,
+        isArchived: false,
+        channelId: channelId,
+      ));
+    } on SocketException catch (_) {
+      emit(CommunicationFailure());
+    } catch (_) {
+      emit(CommunicationFailure());
+    }
+  }
+
+  Future<String> _uploadImage(String channelId, File imageFile) async {
+    final ref = storage.ref().child(
+        'chat_images/$channelId/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    final uploadTask = ref.putFile(imageFile);
+    final snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
+  }
+
+  Future<void> getMessages(
+      {required String senderId, required String recipientId}) async {
     emit(CommunicationLoading());
     try {
       final channelId =
@@ -87,7 +144,7 @@ class CommunicationCubit extends Cubit<CommunicationState> {
       } else {
         final channelId = ChatModel.generateChannelId(uid, otherUid);
         await firestore.collection('chats').doc(channelId).set({
-          'uids': [uid, otherUid],
+          'uids': [uid, otherUid]
         });
         return channelId;
       }
@@ -110,14 +167,13 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     }
   }
 
-  Future<void> _sendTextMessage(
-      MessageModel textMessageEntity, String channelId) async {
+  Future<void> _sendMessage(MessageModel message, String channelId) async {
     try {
       await firestore
           .collection('chats')
           .doc(channelId)
           .collection('messages')
-          .add(textMessageEntity.toDocument());
+          .add(message.toDocument());
     } catch (e) {
       rethrow;
     }
