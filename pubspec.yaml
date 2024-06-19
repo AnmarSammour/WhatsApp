@@ -10,6 +10,7 @@ dependencies:
   bloc: ^8.1.4
   cloud_firestore: ^4.17.3
   country_picker: ^2.0.25
+  emoji_picker_flutter: ^1.6.4
   equatable: ^2.0.5
   firebase_auth: ^4.19.5
   firebase_core: ^2.31.0
