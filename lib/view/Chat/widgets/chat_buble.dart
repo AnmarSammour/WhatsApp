@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:whatsapp/enum/message_enum.dart';
 import 'package:whatsapp/model/message_model.dart';
 import 'package:whatsapp/view/Chat/widgets/chat_bubble_painter.dart';
+import 'package:whatsapp/view/Chat/widgets/full_screen_image.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({Key? key, required this.message}) : super(key: key);
@@ -26,45 +27,63 @@ class ChatBubble extends StatelessWidget {
               constraints: BoxConstraints(maxWidth: maxMessageWidth),
               child: CustomPaint(
                 painter: ChatBubblePainter(isFromFriend: false),
-                child: Container(
-                  padding:
-                      EdgeInsets.only(left: 16, top: 10, bottom: 10, right: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (message.messageType == MessageType.image)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Image.network(
-                              message.message.split('\n').first,
-                              fit: BoxFit.cover,
+                child: GestureDetector(
+                  onTap: () {
+                    if (message.messageType == MessageType.image) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FullScreenImage(
+                            imageUrl: message.message.split('\n').first,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        left: 16, top: 10, bottom: 10, right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        if (message.messageType == MessageType.image)
+                          Container(
+                            constraints: BoxConstraints(
+                              maxHeight: message.message.split('\n').length > 1
+                                  ? double.infinity
+                                  : 400,
+                              maxWidth: maxMessageWidth,
                             ),
-                            if (message.message.split('\n').length > 1)
-                              Text(
-                                message.message
-                                    .split('\n')
-                                    .sublist(1)
-                                    .join('\n'),
-                                style: TextStyle(color: Colors.black),
-                                textAlign: TextAlign.right,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: Image.network(
+                                message.message.split('\n').first,
+                                fit: BoxFit.cover,
                               ),
-                          ],
-                        )
-                      else
+                            ),
+                          ),
+                        if (message.messageType == MessageType.image &&
+                            message.message.split('\n').length > 1)
+                          Text(
+                            message.message.split('\n').sublist(1).join('\n'),
+                            style: TextStyle(color: Colors.black),
+                            textAlign: TextAlign.right,
+                          ),
+                        if (message.messageType != MessageType.image)
+                          Text(
+                            message.message,
+                            style: TextStyle(color: Colors.black),
+                            textAlign: TextAlign.right,
+                          ),
+                        SizedBox(height: 5),
                         Text(
-                          message.message,
-                          style: TextStyle(color: Colors.black),
+                          DateFormat('hh:mm a').format(message.time.toDate()),
+                          style:
+                              TextStyle(color: Color(0xff606D75), fontSize: 12),
                           textAlign: TextAlign.right,
                         ),
-                      SizedBox(height: 5),
-                      Text(
-                        DateFormat('hh:mm a').format(message.time.toDate()),
-                        style:
-                            TextStyle(color: Color(0xff606D75), fontSize: 12),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

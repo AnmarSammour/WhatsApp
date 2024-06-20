@@ -19,13 +19,13 @@ class ChatBubblePainter extends CustomPainter {
         ..arcToPoint(
           Offset(size.width - 10, size.height),
           radius: Radius.circular(10),
-          clockwise: false,
+          clockwise: true,
         )
         ..lineTo(10, size.height)
         ..arcToPoint(
           Offset(0, size.height - 10),
           radius: Radius.circular(10),
-          clockwise: false,
+          clockwise: true,
         )
         ..lineTo(0, 20)
         ..lineTo(-10, 0)
@@ -33,13 +33,13 @@ class ChatBubblePainter extends CustomPainter {
         ..arcToPoint(
           Offset(0, 0),
           radius: Radius.circular(10),
-          clockwise: false,
+          clockwise: true,
         )
         ..lineTo(size.width - 10, 0)
         ..arcToPoint(
           Offset(size.width, 10),
           radius: Radius.circular(10),
-          clockwise: false,
+          clockwise: true,
         )
         ..close();
     } else {
