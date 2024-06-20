@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/view/Chat/widgets/add_image.dart';
 import 'package:whatsapp/view/Chat/widgets/attach_file_option.dart';
+import 'package:whatsapp/view/Chat/widgets/gallery_screen.dart';
 
 class AddAttachFile extends StatelessWidget {
-  const AddAttachFile({
-    super.key,
-  });
+  final Function(List<Map<String, dynamic>>) onImagesSelected;
+
+  AddAttachFile({super.key, required this.onImagesSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +23,30 @@ class AddAttachFile extends StatelessWidget {
             icon: Icons.photo_library_outlined,
             color: Colors.purple,
             label: 'Gallery',
-            onTap: () {},
+            onTap: () async {
+              Navigator.pop(context);
+              await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const GalleryScreen(),
+                ),
+              );
+            },
           ),
           AttachFileOption(
             icon: Icons.camera_alt_outlined,
             color: Colors.red,
             label: 'Camera',
-            onTap: () {},
+            onTap: () async {
+              Navigator.pop(context);
+              await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AddImage(onImagesSelected: onImagesSelected),
+                ),
+              );
+            },
           ),
           AttachFileOption(
             icon: Icons.location_on,
