@@ -70,7 +70,7 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     required String recipientPhoneNumber,
     required String senderPhoneNumber,
     required String imageUrl,
-    required String caption, 
+    required String caption,
   }) async {
     try {
       final channelId =
@@ -202,5 +202,57 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<void> sendAudioMessage({
+    required String senderName,
+    required String senderId,
+    required String recipientId,
+    required String recipientName,
+    required File audioFile,
+    required String recipientPhoneNumber,
+    required String senderPhoneNumber,
+  }) async {
+    try {
+      final channelId =
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+      final audioUrl = await _uploadAudio(channelId, audioFile);
+      await _sendMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          recipientName: recipientName,
+          recipientUID: recipientId,
+          messageType: MessageType.audio,
+          message: audioUrl,
+          time: Timestamp.now(),
+        ),
+        channelId,
+      );
+      await _addToMyChat(ChatModel(
+        time: Timestamp.now(),
+        senderName: senderName,
+        senderUID: senderId,
+        senderPhoneNumber: senderPhoneNumber,
+        recipientName: recipientName,
+        recipientUID: recipientId,
+        recipientPhoneNumber: recipientPhoneNumber,
+        recentTextMessage: "Audio",
+        imageUrl: '',
+        isRead: true,
+        isArchived: false,
+        channelId: channelId,
+      ));
+    } catch (e) {
+      emit(CommunicationFailure());
+    }
+  }
+
+  Future<String> _uploadAudio(String channelId, File audioFile) async {
+    final ref = storage.ref().child(
+        'audio_messages/$channelId/${DateTime.now().millisecondsSinceEpoch}.m4a');
+    final uploadTask = ref.putFile(audioFile);
+    final snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
   }
 }
