@@ -17,16 +17,14 @@ class AttachFileOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return InkWell(
       onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 50.w,
-            height: 50.h,
+            width: 40.w,
+            height: 40.h,
             decoration: BoxDecoration(
               color: Colors.white70,
               borderRadius: BorderRadius.circular(10.r),
@@ -39,9 +37,9 @@ class AttachFileOption extends StatelessWidget {
                 ),
               ],
             ),
-            child: Icon(icon, color: color, size: 30.sp),
+            child: Icon(icon, color: color, size: 25.sp),
           ),
-          SizedBox(height: screenHeight * 0.08),
+          SizedBox(height: 8.h),
           Text(
             label,
             style: TextStyle(
