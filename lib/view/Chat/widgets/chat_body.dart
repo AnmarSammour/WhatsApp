@@ -116,9 +116,10 @@ class _ChatBodyState extends State<ChatBody> {
                 child: BlocBuilder<CommunicationCubit, CommunicationState>(
                   builder: (_, communicationState) {
                     if (communicationState is CommunicationLoaded) {
-                      return ChatMessageListWidget(
+                      return ChatMessageList(
                         messages: communicationState.messages,
                         senderUID: widget.senderUID,
+                        imageUrl: widget.imageUrl,
                       );
                     }
                     return Center(
@@ -140,6 +141,7 @@ class _ChatBodyState extends State<ChatBody> {
                 recipientName: widget.recipientName,
                 recipientPhoneNumber: widget.recipientPhoneNumber,
                 senderPhoneNumber: widget.senderPhoneNumber,
+                imageUrl: widget.imageUrl,
               ),
               _isEmojiVisible
                   ? SizedBox(

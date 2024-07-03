@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp/controller/cubit/communication/communication_cubit.dart';
 import 'package:whatsapp/view/Chat/widgets/add_attach_file.dart';
 import 'package:whatsapp/view/Chat/widgets/add_image.dart';
+import 'package:whatsapp/view/Chat/widgets/audio_recorder.dart';
 import 'package:whatsapp/view/Chat/widgets/emoji_picker.dart';
 
 class ChatTextField extends StatefulWidget {
@@ -20,6 +21,7 @@ class ChatTextField extends StatefulWidget {
   final String recipientName;
   final String recipientPhoneNumber;
   final String senderPhoneNumber;
+  final String imageUrl;
 
   const ChatTextField({
     Key? key,
@@ -35,6 +37,7 @@ class ChatTextField extends StatefulWidget {
     required this.recipientName,
     required this.recipientPhoneNumber,
     required this.senderPhoneNumber,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -75,6 +78,18 @@ class _ChatTextFieldState extends State<ChatTextField> {
     });
   }
 
+  void _handleAudioRecorded(File audioFile) {
+    context.read<CommunicationCubit>().sendAudioMessage(
+          senderName: widget.senderName,
+          senderId: widget.senderUID,
+          recipientId: widget.recipientUID,
+          recipientName: widget.recipientName,
+          audioFile: audioFile,
+          recipientPhoneNumber: widget.recipientPhoneNumber,
+          senderPhoneNumber: widget.senderPhoneNumber,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -104,12 +119,12 @@ class _ChatTextFieldState extends State<ChatTextField> {
                           SizedBox(width: 10),
                           IconButton(
                             icon: Icon(
-                              isEmojiVisible
+                              widget.isEmojiVisible
                                   ? Icons.keyboard
                                   : Icons.insert_emoticon,
                             ),
                             color: Colors.grey,
-                            onPressed: _toggleEmojiPicker,
+                            onPressed: widget.toggleEmojiPicker,
                           ),
                           SizedBox(width: 10),
                           Expanded(
@@ -208,7 +223,9 @@ class _ChatTextFieldState extends State<ChatTextField> {
                   ),
                   SizedBox(width: 8),
                   InkWell(
-                    onTap: widget.sendTextMessage,
+                    onTap: widget.textMessageController.text.isEmpty
+                        ? null
+                        : widget.sendTextMessage,
                     child: Container(
                       height: 45,
                       width: 45,
@@ -216,14 +233,11 @@ class _ChatTextFieldState extends State<ChatTextField> {
                         color: Color(0xFF02B099),
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
-                      child: Icon(
-                        widget.textMessageController.text.isEmpty
-                            ? Icons.mic
-                            : Icons.send,
-                        color: Colors.white,
-                      ),
+                      child: widget.textMessageController.text.isEmpty
+                          ? AudioRecorder(onAudioRecorded: _handleAudioRecorded)
+                          : Icon(Icons.send, color: Colors.white),
                     ),
-                  )
+                  ),
                 ],
               ),
               if (isEmojiVisible)

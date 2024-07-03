@@ -1,15 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:whatsapp/view/Chat/widgets/gallery_screen.dart';
-import 'dart:io';
-
 import 'package:whatsapp/view/widgets/icon_button.dart';
 
 class EditImage extends StatefulWidget {
   final List<File> imageFiles;
   final Function(List<Map<String, dynamic>>) onImagesSent;
 
-  const EditImage({Key? key, required this.imageFiles, required this.onImagesSent}) : super(key: key);
+  const EditImage(
+      {Key? key, required this.imageFiles, required this.onImagesSent})
+      : super(key: key);
 
   @override
   _EditImageState createState() => _EditImageState();
@@ -25,7 +26,8 @@ class _EditImageState extends State<EditImage> {
   void initState() {
     super.initState();
     _selectedImages = List.from(widget.imageFiles);
-    _textControllers = List.generate(_selectedImages.length, (index) => TextEditingController());
+    _textControllers = List.generate(
+        _selectedImages.length, (index) => TextEditingController());
   }
 
   @override
@@ -66,13 +68,14 @@ class _EditImageState extends State<EditImage> {
     final List<File>? selectedImages = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const GalleryScreen(),
+        builder: (context) => GalleryScreen(),
       ),
     );
     if (selectedImages != null && selectedImages.isNotEmpty) {
       setState(() {
         _selectedImages.addAll(selectedImages);
-        _textControllers.addAll(List.generate(selectedImages.length, (index) => TextEditingController()));
+        _textControllers.addAll(List.generate(
+            selectedImages.length, (index) => TextEditingController()));
       });
     }
   }
@@ -113,7 +116,6 @@ class _EditImageState extends State<EditImage> {
                     },
                   ),
                 ),
-                
                 const Positioned(
                   top: 50,
                   right: 10,
@@ -129,7 +131,6 @@ class _EditImageState extends State<EditImage> {
                     ],
                   ),
                 ),
-              
               ],
             ),
           ),
