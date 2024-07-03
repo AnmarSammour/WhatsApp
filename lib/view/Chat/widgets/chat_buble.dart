@@ -1,14 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:whatsapp/enum/message_enum.dart';
 import 'package:whatsapp/model/message_model.dart';
 import 'package:whatsapp/view/Chat/widgets/chat_bubble_painter.dart';
 import 'package:whatsapp/view/Chat/widgets/full_screen_image.dart';
 
-class ChatBubble extends StatelessWidget {
+class ChatBubble extends StatefulWidget {
   const ChatBubble({Key? key, required this.message}) : super(key: key);
 
   final MessageModel message;
+
+  @override
+  _ChatBubbleState createState() => _ChatBubbleState();
+}
+
+class _ChatBubbleState extends State<ChatBubble> {
+  late AudioPlayer _audioPlayer;
+  bool _isPlaying = false;
+  Duration _duration = Duration.zero;
+  Duration _position = Duration.zero;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPlayer = AudioPlayer();
+
+    _audioPlayer.onDurationChanged.listen((d) {
+      setState(() {
+        _duration = d;
+      });
+    });
+
+    _audioPlayer.onPositionChanged.listen((p) {
+      setState(() {
+        _position = p;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  void _togglePlayPause() async {
+    if (_isPlaying) {
+      await _audioPlayer.pause();
+    } else {
+      await _audioPlayer.play(UrlSource(widget.message.message));
+    }
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,55 +75,78 @@ class ChatBubble extends StatelessWidget {
                 painter: ChatBubblePainter(isFromFriend: false),
                 child: GestureDetector(
                   onTap: () {
-                    if (message.messageType == MessageType.image) {
+                    if (widget.message.messageType == MessageType.image) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => FullScreenImage(
-                            imageUrl: message.message.split('\n').first,
+                            imageUrl: widget.message.message.split('\n').first,
                           ),
                         ),
                       );
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.only(
-                        left: 16, top: 10, bottom: 10, right: 16),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        if (message.messageType == MessageType.image)
+                        if (widget.message.messageType == MessageType.image)
                           Container(
                             constraints: BoxConstraints(
-                              maxHeight: message.message.split('\n').length > 1
-                                  ? double.infinity
-                                  : 400,
-                              maxWidth: maxMessageWidth,
+                              maxHeight: 400,
+                              maxWidth:
+                                  maxMessageWidth > 0 ? maxMessageWidth : 1,
                             ),
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: Image.network(
-                                message.message.split('\n').first,
-                                fit: BoxFit.cover,
-                              ),
+                            child: Image.network(
+                              widget.message.message.split('\n').first,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Text('Error loading image'),
                             ),
                           ),
-                        if (message.messageType == MessageType.image &&
-                            message.message.split('\n').length > 1)
+                        if (widget.message.messageType == MessageType.image &&
+                            widget.message.message.split('\n').length > 1)
                           Text(
-                            message.message.split('\n').sublist(1).join('\n'),
+                            widget.message.message
+                                .split('\n')
+                                .sublist(1)
+                                .join('\n'),
                             style: TextStyle(color: Colors.black),
                             textAlign: TextAlign.right,
                           ),
-                        if (message.messageType != MessageType.image)
+                        if (widget.message.messageType == MessageType.audio)
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  _isPlaying ? Icons.pause : Icons.play_arrow,
+                                ),
+                                onPressed: _togglePlayPause,
+                              ),
+                              Expanded(
+                                child: Slider(
+                                  value: _position.inSeconds.toDouble(),
+                                  max: _duration.inSeconds.toDouble(),
+                                  onChanged: (value) {
+                                    _audioPlayer
+                                        .seek(Duration(seconds: value.toInt()));
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        if (widget.message.messageType != MessageType.image &&
+                            widget.message.messageType != MessageType.audio)
                           Text(
-                            message.message,
+                            widget.message.message,
                             style: TextStyle(color: Colors.black),
                             textAlign: TextAlign.right,
                           ),
                         SizedBox(height: 5),
                         Text(
-                          DateFormat('hh:mm a').format(message.time.toDate()),
+                          DateFormat('hh:mm a')
+                              .format(widget.message.time.toDate()),
                           style:
                               TextStyle(color: Color(0xff606D75), fontSize: 12),
                           textAlign: TextAlign.right,
