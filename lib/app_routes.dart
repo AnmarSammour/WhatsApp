@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:whatsapp/controller/cubit/user/user_cubit.dart';
+import 'package:whatsapp/controller/cubit/user/user_state.dart';
 import 'package:whatsapp/view/Chat/chat_screen_view.dart';
 import 'package:whatsapp/view/home/home_view.dart';
 import 'package:whatsapp/view/user_info/user_info_view.dart';
@@ -21,9 +24,41 @@ class AppRoutes {
       case userInfo:
         return MaterialPageRoute(builder: (_) => UserInfo());
       case chat:
-        return MaterialPageRoute(builder: (_) => ChatScreen());
+        return MaterialPageRoute(builder: (context) {
+          return BlocProvider(
+            create: (context) => UserCubit(),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state is UserLoaded) {
+                  return ChatView(userInfo: state.user.first);
+                } else if (state is UserError) {
+                  return Scaffold(
+                      body: Center(child: Text(state.errorMessage)));
+                } else {
+                  return Container();
+                }
+              },
+            ),
+          );
+        });
       case home:
-        return MaterialPageRoute(builder: (_) => HomeView());
+        return MaterialPageRoute(builder: (context) {
+          return BlocProvider(
+            create: (context) => UserCubit(),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state is UserLoaded) {
+                  return HomeView(userInfo: state.user.first);
+                } else if (state is UserError) {
+                  return Scaffold(
+                      body: Center(child: Text(state.errorMessage)));
+                } else {
+                  return Container();
+                }
+              },
+            ),
+          );
+        });
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

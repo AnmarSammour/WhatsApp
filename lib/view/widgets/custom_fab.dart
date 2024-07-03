@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 class CustomFAB extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData icon;
-  final Color backgroundColor;
 
   CustomFAB({
     required this.onPressed,
     required this.icon,
-    required this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onPressed,
-      backgroundColor: backgroundColor,
+      backgroundColor: Color(0xFF02B099),
       child: Icon(icon, color: Colors.white),
     );
   }

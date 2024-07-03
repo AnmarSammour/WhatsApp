@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'widgets/home_view_body.dart';
+import 'package:whatsapp/model/user.dart';
+import 'package:whatsapp/view/home/widgets/home_view_body.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  final UserModel userInfo;
+
+  const HomeView({Key? key, required this.userInfo}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -12,8 +15,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: HomeViewBody(),
+      body: HomeViewBody(userInfo: widget.userInfo),
     );
   }
 }
