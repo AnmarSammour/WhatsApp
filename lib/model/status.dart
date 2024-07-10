@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -24,17 +23,27 @@ class Status extends Equatable {
 
   factory Status.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>?;
-    return Status(
-      id: snapshot.id,
-      userId: data?['uid'] ?? '',
-      imageUrls: List<String>.from(data?['imageUrls'] ?? []),
-      timestamp: (data?['timestamp'] as Timestamp).toDate(),
-      isText: data?['isText'] ?? false,
-      text: data?['text'] ?? '',
-      backgroundColor: data?['backgroundColor'] != null
-          ? Color(int.parse(data?['backgroundColor'], radix: 16))
-          : null,
-    );
+
+    if (data == null) {
+      throw Exception("Snapshot data is null");
+    }
+
+    try {
+      return Status(
+        id: snapshot.id,
+        userId: data['uid'] is String ? data['uid'] : data['uid'].toString(),
+        imageUrls: List<String>.from(data['imageUrls'] ?? []),
+        timestamp: (data['timestamp'] as Timestamp).toDate(),
+        isText: data['isText'] ?? false,
+        text: data['text'] ?? '',
+        backgroundColor: data['backgroundColor'] != null
+            ? Color(int.parse(data['backgroundColor'].toString(), radix: 16))
+            : null,
+      );
+    } catch (e) {
+      print('Error parsing snapshot data: $data');
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toDocument() {

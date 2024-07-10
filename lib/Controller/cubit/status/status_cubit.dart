@@ -26,6 +26,7 @@ class StatusCubit extends Cubit<StatusState> {
             snapshot.docs.map((doc) => Status.fromSnapshot(doc)).toList();
         emit(StatusLoaded(statuses));
       } catch (e) {
+        print('Error fetching statuses: $e');
         emit(StatusError("Failed to fetch statuses"));
       }
     }
@@ -41,18 +42,23 @@ class StatusCubit extends Cubit<StatusState> {
     }
   }
 
-  Future<void> addStatus(Status status, String imagePath) async {
+  Future<void> addStatus(Status status, List<String> imagePaths) async {
     try {
-      String? imageUrl;
+      List<String> imageUrls = [];
       if (!status.isText) {
-        imageUrl = await _uploadImage(imagePath);
+        for (String imagePath in imagePaths) {
+          String imageUrl = await _uploadImage(imagePath);
+          imageUrls.add(imageUrl);
+        }
       }
+
       DocumentReference docRef = await _firestore.collection('statuses').add({
         'uid': status.userId,
-        'imageUrl': imageUrl ?? '',
+        'imageUrls': imageUrls,
         'timestamp': status.timestamp,
         'isText': status.isText,
         'text': status.text,
+        'backgroundColor': status.backgroundColor?.value,
       });
 
       await _firestore.collection('scheduled_deletions').add({
@@ -60,8 +66,9 @@ class StatusCubit extends Cubit<StatusState> {
         'deleteAt': status.timestamp.add(Duration(hours: 24)),
       });
 
-      fetchStatuses();
+      await fetchStatuses();
     } catch (e) {
+      print('Error adding status: $e');
       emit(StatusError("Failed to add status"));
     }
   }
