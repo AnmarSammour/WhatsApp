@@ -18,7 +18,7 @@ class CustomTabBarView extends StatelessWidget {
       children: [
         CommunitiesView(),
         ChatView(userInfo: userInfo),
-        StatusView(),
+        StatusView(userInfo: userInfo),
         CallView(),
       ],
     );
