@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:whatsapp/model/user.dart';
 import 'package:whatsapp/view/Chat/chat_page_view.dart';
+import 'package:whatsapp/view/group_chat/new_group.dart';
 import 'package:whatsapp/view/home/widgets/Custom_search_delegate.dart';
 import 'package:whatsapp/view/widgets/user_card.dart';
 
@@ -80,29 +81,38 @@ class _SelectContactPageState extends State<SelectContactPage> {
   }
 
   Widget _newGroupButtonWidget() {
-    return Container(
-      child: Row(
-        children: [
-          Container(
-            height: 45,
-            width: 45,
-            decoration: BoxDecoration(
-                color: Color(0xFF02B099),
-                borderRadius: BorderRadius.all(Radius.circular(40))),
-            child: Icon(
-              Icons.people,
-              color: Colors.white,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => NewGroup()),
+        );
+      },
+      child: Container(
+        child: Row(
+          children: [
+            Container(
+              height: 45,
+              width: 45,
+              decoration: BoxDecoration(
+                  color: Color(0xFF02B099),
+                  borderRadius: BorderRadius.all(Radius.circular(40))),
+              child: Icon(
+                Icons.people,
+                color: Colors.white,
+              ),
             ),
-          ),
-          SizedBox(width: 15),
-          Text(
-            "New Group",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            SizedBox(width: 15),
+            Text(
+              "New Group",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
