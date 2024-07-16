@@ -86,7 +86,7 @@ class _SelectContactPageState extends State<SelectContactPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => NewGroup()),
+              builder: (context) => NewGroup(userInfo: widget.userInfo)),
         );
       },
       child: Container(
