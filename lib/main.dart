@@ -50,8 +50,10 @@ class MyApp extends StatelessWidget {
                   storage: FirebaseStorage.instance)),
           BlocProvider<StatusCubit>(create: (context) => StatusCubit()),
           BlocProvider<GroupChatCubit>(
-              create: (context) =>
-                  GroupChatCubit(firestore: FirebaseFirestore.instance)),
+              create: (context) => GroupChatCubit(
+                    firestore: FirebaseFirestore.instance,
+                    storage: FirebaseStorage.instance,
+                  )),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false, // Disable debug banner

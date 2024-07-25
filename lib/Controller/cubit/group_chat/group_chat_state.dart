@@ -9,19 +9,6 @@ abstract class GroupChatState extends Equatable {
 
 class GroupChatInitial extends GroupChatState {}
 
-class GroupChatLoading extends GroupChatState {}
-
-class GroupChatCreated extends GroupChatState {}
-
-class GroupChatImageSelected extends GroupChatState {
-  final File image;
-
-  GroupChatImageSelected({required this.image});
-
-  @override
-  List<Object> get props => [image];
-}
-
 class GroupChatLoaded extends GroupChatState {
   final List<MessageModel> messages;
 
@@ -30,6 +17,10 @@ class GroupChatLoaded extends GroupChatState {
   @override
   List<Object> get props => [messages];
 }
+
+class GroupChatFailure extends GroupChatState {}
+
+class GroupChatLoading extends GroupChatState {}
 
 class GroupChatError extends GroupChatState {
   final String errorMessage;
@@ -47,4 +38,13 @@ class GroupChatUsersLoaded extends GroupChatState {
 
   @override
   List<Object> get props => [users];
+}
+
+class GroupChatImageSelected extends GroupChatState {
+  final File image;
+
+  GroupChatImageSelected({required this.image});
+
+  @override
+  List<Object> get props => [image];
 }
