@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/controller/cubit/group_chat/group_chat_cubit.dart';
 import 'package:whatsapp/model/user.dart';
+import 'package:whatsapp/view/group_chat/widgets/new_group_details.dart';
 import 'package:whatsapp/view/widgets/contact_card.dart';
 import 'package:whatsapp/view/widgets/custom_fab.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,19 @@ class _NewGroupState extends State<NewGroup> {
         }).toList();
       }
     });
+  }
+
+  void _createGroup() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NewGroupDetails(
+          selectedContacts: selectedContacts,
+          senderName: widget.userInfo.name,
+          senderUID: widget.userInfo.id,
+        ),
+      ),
+    );
   }
 
   void _removeContact(UserModel user) {
@@ -199,7 +213,7 @@ class _NewGroupState extends State<NewGroup> {
         },
       ),
       floatingActionButton: CustomFAB(
-        onPressed: () {},
+        onPressed: _createGroup,
         icon: Icons.check,
         heroTag: 'createGroup',
       ),
