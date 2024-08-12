@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupChatModel {
+  final String groupCreatorId;
+  final String groupCreator;
   final String senderId;
   final String senderName;
+  final String senderImage;
   final String name;
   final String groupId;
   final String lastMessage;
@@ -12,8 +15,11 @@ class GroupChatModel {
   final bool isGroupChat;
 
   GroupChatModel({
+    required this.groupCreatorId,
+    required this.groupCreator,
     required this.senderId,
     required this.senderName,
+    required this.senderImage,
     required this.name,
     required this.groupId,
     required this.lastMessage,
@@ -25,8 +31,11 @@ class GroupChatModel {
 
   Map<String, dynamic> toDocument() {
     return {
+      'groupCreatorId': groupCreatorId,
+      'groupCreator': groupCreator,
       'senderUID': senderId,
       'senderName': senderName,
+      'senderImage': senderImage,
       'name': name,
       'groupId': groupId,
       'lastMessage': lastMessage,
@@ -40,8 +49,11 @@ class GroupChatModel {
   factory GroupChatModel.fromSnapshot(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>? ?? {};
     return GroupChatModel(
+      groupCreatorId: data['groupCreatorId'] ?? '',
+      groupCreator: data['groupCreator'] ?? '',
       senderId: data['senderUID'] ?? '',
       senderName: data['senderName'] ?? '',
+      senderImage: data['senderImage'] ?? '',
       name: data['name'] ?? '',
       groupId: data['groupId'] ?? '',
       lastMessage: data['lastMessage'] ?? '',

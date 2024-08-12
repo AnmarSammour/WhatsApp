@@ -65,19 +65,6 @@ class _ChatTextFieldState extends State<ChatTextField> {
     });
   }
 
-  void _toggleEmojiPicker() {
-    setState(() {
-      if (isEmojiVisible) {
-        isEmojiVisible = false;
-        FocusScope.of(context).requestFocus(widget.focusNode);
-      } else {
-        isEmojiVisible = true;
-        isAttachFileVisible = false;
-        widget.focusNode.unfocus();
-      }
-    });
-  }
-
   void _handleAudioRecorded(File audioFile) {
     context.read<CommunicationCubit>().sendAudioMessage(
           senderName: widget.senderName,
@@ -87,6 +74,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
           audioFile: audioFile,
           recipientPhoneNumber: widget.recipientPhoneNumber,
           senderPhoneNumber: widget.senderPhoneNumber,
+          imageUrl: '',
         );
   }
 

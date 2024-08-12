@@ -12,7 +12,6 @@ class ChatGroupTextField extends StatefulWidget {
   final String groupId;
   final List<String> memberIds;
   final TextEditingController textMessageController;
-  final String senderName;
   final Function() sendTextMessage;
   final Function(File imageFile, String caption) addImageMessage;
   final String senderId;
@@ -25,7 +24,6 @@ class ChatGroupTextField extends StatefulWidget {
     required this.groupId,
     required this.memberIds,
     required this.textMessageController,
-    required this.senderName,
     required this.sendTextMessage,
     required this.addImageMessage,
     required this.focusNode,
@@ -61,10 +59,9 @@ class _ChatTextFieldState extends State<ChatGroupTextField> {
 
   void _handleAudioRecorded(File audioFile) {
     context.read<GroupChatCubit>().sendGroupAudioMessage(
-          senderId: widget.senderId,
-          senderName: widget.senderName,
           audioFile: audioFile,
           groupId: widget.groupId,
+          membersUid: widget.memberIds,
         );
   }
 
@@ -173,11 +170,10 @@ class _ChatTextFieldState extends State<ChatGroupTextField> {
                                             context
                                                 .read<GroupChatCubit>()
                                                 .sendGroupImageMessage(
-                                                  senderId: widget.senderId,
-                                                  senderName: widget.senderName,
                                                   imageFile: imageFile,
                                                   caption: caption,
                                                   groupId: widget.groupId,
+                                                  membersUid: widget.memberIds,
                                                 );
                                           }
                                         }

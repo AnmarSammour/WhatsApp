@@ -37,6 +37,8 @@ class CommunicationCubit extends Cubit<CommunicationState> {
           messageType: MessageType.text,
           message: message,
           time: Timestamp.now(),
+          membersUid: [],
+          senderImage: '',
         ),
         channelId,
       );
@@ -86,6 +88,8 @@ class CommunicationCubit extends Cubit<CommunicationState> {
           messageType: MessageType.image,
           message: message,
           time: Timestamp.now(),
+          membersUid: [],
+          senderImage: '',
         ),
         channelId,
       );
@@ -212,6 +216,7 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     required File audioFile,
     required String recipientPhoneNumber,
     required String senderPhoneNumber,
+    required String imageUrl,
   }) async {
     try {
       final channelId =
@@ -226,6 +231,8 @@ class CommunicationCubit extends Cubit<CommunicationState> {
           messageType: MessageType.audio,
           message: audioUrl,
           time: Timestamp.now(),
+          membersUid: [],
+          senderImage: '',
         ),
         channelId,
       );
@@ -238,7 +245,7 @@ class CommunicationCubit extends Cubit<CommunicationState> {
         recipientUID: recipientId,
         recipientPhoneNumber: recipientPhoneNumber,
         recentTextMessage: "Audio",
-        imageUrl: '',
+        imageUrl: imageUrl,
         isRead: true,
         isArchived: false,
         channelId: channelId,
@@ -254,5 +261,123 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     final uploadTask = ref.putFile(audioFile);
     final snapshot = await uploadTask;
     return await snapshot.ref.getDownloadURL();
+  }
+
+  Future<void> sendVideoMessage({
+    required String senderName,
+    required String senderId,
+    required String recipientId,
+    required String recipientName,
+    required File videoFile,
+    required String recipientPhoneNumber,
+    required String senderPhoneNumber,
+    required String imageUrl,
+    required String caption,
+  }) async {
+    try {
+      final channelId =
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+      final uploadedVideoUrl = await _uploadVideo(channelId, videoFile);
+      final message =
+          uploadedVideoUrl + (caption.isNotEmpty ? '\n$caption' : '');
+      await _sendMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          recipientName: recipientName,
+          recipientUID: recipientId,
+          messageType: MessageType.video,
+          message: message,
+          time: Timestamp.now(),
+          membersUid: [],
+          senderImage: '',
+        ),
+        channelId,
+      );
+      await _addToMyChat(ChatModel(
+        time: Timestamp.now(),
+        senderName: senderName,
+        senderUID: senderId,
+        senderPhoneNumber: senderPhoneNumber,
+        recipientName: recipientName,
+        recipientUID: recipientId,
+        recipientPhoneNumber: recipientPhoneNumber,
+        recentTextMessage: "Video",
+        imageUrl: imageUrl,
+        isRead: true,
+        isArchived: false,
+        channelId: channelId,
+      ));
+    } catch (_) {
+      emit(CommunicationFailure());
+    }
+  }
+
+  Future<String> _uploadVideo(String channelId, File videoFile) async {
+    final ref = storage.ref().child(
+        'chat_videos/$channelId/${DateTime.now().millisecondsSinceEpoch}.mp4');
+    final uploadTask = ref.putFile(videoFile);
+    final snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
+  }
+
+  Future<void> sendMediaMessage({
+    required String senderName,
+    required String senderId,
+    required String recipientId,
+    required String recipientName,
+    required File mediaFile,
+    required String recipientPhoneNumber,
+    required String senderPhoneNumber,
+    required String imageUrl,
+    required String caption,
+    required MessageType messageType,
+  }) async {
+    try {
+      final channelId =
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+
+      String mediaUrl = '';
+      if (messageType == MessageType.image) {
+        mediaUrl = await _uploadImage(channelId, mediaFile);
+      } else if (messageType == MessageType.video) {
+        mediaUrl = await _uploadVideo(channelId, mediaFile);
+      }
+
+      final message = mediaUrl + (caption.isNotEmpty ? '\n$caption' : '');
+      await _sendMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          recipientName: recipientName,
+          recipientUID: recipientId,
+          messageType: messageType,
+          message: message,
+          time: Timestamp.now(),
+          membersUid: [],
+          senderImage: '',
+        ),
+        channelId,
+      );
+
+      await _addToMyChat(ChatModel(
+        time: Timestamp.now(),
+        senderName: senderName,
+        senderUID: senderId,
+        senderPhoneNumber: senderPhoneNumber,
+        recipientName: recipientName,
+        recipientUID: recipientId,
+        recipientPhoneNumber: recipientPhoneNumber,
+        recentTextMessage: messageType == MessageType.image ? "Image" : "Video",
+        imageUrl: imageUrl,
+        isRead: true,
+        isArchived: false,
+        channelId: channelId,
+      ));
+    } on SocketException catch (_) {
+      emit(CommunicationFailure());
+    } catch (_) {
+      emit(CommunicationFailure());
+    }
   }
 }

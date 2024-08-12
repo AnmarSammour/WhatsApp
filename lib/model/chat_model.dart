@@ -10,10 +10,10 @@ class ChatModel extends Equatable {
   final String imageUrl;
   final String recipientPhoneNumber;
   final String senderPhoneNumber;
-  final String recentTextMessage;
+  late final String recentTextMessage;
   final bool isRead;
   final bool isArchived;
-  final Timestamp time;
+  late final Timestamp time;
 
   ChatModel({
     required this.senderName,
@@ -31,7 +31,7 @@ class ChatModel extends Equatable {
   });
 
   factory ChatModel.fromSnapshot(DocumentSnapshot snapshot) {
-    var data = snapshot.data() as Map<String, dynamic>; // Cast snapshot data to Map
+    var data = snapshot.data() as Map<String, dynamic>; 
     return ChatModel(
       senderName: data['senderName'],
       senderUID: data['senderUID'],

@@ -1,9 +1,9 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:equatable/equatable.dart';
 import 'package:whatsapp/model/group_chat.dart';
 import 'package:whatsapp/model/message_model.dart';
 import 'package:whatsapp/enum/message_enum.dart';
@@ -14,32 +14,102 @@ part 'group_chat_state.dart';
 class GroupChatCubit extends Cubit<GroupChatState> {
   final FirebaseFirestore firestore;
   final FirebaseStorage storage;
+  final FirebaseAuth auth;
 
-  GroupChatCubit({required this.firestore, required this.storage})
-      : super(GroupChatInitial());
+  GroupChatCubit({
+    required this.firestore,
+    required this.storage,
+    required this.auth,
+  }) : super(GroupChatInitial());
+
+  Future<String> getSenderName(String uid) async {
+    try {
+      final userDoc = await firestore.collection('users').doc(uid).get();
+      return userDoc.data()?['name'] ?? 'Unknown';
+    } catch (e) {
+      throw Exception('Failed to fetch sender name');
+    }
+  }
+
+  Future<String> getSenderImage(String uid) async {
+    try {
+      final userDoc = await firestore.collection('users').doc(uid).get();
+      return userDoc.data()?['imageUrl'] ?? '';
+    } catch (e) {
+      throw Exception('Failed to fetch sender image');
+    }
+  }
 
   Future<void> sendGroupTextMessage({
-    required String senderName,
-    required String senderId,
     required String groupId,
     required String message,
+    required List<String> membersUid,
   }) async {
     try {
+      final senderId = auth.currentUser!.uid;
+      final senderName = await getSenderName(senderId);
+      final senderImage = await getSenderImage(senderId);
+
       await _sendGroupMessage(
         MessageModel(
           senderName: senderName,
           senderUID: senderId,
+          senderImage: senderImage,
           messageType: MessageType.text,
           message: message,
           time: Timestamp.now(),
           recipientUID: '',
           recipientName: '',
+          membersUid: membersUid,
         ),
         groupId,
       );
       await _updateGroupChat(
         groupId: groupId,
         lastMessage: message,
+        senderName: senderName,
+        senderId: senderId,
+        senderImage: senderImage,
+      );
+    } catch (e) {
+      emit(GroupChatFailure());
+    }
+  }
+
+  Future<void> sendGroupImageMessage({
+    required String groupId,
+    required File imageFile,
+    required String caption,
+    required List<String> membersUid,
+  }) async {
+    try {
+      final senderId = auth.currentUser!.uid;
+      final senderName = await getSenderName(senderId);
+      final imageUrl = await _uploadImage(groupId, imageFile);
+      final senderImage = await getSenderImage(senderId);
+
+      final message = imageUrl + (caption.isNotEmpty ? '\n$caption' : '');
+
+      await _sendGroupMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          senderImage: senderImage,
+          messageType: MessageType.image,
+          message: message,
+          time: Timestamp.now(),
+          recipientUID: '',
+          recipientName: '',
+          membersUid: membersUid,
+        ),
+        groupId,
+      );
+      await _updateGroupChat(
+        groupId: groupId,
+        lastMessage: "Image",
+        senderName: senderName,
+        senderId: senderId,
+        senderImage: senderImage,
       );
     } on SocketException catch (_) {
       emit(GroupChatFailure());
@@ -48,35 +118,40 @@ class GroupChatCubit extends Cubit<GroupChatState> {
     }
   }
 
-  Future<void> sendGroupImageMessage({
-    required String senderName,
-    required String senderId,
+  Future<void> sendGroupAudioMessage({
     required String groupId,
-    required File imageFile,
-    required String caption,
+    required File audioFile,
+    required List<String> membersUid,
   }) async {
     try {
-      final imageUrl = await _uploadImage(groupId, imageFile);
-      final message = imageUrl + (caption.isNotEmpty ? '\n$caption' : '');
+      final senderId = auth.currentUser!.uid;
+      final senderName = await getSenderName(senderId);
+      final senderImage = await getSenderImage(senderId);
+
+      final audioUrl = await _uploadAudio(groupId, audioFile);
+
       await _sendGroupMessage(
         MessageModel(
           senderName: senderName,
           senderUID: senderId,
-          messageType: MessageType.image,
-          message: message,
+          senderImage: senderImage,
+          messageType: MessageType.audio,
+          message: audioUrl,
           time: Timestamp.now(),
           recipientUID: '',
           recipientName: '',
+          membersUid: membersUid,
         ),
         groupId,
       );
       await _updateGroupChat(
         groupId: groupId,
-        lastMessage: "Image",
+        lastMessage: "Audio",
+        senderName: senderName,
+        senderId: senderId,
+        senderImage: senderImage,
       );
-    } on SocketException catch (_) {
-      emit(GroupChatFailure());
-    } catch (_) {
+    } catch (e) {
       emit(GroupChatFailure());
     }
   }
@@ -85,10 +160,10 @@ class GroupChatCubit extends Cubit<GroupChatState> {
     required String groupName,
     required File? profilePic,
     required List<String> membersUid,
-    required String senderId,
     required String senderName,
   }) async {
     try {
+      final senderId = auth.currentUser!.uid;
       final groupId = firestore.collection('groups').doc().id;
       String profileUrl = profilePic != null
           ? await uploadImageToFirebase(profilePic, groupId)
@@ -97,14 +172,17 @@ class GroupChatCubit extends Cubit<GroupChatState> {
       List<String> allMembersUid = List.from(membersUid)..add(senderId);
 
       final groupChat = GroupChatModel(
-        senderId: senderId,
-        senderName: senderName,
+        groupCreatorId: senderId,
+        groupCreator: senderName,
+        senderId: '',
+        senderName: '',
         name: groupName,
         groupId: groupId,
         lastMessage: '',
         groupPic: profileUrl,
         membersUid: allMembersUid,
         timeSent: DateTime.now(),
+        senderImage: '',
       );
 
       await firestore
@@ -151,35 +229,6 @@ class GroupChatCubit extends Cubit<GroupChatState> {
     }
   }
 
-  Future<void> sendGroupAudioMessage({
-    required String senderName,
-    required String senderId,
-    required String groupId,
-    required File audioFile,
-  }) async {
-    try {
-      final audioUrl = await _uploadAudio(groupId, audioFile);
-      await _sendGroupMessage(
-        MessageModel(
-          senderName: senderName,
-          senderUID: senderId,
-          messageType: MessageType.audio,
-          message: audioUrl,
-          time: Timestamp.now(),
-          recipientUID: '',
-          recipientName: '',
-        ),
-        groupId,
-      );
-      await _updateGroupChat(
-        groupId: groupId,
-        lastMessage: "Audio",
-      );
-    } catch (e) {
-      emit(GroupChatFailure());
-    }
-  }
-
   Future<void> _sendGroupMessage(MessageModel message, String groupId) async {
     try {
       await firestore
@@ -207,11 +256,17 @@ class GroupChatCubit extends Cubit<GroupChatState> {
   Future<void> _updateGroupChat({
     required String groupId,
     required String lastMessage,
+    required String senderName,
+    required String senderId,
+    required String senderImage,
   }) async {
     try {
       await firestore.collection('groups').doc(groupId).update({
         'lastMessage': lastMessage,
         'timeSent': Timestamp.now(),
+        'senderName': senderName,
+        'senderUID': senderId,
+        'senderImage': senderImage,
       });
 
       final groupSnapshot =
@@ -227,6 +282,8 @@ class GroupChatCubit extends Cubit<GroupChatState> {
             .update({
           'lastMessage': lastMessage,
           'timeSent': Timestamp.now(),
+          'senderName': senderName,
+          'senderUID': senderId,
         });
       }
     } catch (e) {
