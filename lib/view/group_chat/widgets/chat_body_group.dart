@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp/controller/cubit/group_chat/group_chat_cubit.dart';
@@ -12,8 +13,6 @@ class ChatBodyGroup extends StatefulWidget {
   final List<String> memberIds;
   final String groupName;
   final String groupImageUrl;
-  final String senderName;
-  final String senderId;
 
   const ChatBodyGroup({
     Key? key,
@@ -21,8 +20,6 @@ class ChatBodyGroup extends StatefulWidget {
     required this.memberIds,
     required this.groupName,
     required this.groupImageUrl,
-    required this.senderName,
-    required this.senderId,
   }) : super(key: key);
 
   @override
@@ -34,6 +31,8 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   bool _isEmojiVisible = false;
+
+  late Future<String> _senderNameFuture;
 
   @override
   void initState() {
@@ -50,6 +49,10 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
         });
       }
     });
+
+    final senderId = FirebaseAuth.instance.currentUser!.uid;
+    _senderNameFuture =
+        BlocProvider.of<GroupChatCubit>(context).getSenderName(senderId);
   }
 
   @override
@@ -77,21 +80,19 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
 
   void _addImageMessage(File imageFile, String caption) {
     context.read<GroupChatCubit>().sendGroupImageMessage(
-          senderId: widget.senderId,
-          senderName: widget.senderName,
           imageFile: imageFile,
           caption: caption,
           groupId: widget.groupId,
+          membersUid: widget.memberIds,
         );
   }
 
   void _sendTextMessage() {
     if (_textMessageController.text.isNotEmpty) {
       context.read<GroupChatCubit>().sendGroupTextMessage(
-            senderId: widget.senderId,
-            senderName: widget.senderName,
             groupId: widget.groupId,
             message: _textMessageController.text,
+            membersUid: widget.memberIds,
           );
       _textMessageController.clear();
       setState(() {});
@@ -110,7 +111,6 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: ChatAppBarGroup(
         groupName: widget.groupName,
@@ -131,7 +131,33 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                 child: BlocBuilder<GroupChatCubit, GroupChatState>(
                   builder: (_, groupChatState) {
                     if (groupChatState is GroupChatLoaded) {
-                      return ChatGroupMessageList(
+                      return FutureBuilder<String>(
+                        future: _senderNameFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Center(
+                              child: Text('Error: ${snapshot.error}'),
+                            );
+                          } else if (snapshot.hasData) {
+                            final senderName = snapshot.data!;
+                            final senderImage = snapshot.data!;
+                            return ChatGroupMessageList(
+                              messages: groupChatState.messages,
+                              senderId: FirebaseAuth.instance.currentUser!.uid,
+                              imageUrl: senderImage,
+                              senderName: senderName,
+                            );
+                          } else {
+                            return Center(
+                              child: Text('No data available'),
+                            );
+                          }
+                        },
                       );
                     }
                     return Center(
@@ -140,17 +166,33 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                   },
                 ),
               ),
-              ChatGroupTextField(
-                groupId: widget.groupId,
-                memberIds: widget.memberIds,
-                textMessageController: _textMessageController,
-                senderName: widget.senderName,
-                sendTextMessage: _sendTextMessage,
-                addImageMessage: _addImageMessage,
-                focusNode: _focusNode,
-                isEmojiVisible: _isEmojiVisible,
-                toggleEmojiPicker: _toggleEmojiPicker,
-                senderId: widget.senderId,
+              FutureBuilder<String>(
+                future: _senderNameFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else if (snapshot.hasData) {
+                    return ChatGroupTextField(
+                      groupId: widget.groupId,
+                      memberIds: widget.memberIds,
+                      textMessageController: _textMessageController,
+                      sendTextMessage: _sendTextMessage,
+                      addImageMessage: _addImageMessage,
+                      focusNode: _focusNode,
+                      isEmojiVisible: _isEmojiVisible,
+                      toggleEmojiPicker: _toggleEmojiPicker,
+                      senderId: FirebaseAuth.instance.currentUser!.uid,
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                },
               ),
               _isEmojiVisible
                   ? SizedBox(
