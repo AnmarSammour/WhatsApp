@@ -13,86 +13,67 @@ class SettingsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16.0, vertical: 10.0),
-          child: ListTile(
-            title: Text(
-              'Media, links, and docs',
-              style: TextStyle(color: Colors.grey, fontSize: 14),
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  '0',
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
-                ),
-                Icon(Icons.chevron_right, color: Colors.grey),
-              ],
-            ),
-            onTap: () {},
+        ListTile(
+          title: Text(
+            'Media, links, and docs',
+            style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: Divider(
-            color: Colors.grey[300],
-            thickness: 5,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16.0, vertical: 10.0),
-          child: Column(
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: Icon(Icons.notifications_none),
-                title: Text('Notifications'),
-                onTap: () {},
+              Text(
+                '0',
+                style: TextStyle(color: Colors.grey, fontSize: 14),
               ),
-              ListTile(
-                leading: Icon(Icons.photo_outlined),
-                title: Text('Media visibility'),
-                onTap: () {},
-              ),
+              Icon(Icons.chevron_right, color: Colors.grey),
             ],
           ),
+          onTap: () {},
         ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
-          child: Divider(
-            color: Colors.grey[300],
-            thickness: 5,
-          ),
+        Divider(
+          color: Colors.grey[300],
+          thickness: 5,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: 16.0, vertical: 10.0),
-          child: Column(
-            children: [
-              ListTile(
-                leading: Icon(Icons.lock_outline),
-                title: Text('Encryption'),
-                subtitle: Text(
-                    'Messages and calls are end-to-end encrypted. Tap to verify.'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.history_toggle_off_sharp),
-                title: Text('Disappearing messages'),
-                subtitle: Text('Off'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.lock_outline_sharp),
-                title: Text('Chat lock'),
-                subtitle:
-                    Text('Lock and hide this chat on this device.'),
-                trailing: Switch(value: false, onChanged: (value) {}),
-              ),
-            ],
-          ),
+        Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.notifications_none),
+              title: Text('Notifications'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_outlined),
+              title: Text('Media visibility'),
+              onTap: () {},
+            ),
+          ],
+        ),
+        Divider(
+          color: Colors.grey[300],
+          thickness: 5,
+        ),
+        Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.lock_outline),
+              title: Text('Encryption'),
+              subtitle: Text(
+                  'Messages and calls are end-to-end encrypted. Tap to verify.'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.history_toggle_off_sharp),
+              title: Text('Disappearing messages'),
+              subtitle: Text('Off'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.lock_outline_sharp),
+              title: Text('Chat lock'),
+              subtitle: Text('Lock and hide this chat on this device.'),
+              trailing: Switch(value: false, onChanged: (value) {}),
+            ),
+          ],
         ),
       ],
     );
