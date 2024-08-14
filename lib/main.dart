@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/controller/cubit/chat/chat_cubit.dart';
 import 'package:whatsapp/controller/cubit/communication/communication_cubit.dart';
-import 'package:whatsapp/controller/cubit/get_numbers/get_numbers_cubit.dart';
 import 'package:whatsapp/controller/cubit/group_chat/group_chat_cubit.dart';
 import 'package:whatsapp/controller/cubit/phone_auth/phone_auth_cubit.dart';
 import 'package:whatsapp/controller/cubit/status/status_cubit.dart';
@@ -40,11 +39,6 @@ class MyApp extends StatelessWidget {
               create: (context) => ChatCubit(
                     firestore: FirebaseFirestore.instance,
                   )),
-          BlocProvider<GetNumbersCubit>(
-            create: (context) => GetNumbersCubit(
-              firestore: FirebaseFirestore.instance,
-            ),
-          ),
           BlocProvider<CommunicationCubit>(
               create: (context) => CommunicationCubit(
                   firestore: FirebaseFirestore.instance,
