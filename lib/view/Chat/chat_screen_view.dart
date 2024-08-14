@@ -117,6 +117,9 @@ class _ChatViewState extends State<ChatView> {
             recentSendMessage: chat.recentTextMessage,
             time: DateFormat('hh:mm a').format(chat.time.toDate()),
             imageUrl: chat.imageUrl,
+            phoneNumber: chat.recipientPhoneNumber,
+            status: '',
+            uid: '',
           ),
         );
       },
