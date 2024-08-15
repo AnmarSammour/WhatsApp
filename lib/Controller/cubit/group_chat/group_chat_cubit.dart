@@ -328,4 +328,103 @@ class GroupChatCubit extends Cubit<GroupChatState> {
       emit(GroupChatError(errorMessage: e.toString()));
     }
   }
+
+  Future<List<UserModel>> getCurrentGroupMembers(String groupId) async {
+    try {
+      final groupSnapshot =
+          await firestore.collection('groups').doc(groupId).get();
+      final groupChat = GroupChatModel.fromSnapshot(groupSnapshot);
+      final memberIds = groupChat.membersUid;
+
+      final membersSnapshots = await firestore
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: memberIds)
+          .get();
+
+      return membersSnapshots.docs
+          .map((doc) => UserModel.fromSnapshot(doc))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to fetch group members');
+    }
+  }
+
+  Future<void> addMembersToGroup({
+    required String groupId,
+    required List<String> newMemberIds,
+  }) async {
+    try {
+      final currentUserId = auth.currentUser!.uid;
+      final currentUserDoc =
+          await firestore.collection('users').doc(currentUserId).get();
+      final currentUserName = currentUserDoc.data()?['name'] ?? 'You';
+
+      final newMembersDocs = await firestore
+          .collection('users')
+          .where(FieldPath.documentId, whereIn: newMemberIds)
+          .get();
+
+      List<String> newMemberNames = newMembersDocs.docs
+          .map((doc) => doc.data()['name'] as String)
+          .toList();
+
+      final addedMembersString = newMemberNames.join(', ');
+      final lastMessage = '$currentUserName added $addedMembersString';
+
+      DocumentReference groupRef = firestore.collection('groups').doc(groupId);
+      await groupRef.update({
+        'membersUid': FieldValue.arrayUnion(newMemberIds),
+      });
+
+      final groupSnapshot = await groupRef.get();
+      final groupChat = GroupChatModel.fromSnapshot(groupSnapshot);
+
+      final allMemberIds = List.from(groupChat.membersUid)..add(currentUserId);
+
+      for (String memberId in allMemberIds) {
+        await firestore
+            .collection('myChats')
+            .doc(memberId)
+            .collection('groups')
+            .doc(groupId)
+            .set({
+          ...groupChat.toDocument(),
+          'lastMessage': lastMessage,
+          'timeSent': Timestamp.now(),
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      print('Error adding members to group: $e');
+      emit(GroupChatFailure());
+    }
+  }
+
+  Future<void> updateGroupName({
+    required String groupId,
+    required String newGroupName,
+  }) async {
+    if (newGroupName.isNotEmpty) {
+      try {
+        await firestore
+            .collection('groups')
+            .doc(groupId)
+            .update({'name': newGroupName});
+
+        final groupSnapshot =
+            await firestore.collection('groups').doc(groupId).get();
+        final groupChat = GroupChatModel.fromSnapshot(groupSnapshot);
+
+        for (String memberUid in groupChat.membersUid) {
+          await firestore
+              .collection('myChats')
+              .doc(memberUid)
+              .collection('groups')
+              .doc(groupId)
+              .update({'name': newGroupName});
+        }
+      } catch (e) {
+        print('Error updating group name: $e');
+      }
+    }
+  }
 }
