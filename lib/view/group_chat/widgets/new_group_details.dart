@@ -146,7 +146,7 @@ class _NewGroupDetailsState extends State<NewGroupDetails> {
                         border: InputBorder.none,
                         enabledBorder: const UnderlineInputBorder(
                           borderSide:
-                              BorderSide(color: Colors.green, width: 2.0),
+                              BorderSide(color: Color(0xFF02B099), width: 2.0),
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(isEmojiPickerVisible

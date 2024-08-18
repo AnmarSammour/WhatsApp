@@ -67,19 +67,22 @@ void showGroupDialog(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.message, color: Colors.green),
+                    icon: const Icon(Icons.message, color: Color(0xFF02B099)),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(Icons.call, color: Colors.green),
+                    icon: const Icon(Icons.call, color: Color(0xFF02B099)),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(Icons.videocam, color: Colors.green),
+                    icon: const Icon(Icons.videocam, color: Color(0xFF02B099)),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: Icon(Icons.info_outline, color: Colors.green),
+                    icon: const Icon(
+                      Icons.info_outline,
+                      color: Color(0xFF02B099),
+                    ),
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(
