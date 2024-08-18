@@ -123,7 +123,10 @@ class GroupMembersList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddMembers(),
+                  builder: (context) => AddMembers(
+                    userInfo: currentUser,
+                    groupId: groupId,
+                  ),
                 ),
               );
             },
@@ -169,22 +172,21 @@ class GroupMembersList extends StatelessWidget {
                             ? Icon(Icons.person, color: Colors.grey)
                             : null,
                       ),
-                      title: Text(
-                          member['isCurrentUser'] ? 'You' : member['name']),
+                      title: Text(member['isCurrentUser'] ? 'You' : member['name']),
                       subtitle: member['status'] != null
                           ? Text(member['status'])
                           : null,
                       trailing: member['isGroupAdmin']
                           ? Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
                                 color: const Color(0xFF02B099),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Text(
                                 'Group Admin',
-                                style: TextStyle(color: Color(0xFF02B099)),
+                                style: TextStyle(color:  Color(0xFF02B099)),
                               ),
                             )
                           : null,

@@ -30,7 +30,7 @@ class GroupHeader extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.green),
+            Icon(icon, color: const Color(0xFF02B099)),
             SizedBox(height: 8.0),
             Text(label, style: TextStyle(color: Colors.black)),
           ],
@@ -109,20 +109,18 @@ class GroupHeader extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _buildActionButton(Icons.message, 'Message', () {
-                      // Handle message button tap
-                    }),
-                    _buildActionButton(Icons.call, 'Audio', () {
-                      // Handle audio button tap
-                    }),
-                    _buildActionButton(Icons.videocam, 'Video', () {
-                      // Handle video button tap
-                    }),
+                    _buildActionButton(Icons.message, 'Message', () {}),
+                    _buildActionButton(Icons.call, 'Audio', () {}),
+                    _buildActionButton(Icons.videocam, 'Video', () {}),
                     _buildActionButton(Icons.person_add_alt_outlined, 'Add',
                         () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddMembers()),
+                        MaterialPageRoute(
+                            builder: (context) => AddMembers(
+                                  userInfo: currentUser,
+                                  groupId: groupChatModel.groupId,
+                                )),
                       );
                     }),
                   ],
