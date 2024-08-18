@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp/model/group_chat.dart';
+import 'package:whatsapp/model/user.dart';
+import 'package:whatsapp/view/group_info/show_group_dialog.dart';
 
 class ChatGroupItems extends StatelessWidget {
   final String time;
@@ -9,6 +12,8 @@ class ChatGroupItems extends StatelessWidget {
   final String groupId;
   final bool isCurrentUser;
   final bool isGroupCreated;
+  final List<UserModel> members;
+  final UserModel currentUser;
 
   const ChatGroupItems({
     Key? key,
@@ -18,12 +23,28 @@ class ChatGroupItems extends StatelessWidget {
     required this.name,
     required this.imageUrl,
     required this.groupId,
+    required this.members,
+    required this.currentUser,
     this.isCurrentUser = false,
     this.isGroupCreated = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final group = GroupChatModel(
+      name: name,
+      groupCreatorId: '',
+      groupCreator: '',
+      timeSent: DateTime.now(),
+      senderId: '',
+      senderName: '',
+      groupId: groupId,
+      lastMessage: '',
+      senderImage: '',
+      groupPic: imageUrl,
+      membersUid: [],
+    );
+
     String displayMessage;
     if (isGroupCreated && recentSendMessage.isEmpty) {
       displayMessage =
@@ -42,7 +63,9 @@ class ChatGroupItems extends StatelessWidget {
               Row(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      showGroupDialog(context, group, currentUser);
+                    },
                     child: CircleAvatar(
                       radius: 27.5,
                       backgroundColor: Colors.grey.withOpacity(0.3),
