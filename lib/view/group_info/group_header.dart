@@ -139,7 +139,11 @@ class GroupHeader extends StatelessWidget {
         },
       ),
       actions: [
-        CustomPopupMenu(),
+        CustomPopupMenu(
+          userInfo: currentUser,
+          groupId: groupChatModel.groupId,
+          initialGroupName: groupChatModel.name,
+        ),
       ],
     );
   }
