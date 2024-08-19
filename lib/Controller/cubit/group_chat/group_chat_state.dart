@@ -48,3 +48,12 @@ class GroupChatImageSelected extends GroupChatState {
   @override
   List<Object> get props => [image];
 }
+
+class GroupChatUpdated extends GroupChatState {
+  final GroupChatModel updatedGroupChat;
+
+  const GroupChatUpdated(this.updatedGroupChat);
+
+  @override
+  List<Object> get props => [updatedGroupChat];
+}

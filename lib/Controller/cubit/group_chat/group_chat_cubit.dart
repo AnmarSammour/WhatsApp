@@ -427,4 +427,81 @@ class GroupChatCubit extends Cubit<GroupChatState> {
       }
     }
   }
+
+  Future<List<Map<String, dynamic>>> getGroupMembersInfo(String groupId) async {
+    List<Map<String, dynamic>> membersInfo = [];
+    try {
+      DocumentSnapshot groupSnapshot = await FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .get();
+
+      if (groupSnapshot.exists) {
+        List<dynamic> members = groupSnapshot.get('membersUid');
+        String groupCreatorId = groupSnapshot.get('groupCreatorId');
+        String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+        for (String memberId in members) {
+          DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(memberId)
+              .get();
+
+          if (userSnapshot.exists) {
+            var userData = userSnapshot.data() as Map<String, dynamic>;
+            userData['isGroupAdmin'] = memberId == groupCreatorId;
+            userData['isCurrentUser'] = memberId == currentUserId;
+
+            membersInfo.add(userData);
+          }
+        }
+
+        membersInfo.sort((a, b) {
+          if (a['isCurrentUser']) return -1;
+          if (b['isCurrentUser']) return 1;
+          if (a['isGroupAdmin']) return -1;
+          if (b['isGroupAdmin']) return 1;
+          return 0;
+        });
+      }
+    } catch (e) {
+      print('Error fetching group members info: $e');
+    }
+    return membersInfo;
+  }
+
+  Future<void> updateGroupImage({
+    required String groupId,
+    required File imageFile,
+  }) async {
+    try {
+      emit(GroupChatLoading());
+
+      final imageUrl = await uploadImageToFirebase(imageFile, groupId);
+
+      await firestore.collection('groups').doc(groupId).update({
+        'groupPic': imageUrl,
+      });
+
+      final groupSnapshot =
+          await firestore.collection('groups').doc(groupId).get();
+      final groupChat = GroupChatModel.fromSnapshot(groupSnapshot);
+
+      for (String memberId in groupChat.membersUid) {
+        await firestore
+            .collection('myChats')
+            .doc(memberId)
+            .collection('groups')
+            .doc(groupId)
+            .update({
+          'groupPic': imageUrl,
+        });
+      }
+
+      emit(GroupChatUpdated(groupChat));
+    } catch (e) {
+      emit(GroupChatFailure());
+      throw Exception('Failed to update group image: $e');
+    }
+  }
 }
