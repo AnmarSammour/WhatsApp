@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:whatsapp/model/group_chat.dart';
+import 'package:whatsapp/view/group_info/edit_group_image_screen.dart';
 
 class ChangeGroupImage extends StatefulWidget {
   final GroupChatModel groupChatModel;
@@ -21,16 +23,17 @@ class _ChangeGroupImageState extends State<ChangeGroupImage> {
       imageQuality: 50,
     );
 
-    // if (pickedFile != null) {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => EditGroupImageScreen(
-
-    //       ),
-    //     ),
-    //   );
-    // }
+    if (pickedFile != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditGroupImageScreen(
+            imageFile: File(pickedFile.path),
+            groupChatModel: widget.groupChatModel,
+          ),
+        ),
+      );
+    }
   }
 
   @override
