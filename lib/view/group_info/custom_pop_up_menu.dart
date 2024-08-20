@@ -66,7 +66,11 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
       } else if (value == 'Change group name') {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ChangeGroupName()),
+          MaterialPageRoute(
+              builder: (context) => ChangeGroupName(
+                    groupId: widget.groupId,
+                    initialGroupName: widget.initialGroupName,
+                  )),
         );
       }
     });
