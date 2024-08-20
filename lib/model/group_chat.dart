@@ -48,6 +48,10 @@ class GroupChatModel {
 
   factory GroupChatModel.fromSnapshot(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>? ?? {};
+    return GroupChatModel.fromMap(data);
+  }
+
+  factory GroupChatModel.fromMap(Map<String, dynamic> data) {
     return GroupChatModel(
       groupCreatorId: data['groupCreatorId'] ?? '',
       groupCreator: data['groupCreator'] ?? '',

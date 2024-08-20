@@ -88,7 +88,10 @@ void showGroupDialog(
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GroupInfoPage(),
+                          builder: (context) => GroupInfoPage(
+                            groupChatModel: groupChatModel,
+                            currentUser: currentUser,
+                          ),
                         ),
                       );
                     },
