@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,7 +20,12 @@ class StatusViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StatusCubit()..fetchStatuses(),
+      create: (context) {
+        final statusCubit = StatusCubit();
+        statusCubit.deleteExpiredStatuses();
+        statusCubit.fetchStatuses();
+        return statusCubit;
+      },
       child: Scaffold(
         body: BlocBuilder<StatusCubit, StatusState>(
           builder: (context, state) {
@@ -102,9 +108,12 @@ class StatusViewBody extends StatelessWidget {
             onImagesSent: (imagesWithCaptions) async {
               final statusCubit = context.read<StatusCubit>();
               for (var item in imagesWithCaptions) {
+                final statusesId =
+                    FirebaseFirestore.instance.collection('statuses').doc().id;
+
                 await statusCubit.addStatus(
                   Status(
-                    id: '',
+                    statusId: statusesId,
                     userId: userInfo.id,
                     imageUrls: [],
                     timestamp: DateTime.now(),
