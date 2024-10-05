@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,7 +48,8 @@ class MyStatus extends StatelessWidget {
       title: const Text('My status'),
       subtitle: const Text('Tap to add status update'),
       onTap: () async {
-        XFile? pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+        XFile? pickedFile =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
         if (pickedFile != null) {
           _navigateToEditStory(context, pickedFile, userInfo);
         }
@@ -55,7 +57,8 @@ class MyStatus extends StatelessWidget {
     );
   }
 
-  void _navigateToEditStory(BuildContext context, XFile pickedFile, UserModel userInfo) {
+  void _navigateToEditStory(
+      BuildContext context, XFile pickedFile, UserModel userInfo) {
     final navigator = Navigator.of(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       navigator.push(
@@ -65,9 +68,12 @@ class MyStatus extends StatelessWidget {
             onImagesSent: (imagesWithCaptions) async {
               final statusCubit = context.read<StatusCubit>();
               for (var item in imagesWithCaptions) {
+                final statusesId =
+                    FirebaseFirestore.instance.collection('statuses').doc().id;
+
                 await statusCubit.addStatus(
                   Status(
-                    id: '',
+                    statusId: statusesId,
                     userId: userInfo.id,
                     imageUrls: [],
                     timestamp: DateTime.now(),
@@ -85,4 +91,3 @@ class MyStatus extends StatelessWidget {
     });
   }
 }
-
