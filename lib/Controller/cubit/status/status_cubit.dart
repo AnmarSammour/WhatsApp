@@ -42,6 +42,26 @@ class StatusCubit extends Cubit<StatusState> {
     }
   }
 
+  Future<List<UserModel>> fetchViewers(String statusId) async {
+    try {
+      DocumentSnapshot snapshot =
+          await _firestore.collection('statuses').doc(statusId).get();
+      List<dynamic> viewersData = snapshot.get('viewers') ?? [];
+
+      List<UserModel> viewers = [];
+      for (var viewerData in viewersData) {
+        String userId = viewerData['uid'];
+        UserModel user = await fetchUser(userId);
+        viewers.add(user);
+      }
+
+      return viewers;
+    } catch (e) {
+      print('Error fetching viewers: $e');
+      throw Exception("Failed to fetch viewers");
+    }
+  }
+
   Future<void> addStatus(Status status, List<String> imagePaths) async {
     try {
       List<String> imageUrls = [];
@@ -53,12 +73,14 @@ class StatusCubit extends Cubit<StatusState> {
       }
 
       DocumentReference docRef = await _firestore.collection('statuses').add({
+        'id': status.statusId,
         'uid': status.userId,
         'imageUrls': imageUrls,
         'timestamp': status.timestamp,
         'isText': status.isText,
         'text': status.text,
         'backgroundColor': status.backgroundColor?.value,
+        'viewers': [],
       });
 
       await _firestore.collection('scheduled_deletions').add({
@@ -73,6 +95,22 @@ class StatusCubit extends Cubit<StatusState> {
     }
   }
 
+  Future<void> deleteExpiredStatuses() async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection('scheduled_deletions')
+          .where('deleteAt', isLessThanOrEqualTo: Timestamp.now())
+          .get();
+
+      for (QueryDocumentSnapshot doc in snapshot.docs) {
+        await _firestore.collection('statuses').doc(doc['docId']).delete();
+        await _firestore.collection('scheduled_deletions').doc(doc.id).delete();
+      }
+    } catch (e) {
+      print('Error deleting expired statuses: $e');
+    }
+  }
+
   Future<String> _uploadImage(String imagePath) async {
     try {
       Reference ref =
@@ -82,6 +120,36 @@ class StatusCubit extends Cubit<StatusState> {
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
       throw Exception("Failed to upload image");
+    }
+  }
+
+  Future<void> logViewer(String statusId, String userId) async {
+    try {
+      DocumentReference docRef =
+          FirebaseFirestore.instance.collection('statuses').doc(statusId);
+      DocumentSnapshot snapshot = await docRef.get();
+
+      if (snapshot.exists) {
+        List<dynamic> viewers = snapshot.get('viewers') ?? [];
+        String ownerId = snapshot.get('uid');
+
+        if (!viewers.any((v) => v['uid'] == userId) && userId != ownerId) {
+          UserModel user = await fetchUser(userId);
+
+          viewers.add({
+            'uid': userId,
+            'name': user.name,
+            'imageUrl': user.imageUrl,
+            'viewedAt': Timestamp.now(),
+          });
+
+          await docRef.update({
+            'viewers': viewers,
+          });
+        }
+      }
+    } catch (e) {
+      print('Error logging viewer: $e');
     }
   }
 }
