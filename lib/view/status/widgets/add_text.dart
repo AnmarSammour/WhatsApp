@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp/controller/cubit/status/status_cubit.dart';
@@ -106,16 +107,20 @@ class _AddTextState extends State<AddText> {
                       child: InkWell(
                         onTap: () async {
                           if (_textController.text.isNotEmpty) {
+                            final statusesId = FirebaseFirestore.instance
+                                .collection('statuses')
+                                .doc()
+                                .id;
+
                             await context.read<StatusCubit>().addStatus(
                               Status(
-                                id: '',
+                                statusId: statusesId,
                                 userId: widget.userId,
                                 imageUrls: [],
                                 timestamp: DateTime.now(),
                                 isText: true,
                                 text: _textController.text,
-                                backgroundColor:
-                                    backgroundColor, // Pass the selected background color
+                                backgroundColor: backgroundColor,
                               ),
                               [],
                             );
