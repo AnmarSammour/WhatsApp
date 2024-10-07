@@ -152,4 +152,15 @@ class StatusCubit extends Cubit<StatusState> {
       print('Error logging viewer: $e');
     }
   }
+
+  Future<bool> deleteStatus(String statusId) async {
+    try {
+      await _firestore.collection('statuses').doc(statusId).delete();
+      return true;
+    } catch (e) {
+      print('Error deleting status: $e');
+      emit(const StatusError("Failed to delete status"));
+      return false;
+    }
+  }
 }
