@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:video_player/video_player.dart';
 import 'package:whatsapp/enum/message_enum.dart';
 import 'package:whatsapp/model/message_model.dart';
 import 'package:whatsapp/view/Chat/widgets/chat_bubble_painter.dart';
 import 'package:whatsapp/view/Chat/widgets/full_screen_image.dart';
+import 'package:whatsapp/view/Chat/widgets/full_screen_video.dart';
 
 class ChatBubbleForFriend extends StatefulWidget {
   const ChatBubbleForFriend({Key? key, required this.message})
@@ -22,10 +24,20 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
 
+  VideoPlayerController? _videoPlayerController;
+
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
+
+    if (widget.message.messageType == MessageType.video) {
+      _videoPlayerController =
+          VideoPlayerController.network(widget.message.message)
+            ..initialize().then((_) {
+              setState(() {});
+            });
+    }
 
     _audioPlayer.onDurationChanged.listen((d) {
       setState(() {
@@ -43,6 +55,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _videoPlayerController?.dispose();
     super.dispose();
   }
 
@@ -63,7 +76,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
     final maxMessageWidth = screenWidth * 0.75;
 
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
@@ -90,7 +103,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.message.messageType == MessageType.image)
                           Container(
@@ -114,7 +127,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                                 .sublist(1)
                                 .join('\n'),
                             style: TextStyle(color: Colors.black),
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.left,
                           ),
                         if (widget.message.messageType == MessageType.audio)
                           Row(
@@ -137,12 +150,71 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                               ),
                             ],
                           ),
+                        if (widget.message.messageType == MessageType.video &&
+                            _videoPlayerController != null &&
+                            _videoPlayerController!.value.isInitialized)
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FullScreenVideo(
+                                    videoUrl: widget.message.message
+                                        .split('\n')
+                                        .first, 
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                AspectRatio(
+                                  aspectRatio:
+                                      _videoPlayerController!.value.aspectRatio,
+                                  child: VideoPlayer(_videoPlayerController!),
+                                ),
+                                VideoProgressIndicator(
+                                  _videoPlayerController!,
+                                  allowScrubbing: true,
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    _videoPlayerController!.value.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _videoPlayerController!.value.isPlaying
+                                          ? _videoPlayerController!.pause()
+                                          : _videoPlayerController!.play();
+                                    });
+                                  },
+                                ),
+                                if (widget.message.message.split('\n').length >
+                                    1)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      widget.message.message
+                                          .split('\n')
+                                          .sublist(1)
+                                          .join('\n'),
+                                      style: TextStyle(color: Colors.black),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
                         if (widget.message.messageType != MessageType.image &&
-                            widget.message.messageType != MessageType.audio)
+                            widget.message.messageType != MessageType.audio &&
+                            widget.message.messageType != MessageType.video)
                           Text(
                             widget.message.message,
                             style: TextStyle(color: Colors.black),
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.left,
                           ),
                         SizedBox(height: 5),
                         Text(
@@ -150,7 +222,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                               .format(widget.message.time.toDate()),
                           style:
                               TextStyle(color: Color(0xff606D75), fontSize: 12),
-                          textAlign: TextAlign.right,
+                          textAlign: TextAlign.left,
                         ),
                       ],
                     ),

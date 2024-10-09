@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:video_player/video_player.dart';
 import 'package:whatsapp/enum/message_enum.dart';
 import 'package:whatsapp/model/message_model.dart';
 import 'package:whatsapp/view/Chat/widgets/chat_bubble_painter.dart';
 import 'package:whatsapp/view/Chat/widgets/full_screen_image.dart';
+import 'package:whatsapp/view/Chat/widgets/full_screen_video.dart';
 
 class ChatBubble extends StatefulWidget {
   const ChatBubble({Key? key, required this.message}) : super(key: key);
@@ -21,10 +23,20 @@ class _ChatBubbleState extends State<ChatBubble> {
   Duration _duration = Duration.zero;
   Duration _position = Duration.zero;
 
+  VideoPlayerController? _videoPlayerController;
+
   @override
   void initState() {
     super.initState();
     _audioPlayer = AudioPlayer();
+
+    if (widget.message.messageType == MessageType.video) {
+      _videoPlayerController =
+          VideoPlayerController.network(widget.message.message)
+            ..initialize().then((_) {
+              setState(() {});
+            });
+    }
 
     _audioPlayer.onDurationChanged.listen((d) {
       setState(() {
@@ -42,6 +54,7 @@ class _ChatBubbleState extends State<ChatBubble> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _videoPlayerController?.dispose();
     super.dispose();
   }
 
@@ -136,8 +149,67 @@ class _ChatBubbleState extends State<ChatBubble> {
                               ),
                             ],
                           ),
+                        if (widget.message.messageType == MessageType.video &&
+                            _videoPlayerController != null &&
+                            _videoPlayerController!.value.isInitialized)
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FullScreenVideo(
+                                    videoUrl: widget.message.message
+                                        .split('\n')
+                                        .first, 
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                AspectRatio(
+                                  aspectRatio:
+                                      _videoPlayerController!.value.aspectRatio,
+                                  child: VideoPlayer(_videoPlayerController!),
+                                ),
+                                VideoProgressIndicator(
+                                  _videoPlayerController!,
+                                  allowScrubbing: true,
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    _videoPlayerController!.value.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _videoPlayerController!.value.isPlaying
+                                          ? _videoPlayerController!.pause()
+                                          : _videoPlayerController!.play();
+                                    });
+                                  },
+                                ),
+                                if (widget.message.message.split('\n').length >
+                                    1)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      widget.message.message
+                                          .split('\n')
+                                          .sublist(1)
+                                          .join('\n'),
+                                      style: TextStyle(color: Colors.black),
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
                         if (widget.message.messageType != MessageType.image &&
-                            widget.message.messageType != MessageType.audio)
+                            widget.message.messageType != MessageType.audio &&
+                            widget.message.messageType != MessageType.video)
                           Text(
                             widget.message.message,
                             style: TextStyle(color: Colors.black),
