@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({Key? key}) : super(key: key);
@@ -10,28 +10,31 @@ class GalleryScreen extends StatefulWidget {
 }
 
 class _GalleryScreenState extends State<GalleryScreen> {
-  final ImagePicker _picker = ImagePicker();
+  Future<void> _pickMedia() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.media,
+      allowMultiple: true,
+    );
 
-  Future<void> _pickImages() async {
-    final List<XFile>? images = await _picker.pickMultiImage();
-    if (images != null && images.isNotEmpty) {
-      List<File> selectedFiles = images.map((image) => File(image.path)).toList();
-      Navigator.pop(context, selectedFiles); 
+    if (result != null && result.files.isNotEmpty) {
+      List<File> selectedFiles =
+          result.paths.map((path) => File(path!)).toList();
+      Navigator.pop(context, selectedFiles);
     } else {
-      Navigator.pop(context, null); 
+      Navigator.pop(context, null);
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _pickImages(); 
+    _pickMedia();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: CircularProgressIndicator()), 
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }
