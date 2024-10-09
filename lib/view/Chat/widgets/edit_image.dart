@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:whatsapp/view/Chat/widgets/gallery_screen.dart';
+import 'package:video_player/video_player.dart';
 import 'package:whatsapp/view/widgets/icon_button.dart';
+import 'gallery_screen.dart';
 
 class EditImage extends StatefulWidget {
   final List<File> imageFiles;
@@ -19,15 +20,31 @@ class EditImage extends StatefulWidget {
 class _EditImageState extends State<EditImage> {
   final PageController _pageController = PageController();
   List<TextEditingController> _textControllers = [];
-  List<File> _selectedImages = [];
+  List<File> _selectedFiles = [];
+  List<VideoPlayerController?> _videoControllers = [];
   int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    _selectedImages = List.from(widget.imageFiles);
+    _selectedFiles = List.from(widget.imageFiles);
     _textControllers = List.generate(
-        _selectedImages.length, (index) => TextEditingController());
+        _selectedFiles.length, (index) => TextEditingController());
+    _initializeVideoControllers();
+  }
+
+  void _initializeVideoControllers() {
+    _videoControllers = _selectedFiles.map((file) {
+      if (_isVideo(file)) {
+        return VideoPlayerController.file(file)..initialize();
+      }
+      return null;
+    }).toList();
+  }
+
+  bool _isVideo(File file) {
+    final extension = file.path.split('.').last.toLowerCase();
+    return extension == 'mp4' || extension == 'mov' || extension == 'avi'; // يمكنك إضافة المزيد من التنسيقات إذا لزم الأمر
   }
 
   @override
@@ -36,46 +53,58 @@ class _EditImageState extends State<EditImage> {
     for (var controller in _textControllers) {
       controller.dispose();
     }
+    for (var videoController in _videoControllers) {
+      videoController?.dispose();
+    }
     super.dispose();
   }
 
-  void _sendImages() {
-    if (_selectedImages.isNotEmpty) {
-      List<Map<String, dynamic>> imagesWithCaptions = [];
-      for (int i = 0; i < _selectedImages.length; i++) {
-        imagesWithCaptions.add({
-          'image': _selectedImages[i],
+  void _sendFiles() {
+    if (_selectedFiles.isNotEmpty) {
+      List<Map<String, dynamic>> filesWithCaptions = [];
+      for (int i = 0; i < _selectedFiles.length; i++) {
+        filesWithCaptions.add({
+          'file': _selectedFiles[i],
           'caption': _textControllers[i].text,
         });
       }
-      widget.onImagesSent(imagesWithCaptions);
+      widget.onImagesSent(filesWithCaptions);
       Navigator.pop(context);
     }
   }
 
-  void _removeImage(int index) {
+  void _removeFile(int index) {
     setState(() {
-      _selectedImages.removeAt(index);
+      _selectedFiles.removeAt(index);
       _textControllers.removeAt(index);
-      if (_currentPage >= _selectedImages.length) {
-        _currentPage = _selectedImages.length - 1;
+      _videoControllers[index]?.dispose();
+      _videoControllers.removeAt(index);
+
+      if (_currentPage >= _selectedFiles.length) {
+        _currentPage = _selectedFiles.length - 1;
       }
       _pageController.jumpToPage(_currentPage);
     });
   }
 
-  Future<void> _pickMoreImages() async {
-    final List<File>? selectedImages = await Navigator.push(
+  Future<void> _pickMoreFiles() async {
+    final List<File>? selectedFiles = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => GalleryScreen(),
       ),
     );
-    if (selectedImages != null && selectedImages.isNotEmpty) {
+    if (selectedFiles != null && selectedFiles.isNotEmpty) {
       setState(() {
-        _selectedImages.addAll(selectedImages);
+        _selectedFiles.addAll(selectedFiles);
         _textControllers.addAll(List.generate(
-            selectedImages.length, (index) => TextEditingController()));
+            selectedFiles.length, (index) => TextEditingController()));
+        _videoControllers.addAll(selectedFiles.map((file) {
+          if (_isVideo(file)) {
+            return VideoPlayerController.file(file)..initialize();
+          }
+          return null;
+        }).toList());
       });
     }
   }
@@ -92,18 +121,29 @@ class _EditImageState extends State<EditImage> {
                 PageView.builder(
                   controller: _pageController,
                   scrollDirection: Axis.horizontal,
-                  itemCount: _selectedImages.length,
+                  itemCount: _selectedFiles.length,
                   onPageChanged: (index) {
                     setState(() {
                       _currentPage = index;
                     });
                   },
                   itemBuilder: (context, index) {
-                    return PhotoView(
-                      imageProvider: FileImage(_selectedImages[index]),
-                      minScale: PhotoViewComputedScale.contained,
-                      maxScale: PhotoViewComputedScale.covered * 2,
-                    );
+                    final file = _selectedFiles[index];
+                    if (_isVideo(file)) {
+                      // إذا كان الملف فيديو
+                      final videoController = _videoControllers[index];
+                      if (videoController != null && videoController.value.isInitialized) {
+                        return VideoPlayer(videoController);
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      // إذا كان الملف صورة
+                      return PhotoView(
+                        imageProvider: FileImage(file),
+                        minScale: PhotoViewComputedScale.contained,
+                        maxScale: PhotoViewComputedScale.covered * 2,
+                      );
+                    }
                   },
                 ),
                 Positioned(
@@ -134,14 +174,14 @@ class _EditImageState extends State<EditImage> {
               ],
             ),
           ),
-          if (_selectedImages.length > 1)
+          if (_selectedFiles.length > 1)
             Container(
               height: 70,
               padding: EdgeInsets.all(8.0),
               alignment: Alignment.center,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: _selectedImages.length,
+                itemCount: _selectedFiles.length,
                 itemBuilder: (context, index) {
                   return Stack(
                     children: [
@@ -150,10 +190,12 @@ class _EditImageState extends State<EditImage> {
                         width: 50,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: Image.file(
-                            _selectedImages[index],
-                            fit: BoxFit.fill,
-                          ),
+                          child: _isVideo(_selectedFiles[index])
+                              ? Icon(Icons.videocam, color: Colors.white) // عرض أيقونة الفيديو
+                              : Image.file(
+                                  _selectedFiles[index],
+                                  fit: BoxFit.fill,
+                                ),
                         ),
                       ),
                       if (index == _currentPage)
@@ -165,7 +207,7 @@ class _EditImageState extends State<EditImage> {
                               margin: EdgeInsets.all(4),
                               child: Center(
                                 child: GestureDetector(
-                                  onTap: () => _removeImage(index),
+                                  onTap: () => _removeFile(index),
                                   child: Icon(
                                     Icons.delete_forever_outlined,
                                     color: Colors.white,
@@ -199,7 +241,7 @@ class _EditImageState extends State<EditImage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.add_photo_alternate_outlined),
-                  onPressed: _pickMoreImages,
+                  onPressed: _pickMoreFiles,
                 ),
                 Expanded(
                   child: ConstrainedBox(
@@ -229,7 +271,7 @@ class _EditImageState extends State<EditImage> {
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Center(
                   child: InkWell(
-                    onTap: _sendImages,
+                    onTap: _sendFiles,
                     child: Container(
                       height: 45,
                       width: 45,
