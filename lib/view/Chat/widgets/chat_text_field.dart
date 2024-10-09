@@ -14,14 +14,13 @@ class ChatTextField extends StatefulWidget {
   final bool isEmojiVisible;
   final Function() toggleEmojiPicker;
   final Function() sendTextMessage;
-  final Function(File imageFile, String caption) addImageMessage;
+  final Function(File file, String caption) addMediaMessage;
   final String senderName;
   final String senderUID;
   final String recipientUID;
   final String recipientName;
   final String recipientPhoneNumber;
   final String senderPhoneNumber;
-  final String imageUrl;
 
   const ChatTextField({
     Key? key,
@@ -30,14 +29,13 @@ class ChatTextField extends StatefulWidget {
     required this.isEmojiVisible,
     required this.toggleEmojiPicker,
     required this.sendTextMessage,
-    required this.addImageMessage,
+    required this.addMediaMessage,
     required this.senderName,
     required this.senderUID,
     required this.recipientUID,
     required this.recipientName,
     required this.recipientPhoneNumber,
     required this.senderPhoneNumber,
-    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -76,6 +74,42 @@ class _ChatTextFieldState extends State<ChatTextField> {
           senderPhoneNumber: widget.senderPhoneNumber,
           imageUrl: '',
         );
+  }
+
+  Future<void> _handleMediaSelected(
+      List<Map<String, dynamic>> selectedMedia) async {
+    if (selectedMedia.isNotEmpty) {
+      for (var mediaWithCaption in selectedMedia) {
+        File mediaFile = mediaWithCaption['file'];
+        String caption = mediaWithCaption['caption'] ?? '';
+
+        if (mediaFile.path.endsWith('.mp4')) {
+          context.read<CommunicationCubit>().sendVideoMessage(
+                senderName: widget.senderName,
+                senderId: widget.senderUID,
+                recipientId: widget.recipientUID,
+                recipientName: widget.recipientName,
+                videoFile: mediaFile,
+                caption: caption,
+                recipientPhoneNumber: widget.recipientPhoneNumber,
+                senderPhoneNumber: widget.senderPhoneNumber,
+                videoUrl: '',
+              );
+        } else {
+          context.read<CommunicationCubit>().sendImageMessage(
+                senderName: widget.senderName,
+                senderId: widget.senderUID,
+                recipientId: widget.recipientUID,
+                recipientName: widget.recipientName,
+                imageFile: mediaFile,
+                caption: caption,
+                recipientPhoneNumber: widget.recipientPhoneNumber,
+                senderPhoneNumber: widget.senderPhoneNumber,
+                imageUrl: '',
+              );
+        }
+      }
+    }
   }
 
   @override
@@ -157,48 +191,22 @@ class _ChatTextFieldState extends State<ChatTextField> {
                                       color: Colors.grey,
                                       onPressed: () async {
                                         List<Map<String, dynamic>>
-                                            selectedImagesWithCaptions = [];
+                                            selectedMediaWithCaptions = [];
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => AddImage(
                                               onImagesSelected:
                                                   (List<Map<String, dynamic>>
-                                                      selectedImages) {
-                                                selectedImagesWithCaptions =
-                                                    selectedImages;
+                                                      selectedMedia) {
+                                                selectedMediaWithCaptions =
+                                                    selectedMedia;
                                               },
                                             ),
                                           ),
                                         );
-                                        if (selectedImagesWithCaptions
-                                            .isNotEmpty) {
-                                          for (var imageWithCaption
-                                              in selectedImagesWithCaptions) {
-                                            File imageFile =
-                                                imageWithCaption['image'];
-                                            String caption =
-                                                imageWithCaption['caption'] ??
-                                                    '';
-                                            context
-                                                .read<CommunicationCubit>()
-                                                .sendImageMessage(
-                                                  senderName: widget.senderName,
-                                                  senderId: widget.senderUID,
-                                                  recipientId:
-                                                      widget.recipientUID,
-                                                  recipientName:
-                                                      widget.recipientName,
-                                                  imageFile: imageFile,
-                                                  caption: caption,
-                                                  recipientPhoneNumber: widget
-                                                      .recipientPhoneNumber,
-                                                  senderPhoneNumber:
-                                                      widget.senderPhoneNumber,
-                                                  imageUrl: '',
-                                                );
-                                          }
-                                        }
+                                        await _handleMediaSelected(
+                                            selectedMediaWithCaptions);
                                       },
                                     )
                                   : Text(""),
@@ -239,7 +247,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
           Container(
             height: 300.0,
             child: AddAttachFile(
-              onImagesSelected: (List<Map<String, dynamic>> selectedImages) {},
+              onImagesSelected: (List<Map<String, dynamic>> selectedMedia) {},
             ),
           ),
       ],

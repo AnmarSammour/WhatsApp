@@ -134,14 +134,13 @@ class _ChatBodyState extends State<ChatBody> {
                 isEmojiVisible: _isEmojiVisible,
                 toggleEmojiPicker: _toggleEmojiPicker,
                 sendTextMessage: _sendTextMessage,
-                addImageMessage: _addImageMessage,
+                addMediaMessage: _addImageMessage,
                 senderUID: widget.senderUID,
                 recipientUID: widget.recipientUID,
                 senderName: widget.senderName,
                 recipientName: widget.recipientName,
                 recipientPhoneNumber: widget.recipientPhoneNumber,
                 senderPhoneNumber: widget.senderPhoneNumber,
-                imageUrl: widget.imageUrl,
               ),
               _isEmojiVisible
                   ? SizedBox(
