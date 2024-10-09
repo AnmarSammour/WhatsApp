@@ -271,15 +271,17 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     required File videoFile,
     required String recipientPhoneNumber,
     required String senderPhoneNumber,
-    required String imageUrl,
+    required String videoUrl,
     required String caption,
   }) async {
     try {
       final channelId =
           await _getOneToOneSingleUserChatChannel(senderId, recipientId);
-      final uploadedVideoUrl = await _uploadVideo(channelId, videoFile);
-      final message =
-          uploadedVideoUrl + (caption.isNotEmpty ? '\n$caption' : '');
+
+      final videoUrl = await _uploadVideo(channelId, videoFile);
+
+      final message = videoUrl + (caption.isNotEmpty ? '\n$caption' : '');
+
       await _sendMessage(
         MessageModel(
           senderName: senderName,
@@ -294,6 +296,7 @@ class CommunicationCubit extends Cubit<CommunicationState> {
         ),
         channelId,
       );
+
       await _addToMyChat(ChatModel(
         time: Timestamp.now(),
         senderName: senderName,
@@ -303,11 +306,13 @@ class CommunicationCubit extends Cubit<CommunicationState> {
         recipientUID: recipientId,
         recipientPhoneNumber: recipientPhoneNumber,
         recentTextMessage: "Video",
-        imageUrl: imageUrl,
+        imageUrl: videoUrl,
         isRead: true,
         isArchived: false,
         channelId: channelId,
       ));
+    } on SocketException catch (_) {
+      emit(CommunicationFailure());
     } catch (_) {
       emit(CommunicationFailure());
     }
@@ -319,65 +324,5 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     final uploadTask = ref.putFile(videoFile);
     final snapshot = await uploadTask;
     return await snapshot.ref.getDownloadURL();
-  }
-
-  Future<void> sendMediaMessage({
-    required String senderName,
-    required String senderId,
-    required String recipientId,
-    required String recipientName,
-    required File mediaFile,
-    required String recipientPhoneNumber,
-    required String senderPhoneNumber,
-    required String imageUrl,
-    required String caption,
-    required MessageType messageType,
-  }) async {
-    try {
-      final channelId =
-          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
-
-      String mediaUrl = '';
-      if (messageType == MessageType.image) {
-        mediaUrl = await _uploadImage(channelId, mediaFile);
-      } else if (messageType == MessageType.video) {
-        mediaUrl = await _uploadVideo(channelId, mediaFile);
-      }
-
-      final message = mediaUrl + (caption.isNotEmpty ? '\n$caption' : '');
-      await _sendMessage(
-        MessageModel(
-          senderName: senderName,
-          senderUID: senderId,
-          recipientName: recipientName,
-          recipientUID: recipientId,
-          messageType: messageType,
-          message: message,
-          time: Timestamp.now(),
-          membersUid: [],
-          senderImage: '',
-        ),
-        channelId,
-      );
-
-      await _addToMyChat(ChatModel(
-        time: Timestamp.now(),
-        senderName: senderName,
-        senderUID: senderId,
-        senderPhoneNumber: senderPhoneNumber,
-        recipientName: recipientName,
-        recipientUID: recipientId,
-        recipientPhoneNumber: recipientPhoneNumber,
-        recentTextMessage: messageType == MessageType.image ? "Image" : "Video",
-        imageUrl: imageUrl,
-        isRead: true,
-        isArchived: false,
-        channelId: channelId,
-      ));
-    } on SocketException catch (_) {
-      emit(CommunicationFailure());
-    } catch (_) {
-      emit(CommunicationFailure());
-    }
   }
 }
