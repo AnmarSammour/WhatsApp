@@ -78,7 +78,7 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
     _textMessageController.text += emoji.emoji;
   }
 
-  void _addImageMessage(File imageFile, String caption) {
+  void _addMediaMessage(File imageFile, String caption) {
     context.read<GroupChatCubit>().sendGroupImageMessage(
           imageFile: imageFile,
           caption: caption,
@@ -183,7 +183,7 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                       memberIds: widget.memberIds,
                       textMessageController: _textMessageController,
                       sendTextMessage: _sendTextMessage,
-                      addImageMessage: _addImageMessage,
+                      addMediaMessage: _addMediaMessage,
                       focusNode: _focusNode,
                       isEmojiVisible: _isEmojiVisible,
                       toggleEmojiPicker: _toggleEmojiPicker,

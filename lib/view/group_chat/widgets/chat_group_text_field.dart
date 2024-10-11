@@ -13,7 +13,8 @@ class ChatGroupTextField extends StatefulWidget {
   final List<String> memberIds;
   final TextEditingController textMessageController;
   final Function() sendTextMessage;
-  final Function(File imageFile, String caption) addImageMessage;
+  final Function(File mediaFile, String caption)
+      addMediaMessage; 
   final String senderId;
   final FocusNode focusNode;
   final bool isEmojiVisible;
@@ -25,7 +26,7 @@ class ChatGroupTextField extends StatefulWidget {
     required this.memberIds,
     required this.textMessageController,
     required this.sendTextMessage,
-    required this.addImageMessage,
+    required this.addMediaMessage,
     required this.focusNode,
     required this.senderId,
     required this.isEmojiVisible,
@@ -33,10 +34,10 @@ class ChatGroupTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ChatTextFieldState createState() => _ChatTextFieldState();
+  _ChatGroupTextFieldState createState() => _ChatGroupTextFieldState();
 }
 
-class _ChatTextFieldState extends State<ChatGroupTextField> {
+class _ChatGroupTextFieldState extends State<ChatGroupTextField> {
   bool isAttachFileVisible = false;
   bool isEmojiVisible = false;
 
@@ -63,6 +64,32 @@ class _ChatTextFieldState extends State<ChatGroupTextField> {
           groupId: widget.groupId,
           membersUid: widget.memberIds,
         );
+  }
+
+  Future<void> _handleMediaSelected(
+      List<Map<String, dynamic>> selectedMedia) async {
+    if (selectedMedia.isNotEmpty) {
+      for (var mediaWithCaption in selectedMedia) {
+        File mediaFile = mediaWithCaption['file'];
+        String caption = mediaWithCaption['caption'] ?? '';
+
+        if (mediaFile.path.endsWith('.mp4')) {
+          context.read<GroupChatCubit>().sendGroupVideoMessage(
+                videoFile: mediaFile,
+                caption: caption,
+                groupId: widget.groupId,
+                membersUid: widget.memberIds,
+              );
+        } else {
+          context.read<GroupChatCubit>().sendGroupImageMessage(
+                imageFile: mediaFile,
+                caption: caption,
+                groupId: widget.groupId,
+                membersUid: widget.memberIds,
+              );
+        }
+      }
+    }
   }
 
   @override
@@ -144,39 +171,22 @@ class _ChatTextFieldState extends State<ChatGroupTextField> {
                                       color: Colors.grey,
                                       onPressed: () async {
                                         List<Map<String, dynamic>>
-                                            selectedImagesWithCaptions = [];
+                                            selectedMediaWithCaptions = [];
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => AddImage(
                                               onImagesSelected:
                                                   (List<Map<String, dynamic>>
-                                                      selectedImages) {
-                                                selectedImagesWithCaptions =
-                                                    selectedImages;
+                                                      selectedMedia) {
+                                                selectedMediaWithCaptions =
+                                                    selectedMedia;
                                               },
                                             ),
                                           ),
                                         );
-                                        if (selectedImagesWithCaptions
-                                            .isNotEmpty) {
-                                          for (var imageWithCaption
-                                              in selectedImagesWithCaptions) {
-                                            File imageFile =
-                                                imageWithCaption['image'];
-                                            String caption =
-                                                imageWithCaption['caption'] ??
-                                                    '';
-                                            context
-                                                .read<GroupChatCubit>()
-                                                .sendGroupImageMessage(
-                                                  imageFile: imageFile,
-                                                  caption: caption,
-                                                  groupId: widget.groupId,
-                                                  membersUid: widget.memberIds,
-                                                );
-                                          }
-                                        }
+                                        await _handleMediaSelected(
+                                            selectedMediaWithCaptions);
                                       },
                                     )
                                   : Text(""),
@@ -217,7 +227,7 @@ class _ChatTextFieldState extends State<ChatGroupTextField> {
           Container(
             height: 300.0,
             child: AddAttachFile(
-              onImagesSelected: (List<Map<String, dynamic>> selectedImages) {},
+              onImagesSelected: (List<Map<String, dynamic>> selectedMedia) {},
             ),
           ),
       ],
