@@ -504,4 +504,56 @@ class GroupChatCubit extends Cubit<GroupChatState> {
       throw Exception('Failed to update group image: $e');
     }
   }
+
+  Future<void> sendGroupVideoMessage({
+    required String groupId,
+    required File videoFile,
+    required String caption,
+    required List<String> membersUid,
+  }) async {
+    try {
+      final senderId = auth.currentUser!.uid;
+      final senderName = await getSenderName(senderId);
+      final senderImage = await getSenderImage(senderId);
+
+      final videoUrl = await _uploadVideo(groupId, videoFile);
+
+      final message = videoUrl + (caption.isNotEmpty ? '\n$caption' : '');
+
+      await _sendGroupMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          senderImage: senderImage,
+          messageType: MessageType.video,
+          message: message,
+          time: Timestamp.now(),
+          recipientUID: '',
+          recipientName: '',
+          membersUid: membersUid,
+        ),
+        groupId,
+      );
+
+      await _updateGroupChat(
+        groupId: groupId,
+        lastMessage: "Video",
+        senderName: senderName,
+        senderId: senderId,
+        senderImage: senderImage,
+      );
+    } on SocketException catch (_) {
+      emit(GroupChatFailure());
+    } catch (_) {
+      emit(GroupChatFailure());
+    }
+  }
+
+  Future<String> _uploadVideo(String groupId, File videoFile) async {
+    final ref = storage.ref().child(
+        'group_videos/$groupId/${DateTime.now().millisecondsSinceEpoch}.mp4');
+    final uploadTask = ref.putFile(videoFile);
+    final snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
+  }
 }
