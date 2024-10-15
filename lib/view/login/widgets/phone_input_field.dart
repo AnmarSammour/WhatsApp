@@ -5,10 +5,12 @@ import 'package:whatsapp/view/login/widgets/country_picker_button.dart';
 
 class PhoneInputField extends StatefulWidget {
   final LoginModel selectedCountry;
+  final TextEditingController phoneController;
 
   const PhoneInputField({
     Key? key,
     required this.selectedCountry,
+    required this.phoneController,
   }) : super(key: key);
 
   @override
@@ -75,12 +77,14 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                         ],
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.008),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.008),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.002,
                       width: 40.w,
                       color: const Color(0xFF02B099),
-                      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.001),
+                      margin: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).size.height * 0.001),
                     ),
                   ],
                 ),
@@ -89,6 +93,7 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
               Expanded(
                 flex: 2,
                 child: TextFormField(
+                  controller: widget.phoneController,
                   onChanged: (value) {
                     setState(() {
                       phoneNumber = value;
@@ -119,10 +124,8 @@ class _PhoneInputFieldState extends State<PhoneInputField> {
                     phoneNumber = value!;
                   },
                   onFieldSubmitted: (value) {
-                    // Check if the entered phone number is valid
                     if (value.length == 9) {
-                      // Update the phone number in selectedCountry
-                      (value);
+                      widget.selectedCountry.phoneNum = value;
                     }
                   },
                 ),
