@@ -13,9 +13,12 @@ class LoginVerifyingBody extends StatelessWidget {
   final String countryCode;
   final String phoneNumber;
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
-  late LoginModel selectedCountry = LoginModel(countryCode: '', countryName: ''); // تعيين قيمة افتراضية
 
-  LoginVerifyingBody({required this.countryCode, required this.phoneNumber});
+  late LoginModel selectedCountry = LoginModel(
+      countryCode: countryCode, countryName: '', phoneNum: phoneNumber);
+
+  LoginVerifyingBody(
+      {super.key, required this.countryCode, required this.phoneNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class LoginVerifyingBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-          LoginverifyingHeader(),
+          const LoginverifyingHeader(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           PhoneNumberText(
             countryCode: countryCode,
