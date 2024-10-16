@@ -22,7 +22,7 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _submitProfileInfo() {
+    void submitProfileInfo() {
       if (nameController.text.isNotEmpty) {
         BlocProvider.of<PhoneAuthCubit>(context)
             .submitProfileInfo(profileUrl: "", name: nameController.text);
@@ -55,22 +55,19 @@ class SaveButton extends StatelessWidget {
 
               BlocProvider.of<UserCubit>(context).updateUser(newUser, image);
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Data saved successfully')),
-              );
-              Navigator.of(context).pushNamed('/chat');
+              Navigator.of(context).pushNamed('/home');
             } else {
               print('User is not signed in.');
             }
           }
         }
-        _submitProfileInfo();
+        submitProfileInfo();
       },
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF02B099),
+        backgroundColor: const Color(0xFF02B099),
       ),
-      child: Text('Save'),
+      child: const Text('Save'),
     );
   }
 
