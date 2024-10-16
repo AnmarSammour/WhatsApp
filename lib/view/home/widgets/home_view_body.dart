@@ -6,20 +6,22 @@ import 'package:whatsapp/model/user.dart';
 class HomeViewBody extends StatefulWidget {
   final UserModel userInfo;
 
-  const HomeViewBody({required this.userInfo});
+  const HomeViewBody({super.key, required this.userInfo});
 
   @override
   _HomeViewBodyState createState() => _HomeViewBodyState();
 }
 
-class _HomeViewBodyState extends State<HomeViewBody> with SingleTickerProviderStateMixin {
+class _HomeViewBodyState extends State<HomeViewBody>
+    with SingleTickerProviderStateMixin {
   late TabController tabController;
   int currentPageIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 4, initialIndex: currentPageIndex, vsync: this);
+    tabController =
+        TabController(length: 4, initialIndex: currentPageIndex, vsync: this);
   }
 
   @override
@@ -33,9 +35,10 @@ class _HomeViewBodyState extends State<HomeViewBody> with SingleTickerProviderSt
             currentPageIndex = index;
           });
         },
-        currentUser: widget.userInfo, 
+        currentUser: widget.userInfo,
       ),
-      body: CustomTabBarView(tabController: tabController, userInfo: widget.userInfo),
+      body: CustomTabBarView(
+          tabController: tabController, userInfo: widget.userInfo),
     );
   }
 
