@@ -10,7 +10,7 @@ class UserModel extends Equatable {
   final String phoneNumber;
   final String status;
 
-  UserModel({
+  const UserModel({
     required this.id,
     required this.name,
     required this.imageUrl,

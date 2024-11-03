@@ -5,7 +5,8 @@ class LoginVerifyingView extends StatelessWidget {
   final String countryCode;
   final String phoneNumber;
 
-  LoginVerifyingView({required this.countryCode, required this.phoneNumber});
+  const LoginVerifyingView(
+      {super.key, required this.countryCode, required this.phoneNumber});
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp/view/login/widgets/boxwhats.dart';
 
 class WhatsMynum extends StatelessWidget {
+  const WhatsMynum({super.key});
+
   @override
   Widget build(BuildContext context) {
     return RichText(
@@ -19,7 +21,7 @@ class WhatsMynum extends StatelessWidget {
               onTap: () {
                 showDialog(
                   context: context,
-                  barrierDismissible: false, 
+                  barrierDismissible: false,
                   builder: (BuildContext context) {
                     return BoxWhats();
                   },

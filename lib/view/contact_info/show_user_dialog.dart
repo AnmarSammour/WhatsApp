@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/model/user.dart';
 
- void showUserDialog(BuildContext context, UserModel user) {
+void showUserDialog(BuildContext context, UserModel user) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -19,7 +19,7 @@ import 'package:whatsapp/model/user.dart';
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 300, 
+                    height: 300,
                     decoration: BoxDecoration(
                       image: user.imageUrl.isNotEmpty
                           ? DecorationImage(
@@ -32,7 +32,9 @@ import 'package:whatsapp/model/user.dart';
                           : Colors.transparent,
                     ),
                     child: user.imageUrl.isEmpty
-                        ? Center(child: Icon(Icons.person, size: 100, color: Colors.white))
+                        ? const Center(
+                            child: Icon(Icons.person,
+                                size: 100, color: Colors.white))
                         : null,
                   ),
                   Positioned(
@@ -40,7 +42,7 @@ import 'package:whatsapp/model/user.dart';
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       color: Colors.black.withOpacity(0.5),
                       child: Text(
                         user.name,
@@ -59,33 +61,32 @@ import 'package:whatsapp/model/user.dart';
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.message, color: Colors.green),
+                    icon: const Icon(Icons.message, color: Colors.green),
                     onPressed: () {
                       // Navigate to chat screen
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.call, color: Colors.green),
+                    icon: const Icon(Icons.call, color: Colors.green),
                     onPressed: () {
                       // Start a call
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.videocam, color: Colors.green),
+                    icon: const Icon(Icons.videocam, color: Colors.green),
                     onPressed: () {
                       // Start a video call
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.info_outline, color: Colors.green),
+                    icon: const Icon(Icons.info_outline, color: Colors.green),
                     onPressed: () {
                       Navigator.pop(context);
-                      
                     },
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -93,4 +94,3 @@ import 'package:whatsapp/model/user.dart';
     },
   );
 }
-

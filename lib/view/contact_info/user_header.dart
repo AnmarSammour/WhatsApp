@@ -22,8 +22,8 @@ class UserHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: Colors.green),
-          SizedBox(height: 8.0),
-          Text(label, style: TextStyle(color: Colors.black)),
+          const SizedBox(height: 8.0),
+          Text(label, style: const TextStyle(color: Colors.black)),
         ],
       ),
     );
@@ -49,15 +49,16 @@ class UserHeader extends StatelessWidget {
                             ? NetworkImage(user.imageUrl)
                             : null,
                         backgroundColor: Colors.grey.withOpacity(0.3),
+                        radius: 15,
                         child: user.imageUrl.isEmpty
                             ? Icon(Icons.person, size: 20, color: Colors.white)
                             : null,
-                        radius: 15,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Text(
                         user.name,
-                        style: TextStyle(fontSize: 16, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.black),
                       ),
                     ],
                   )
@@ -72,19 +73,20 @@ class UserHeader extends StatelessWidget {
                       ? NetworkImage(user.imageUrl)
                       : null,
                   child: user.imageUrl.isEmpty
-                      ? Icon(Icons.person, size: 50, color: Colors.white)
+                      ? const Icon(Icons.person, size: 50, color: Colors.white)
                       : null,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   user.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   user.phoneNumber,
-                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                  style: const TextStyle(color: Colors.grey, fontSize: 16),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -99,14 +101,14 @@ class UserHeader extends StatelessWidget {
         },
       ),
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.of(context).pop();
         },
       ),
       actions: [
         IconButton(
-          icon: Icon(Icons.more_vert),
+          icon: const Icon(Icons.more_vert),
           onPressed: () {},
         ),
       ],

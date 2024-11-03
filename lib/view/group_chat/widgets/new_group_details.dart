@@ -29,8 +29,8 @@ class _NewGroupDetailsState extends State<NewGroupDetails> {
   String groupName = '';
   File? profilePic;
   bool isEmojiPickerVisible = false;
-  TextEditingController _groupNameController = TextEditingController();
-  FocusNode _focusNode = FocusNode();
+  final TextEditingController _groupNameController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   Future<void> _pickImage() async {
     final pickedFile =

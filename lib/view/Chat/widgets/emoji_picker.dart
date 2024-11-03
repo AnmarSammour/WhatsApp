@@ -12,7 +12,7 @@ class EmojiPickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       height: 300.0,
       child: EmojiPicker(
         onEmojiSelected: (category, emoji) {

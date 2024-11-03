@@ -62,7 +62,8 @@ class _FullScreenVideoState extends State<FullScreenVideo> {
                   ),
                   if (!_isPlaying)
                     IconButton(
-                      icon: Icon(Icons.play_arrow, color: Colors.white, size: 50),
+                      icon: const Icon(Icons.play_arrow,
+                          color: Colors.white, size: 50),
                       onPressed: _togglePlayPause,
                     ),
                   Positioned(
@@ -72,7 +73,7 @@ class _FullScreenVideoState extends State<FullScreenVideo> {
                     child: VideoProgressIndicator(
                       _videoPlayerController,
                       allowScrubbing: true,
-                      colors: VideoProgressColors(
+                      colors: const VideoProgressColors(
                         playedColor: Colors.green,
                         backgroundColor: Colors.white,
                       ),
@@ -92,7 +93,7 @@ class _FullScreenVideoState extends State<FullScreenVideo> {
                   ),
                 ],
               )
-            : CircularProgressIndicator(),
+            : const CircularProgressIndicator(),
       ),
     );
   }

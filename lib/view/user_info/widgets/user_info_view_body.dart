@@ -31,9 +31,9 @@ class _UserInfoViewBodyState extends State<UserInfoViewBody> {
               child: Column(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-                  UserInfoHeader(),
+                  const UserInfoHeader(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                  HintText(),
+                  const HintText(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                   UserImagePicker(
                     onImagePicked: (pickedImage) {

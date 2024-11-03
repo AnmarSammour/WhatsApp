@@ -26,11 +26,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Wrap the app with ScreenUtilInit to enable screen adaptation
     return ScreenUtilInit(
-      designSize: Size(360, 640),
+      designSize: const Size(360, 640),
       builder: (context, _) => MultiBlocProvider(
         providers: [
           BlocProvider<PhoneAuthCubit>(create: (context) => PhoneAuthCubit()),

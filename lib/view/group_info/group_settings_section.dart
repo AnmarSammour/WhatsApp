@@ -14,11 +14,11 @@ class GroupSettingsSection extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: Text(
+          title: const Text(
             'Media, links, and docs',
             style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
-          trailing: Row(
+          trailing: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
@@ -37,13 +37,13 @@ class GroupSettingsSection extends StatelessWidget {
         Column(
           children: [
             ListTile(
-              leading: Icon(Icons.notifications_none),
-              title: Text('Notifications'),
+              leading: const Icon(Icons.notifications_none),
+              title: const Text('Notifications'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.photo_outlined),
-              title: Text('Media visibility'),
+              leading: const Icon(Icons.photo_outlined),
+              title: const Text('Media visibility'),
               onTap: () {},
             ),
           ],
@@ -55,27 +55,27 @@ class GroupSettingsSection extends StatelessWidget {
         Column(
           children: [
             ListTile(
-              leading: Icon(Icons.lock_outline),
-              title: Text('Encryption'),
-              subtitle: Text(
+              leading: const Icon(Icons.lock_outline),
+              title: const Text('Encryption'),
+              subtitle: const Text(
                   'Messages and calls are end-to-end encrypted. Tap to verify.'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.history_toggle_off_sharp),
-              title: Text('Disappearing messages'),
-              subtitle: Text('Off'),
+              leading: const Icon(Icons.history_toggle_off_sharp),
+              title: const Text('Disappearing messages'),
+              subtitle: const Text('Off'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.lock_outline_sharp),
-              title: Text('Chat lock'),
-              subtitle: Text('Lock and hide this chat on this device.'),
+              leading: const Icon(Icons.lock_outline_sharp),
+              title: const Text('Chat lock'),
+              subtitle: const Text('Lock and hide this chat on this device.'),
               trailing: Switch(value: false, onChanged: (value) {}),
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Group permissions'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Group permissions'),
               onTap: () {},
             ),
           ],
@@ -95,7 +95,7 @@ class GroupSettingsSection extends StatelessWidget {
                   color: const Color(0xFF02B099),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.groups_2_rounded,
                   color: Colors.white,
                   size: 24.0,

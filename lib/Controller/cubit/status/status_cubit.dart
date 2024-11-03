@@ -27,7 +27,7 @@ class StatusCubit extends Cubit<StatusState> {
         emit(StatusLoaded(statuses));
       } catch (e) {
         print('Error fetching statuses: $e');
-        emit(StatusError("Failed to fetch statuses"));
+        emit(const StatusError("Failed to fetch statuses"));
       }
     }
   }
@@ -85,13 +85,13 @@ class StatusCubit extends Cubit<StatusState> {
 
       await _firestore.collection('scheduled_deletions').add({
         'docId': docRef.id,
-        'deleteAt': status.timestamp.add(Duration(hours: 24)),
+        'deleteAt': status.timestamp.add(const Duration(hours: 24)),
       });
 
       await fetchStatuses();
     } catch (e) {
       print('Error adding status: $e');
-      emit(StatusError("Failed to add status"));
+      emit(const StatusError("Failed to add status"));
     }
   }
 

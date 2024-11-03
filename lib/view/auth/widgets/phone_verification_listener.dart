@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
 
 class PhoneVerificationListener extends StatelessWidget {
+  const PhoneVerificationListener({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<PhoneAuthCubit, PhoneAuthState>(
@@ -21,7 +23,7 @@ class PhoneVerificationListener extends StatelessWidget {
             SnackBar(
               content: Text(errorMsg),
               backgroundColor: Colors.black,
-              duration: Duration(seconds: 3),
+              duration: const Duration(seconds: 3),
             ),
           );
         }

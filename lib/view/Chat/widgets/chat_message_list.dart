@@ -28,10 +28,11 @@ class ChatMessageList extends StatelessWidget {
 
               final message = messages[reversedIndex];
 
-              if (message.senderUID == senderUID)
+              if (message.senderUID == senderUID) {
                 return ChatBubble(message: message);
-              else
+              } else {
                 return ChatBubbleForFriend(message: message);
+              }
             },
           ),
         ),

@@ -18,11 +18,11 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return MaterialPageRoute(builder: (_) => SplachView());
+        return MaterialPageRoute(builder: (_) => const SplachView());
       case login:
-        return MaterialPageRoute(builder: (_) => LoginView());
+        return MaterialPageRoute(builder: (_) => const LoginView());
       case userInfo:
-        return MaterialPageRoute(builder: (_) => UserInfo());
+        return MaterialPageRoute(builder: (_) => const UserInfo());
       case chat:
         return MaterialPageRoute(builder: (context) {
           return BlocProvider(

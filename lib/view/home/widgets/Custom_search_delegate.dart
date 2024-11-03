@@ -13,7 +13,7 @@ class CustomSearchDelegate extends SearchDelegate<void> {
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-        icon: Icon(Icons.clear),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
         },
@@ -24,7 +24,7 @@ class CustomSearchDelegate extends SearchDelegate<void> {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.arrow_back),
+      icon: const Icon(Icons.arrow_back),
       onPressed: () {
         close(context, null);
       },
@@ -46,11 +46,11 @@ class CustomSearchDelegate extends SearchDelegate<void> {
       future: _searchUsers(query),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No results found'));
+          return const Center(child: Text('No results found'));
         } else {
           List<UserModel> users = snapshot.data!;
           return ListView.builder(
@@ -88,15 +88,15 @@ class CustomSearchDelegate extends SearchDelegate<void> {
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('users')
           .where('name', isGreaterThanOrEqualTo: query)
-          .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+          .where('name', isLessThanOrEqualTo: '$query\uf8ff')
           .get();
 
       List<UserModel> users = [];
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         if (doc.exists) {
           users.add(UserModel.fromSnapshot(doc));
         }
-      });
+      }
 
       return users;
     } else {

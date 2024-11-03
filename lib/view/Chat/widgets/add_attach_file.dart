@@ -6,12 +6,12 @@ import 'package:whatsapp/view/Chat/widgets/gallery_screen.dart';
 class AddAttachFile extends StatelessWidget {
   final Function(List<Map<String, dynamic>>) onImagesSelected;
 
-  AddAttachFile({super.key, required this.onImagesSelected});
+  const AddAttachFile({super.key, required this.onImagesSelected});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0XFFF7F7F8),
+      color: const Color(0XFFF7F7F8),
       padding: const EdgeInsets.all(16.0),
       child: GridView.count(
         crossAxisCount: 4,

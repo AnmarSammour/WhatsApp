@@ -31,7 +31,7 @@ class GroupInfoPage extends StatelessWidget {
         stream: _getGroupStream(groupChatModel.groupId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
@@ -39,7 +39,7 @@ class GroupInfoPage extends StatelessWidget {
           }
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
-            return Center(child: Text('Group not found.'));
+            return const Center(child: Text('Group not found.'));
           }
 
           var groupData = snapshot.data!.data() as Map<String, dynamic>;
@@ -81,7 +81,7 @@ class GroupInfoPage extends StatelessWidget {
                         thickness: 5,
                       ),
                     ),
-                    ActionButtons()
+                    const ActionButtons()
                   ],
                 ),
               ),

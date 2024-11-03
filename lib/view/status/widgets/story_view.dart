@@ -13,7 +13,7 @@ class StoryViewScreen extends StatefulWidget {
   final List<Status> statuses;
   final UserModel user;
 
-  StoryViewScreen({required this.statuses, required this.user, Key? key})
+  const StoryViewScreen({required this.statuses, required this.user, Key? key})
       : super(key: key);
 
   @override
@@ -57,24 +57,25 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
           context: context,
           isScrollControlled: true,
           builder: (context) {
-            return Container(
+            return SizedBox(
               height: height,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     color: Colors.green,
                     child: Row(
                       children: [
                         Text(
                           'Viewed by ${viewers.length}',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
                         ),
-                        Spacer(),
-                        Icon(Icons.facebook, color: Colors.white),
-                        SizedBox(width: 10),
-                        Icon(Icons.more_vert, color: Colors.white),
+                        const Spacer(),
+                        const Icon(Icons.facebook, color: Colors.white),
+                        const SizedBox(width: 10),
+                        const Icon(Icons.more_vert, color: Colors.white),
                       ],
                     ),
                   ),
@@ -91,20 +92,20 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return ListTile(
+                              return const ListTile(
                                 leading: CircleAvatar(
-                                  child: CircularProgressIndicator(),
                                   backgroundColor: Colors.blue,
+                                  child: CircularProgressIndicator(),
                                 ),
                                 title: Text('Loading...'),
                               );
                             }
                             if (!snapshot.hasData || !snapshot.data!.exists) {
-                              return ListTile(
+                              return const ListTile(
                                 leading: CircleAvatar(
+                                  backgroundColor: Colors.grey,
                                   child:
                                       Icon(Icons.person, color: Colors.white),
-                                  backgroundColor: Colors.grey,
                                 ),
                                 title: Text('Unknown User'),
                               );
@@ -122,8 +123,8 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                               ),
                               title: Text(user.name),
                               subtitle: Text(
-                                '${DateFormat('hh:mm a').format(viewer.viewedAt)}',
-                                style: TextStyle(color: Colors.grey),
+                                DateFormat('hh:mm a').format(viewer.viewedAt),
+                                style: const TextStyle(color: Colors.grey),
                               ),
                             );
                           },
@@ -147,7 +148,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
   void _deleteStory(String statusId) async {
     Navigator.pop(context);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Deleting status update...')),
+      const SnackBar(content: Text('Deleting status update...')),
     );
 
     final cubit = context.read<StatusCubit>();
@@ -156,11 +157,11 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
     if (success) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Deleting status update...')),
+        const SnackBar(content: Text('Deleting status update...')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete status update')),
+        const SnackBar(content: Text('Failed to delete status update')),
       );
     }
   }
@@ -170,19 +171,19 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete Status Update?'),
+          title: const Text('Delete Status Update?'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 _deleteStory(statusId);
               },
-              child: Text('Delete'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -192,7 +193,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
 
   String formatTimestamp(DateTime timestamp) {
     DateTime now = DateTime.now();
-    DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
+    DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
     if (timestamp.year == now.year &&
         timestamp.month == now.month &&
@@ -216,7 +217,7 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
         return StoryItem.text(
           title: status.text,
           backgroundColor: status.backgroundColor ?? Colors.black,
-          textStyle: TextStyle(fontSize: 30, color: Colors.white),
+          textStyle: const TextStyle(fontSize: 30, color: Colors.white),
         );
       } else {
         return StoryItem.pageImage(
@@ -257,23 +258,23 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.user.name,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       formatTimestamp(widget.statuses.first.timestamp),
                       style: TextStyle(
@@ -281,16 +282,17 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                     ),
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 widget.statuses.first.userId == currentUser!.uid
                     ? GestureDetector(
                         onTap: () {
                           _storyController.pause();
                           showMenu(
                             context: context,
-                            position: RelativeRect.fromLTRB(100, 80, 0, 0),
+                            position:
+                                const RelativeRect.fromLTRB(100, 80, 0, 0),
                             items: [
-                              PopupMenuItem<String>(
+                              const PopupMenuItem<String>(
                                 value: 'Delete',
                                 child: Text('Delete'),
                               ),
@@ -306,9 +308,9 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                             }
                           });
                         },
-                        child: Icon(Icons.more_vert, color: Colors.white),
+                        child: const Icon(Icons.more_vert, color: Colors.white),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
@@ -322,7 +324,8 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                       widget.statuses[currentIndexNotifier.value].statusId);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(20),
@@ -330,8 +333,9 @@ class _StoryViewScreenState extends State<StoryViewScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.remove_red_eye, color: Colors.white, size: 20),
-                      SizedBox(width: 5),
+                      const Icon(Icons.remove_red_eye,
+                          color: Colors.white, size: 20),
+                      const SizedBox(width: 5),
                       ValueListenableBuilder<int>(
                         valueListenable: currentIndexNotifier,
                         builder: (context, currentIndex, _) {

@@ -9,7 +9,7 @@ class NextButton extends StatelessWidget {
   final GlobalKey<FormState> phoneFormKey;
   final bool isInvalid;
   final TextEditingController phoneController;
-  NextButton({
+  const NextButton({
     Key? key,
     required this.selectedCountry,
     required this.phoneFormKey,

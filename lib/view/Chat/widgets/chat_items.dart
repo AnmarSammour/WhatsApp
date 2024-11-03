@@ -24,7 +24,6 @@ class ChatItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final user = UserModel(
       id: uid,
       name: name,
@@ -36,7 +35,7 @@ class ChatItems extends StatelessWidget {
     );
 
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Row(
@@ -54,18 +53,19 @@ class ChatItems extends StatelessWidget {
                       backgroundImage:
                           imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
                       child: imageUrl.isEmpty
-                          ? Icon(Icons.person, size: 30, color: Colors.white)
+                          ? const Icon(Icons.person,
+                              size: 30, color: Colors.white)
                           : null,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(name,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(recentSendMessage,
                           maxLines: 1, overflow: TextOverflow.ellipsis),
                     ],

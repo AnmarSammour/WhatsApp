@@ -6,7 +6,8 @@ class PhoneNumberText extends StatelessWidget {
   final String countryCode;
   final String phoneNumber;
 
-  PhoneNumberText({required this.countryCode, required this.phoneNumber});
+  const PhoneNumberText(
+      {super.key, required this.countryCode, required this.phoneNumber});
 
   @override
   Widget build(BuildContext context) {

@@ -54,7 +54,7 @@ class ChatGroupItems extends StatelessWidget {
     }
 
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Row(
@@ -72,18 +72,19 @@ class ChatGroupItems extends StatelessWidget {
                       backgroundImage:
                           imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
                       child: imageUrl.isEmpty
-                          ? Icon(Icons.group, size: 30, color: Colors.white)
+                          ? const Icon(Icons.group,
+                              size: 30, color: Colors.white)
                           : null,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(name,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w500)),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
                           if (!isGroupCreated &&
@@ -91,14 +92,14 @@ class ChatGroupItems extends StatelessWidget {
                               recentSendMessage != '$senderName added you')
                             Text(
                               isCurrentUser ? "You: " : "$senderName: ",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
                               ),
                             ),
                           Text(
                             displayMessage,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 12,
                               color: Colors.grey,
                             ),

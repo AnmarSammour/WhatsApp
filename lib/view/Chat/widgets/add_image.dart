@@ -51,7 +51,7 @@ class _AddImageState extends State<AddImage> {
     final List<File>? selectedImages = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GalleryScreen(),
+        builder: (context) => const GalleryScreen(),
       ),
     );
     if (selectedImages != null && selectedImages.isNotEmpty) {
@@ -80,7 +80,8 @@ class _AddImageState extends State<AddImage> {
   void _toggleFlash() async {
     if (_cameraController != null && _cameraController!.value.isInitialized) {
       bool newFlashMode = !_isFlashOn;
-      await _cameraController!.setFlashMode(newFlashMode ? FlashMode.torch : FlashMode.off);
+      await _cameraController!
+          .setFlashMode(newFlashMode ? FlashMode.torch : FlashMode.off);
       setState(() {
         _isFlashOn = newFlashMode;
       });
@@ -109,7 +110,7 @@ class _AddImageState extends State<AddImage> {
                   top: 40,
                   left: 20,
                   child: IconButton(
-                    icon: Icon(Icons.close, color: Colors.white),
+                    icon: const Icon(Icons.close, color: Colors.white),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -120,7 +121,9 @@ class _AddImageState extends State<AddImage> {
                   right: 20,
                   child: IconButton(
                     icon: Icon(
-                      _isFlashOn ? Icons.flash_on_outlined : Icons.flash_off_outlined,
+                      _isFlashOn
+                          ? Icons.flash_on_outlined
+                          : Icons.flash_off_outlined,
                       color: Colors.white,
                     ),
                     onPressed: _toggleFlash,
@@ -139,31 +142,39 @@ class _AddImageState extends State<AddImage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color.fromARGB(120, 0, 0, 0),
                               ),
                               child: IconButton(
-                                icon: Icon(Icons.image_outlined, color: Colors.white),
+                                icon: const Icon(Icons.image_outlined,
+                                    color: Colors.white),
                                 onPressed: _openGallery,
                               ),
                             ),
                             GestureDetector(
                               onTap: _captureImage,
-                              child: Icon(Icons.circle_outlined, color: Colors.white, size: 40),
+                              child: const Icon(Icons.circle_outlined,
+                                  color: Colors.white, size: 40),
                             ),
                             Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Color.fromARGB(120, 0, 0, 0),
                               ),
                               child: IconButton(
-                                icon: Icon(Icons.flip_camera_android_rounded, color: Colors.white),
+                                icon: const Icon(
+                                    Icons.flip_camera_android_rounded,
+                                    color: Colors.white),
                                 onPressed: () async {
                                   if (cameras != null && cameras!.length > 1) {
-                                    final cameraIndex = cameras!.indexOf(_cameraController!.description);
-                                    final newCameraIndex = (cameraIndex + 1) % cameras!.length;
-                                    _cameraController = CameraController(cameras![newCameraIndex], ResolutionPreset.high);
+                                    final cameraIndex = cameras!.indexOf(
+                                        _cameraController!.description);
+                                    final newCameraIndex =
+                                        (cameraIndex + 1) % cameras!.length;
+                                    _cameraController = CameraController(
+                                        cameras![newCameraIndex],
+                                        ResolutionPreset.high);
                                     await _cameraController!.initialize();
                                     setState(() {});
                                   }
@@ -178,7 +189,7 @@ class _AddImageState extends State<AddImage> {
                 ),
               ],
             )
-          : Center(child: CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }

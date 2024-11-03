@@ -13,7 +13,7 @@ class CommunicationInitial extends CommunicationState {}
 class CommunicationLoaded extends CommunicationState {
   final List<MessageModel> messages;
 
-  CommunicationLoaded({required this.messages});
+  const CommunicationLoaded({required this.messages});
 
   @override
   List<Object> get props => [messages];

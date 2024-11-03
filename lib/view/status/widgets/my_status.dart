@@ -22,21 +22,21 @@ class MyStatus extends StatelessWidget {
             backgroundImage: userInfo.imageUrl.isNotEmpty
                 ? NetworkImage(userInfo.imageUrl)
                 : null,
+            radius: 30,
             child: userInfo.imageUrl.isEmpty
                 ? const Icon(Icons.person, size: 30, color: Colors.white)
                 : null,
-            radius: 30,
           ),
           Positioned(
             bottom: 0,
             right: 0,
             child: Container(
               padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                color: const Color(0xFF02B099),
+              decoration: const BoxDecoration(
+                color: Color(0xFF02B099),
                 shape: BoxShape.circle,
               ),
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 12,
                 backgroundColor: Colors.transparent,
                 child: Icon(Icons.add, color: Colors.white, size: 15),
@@ -75,7 +75,7 @@ class MyStatus extends StatelessWidget {
                   Status(
                     statusId: statusesId,
                     userId: userInfo.id,
-                    imageUrls: [],
+                    imageUrls: const [],
                     timestamp: DateTime.now(),
                     isText: false,
                     text: item['caption'],

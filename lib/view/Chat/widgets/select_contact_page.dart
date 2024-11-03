@@ -29,11 +29,11 @@ class _SelectContactPageState extends State<SelectContactPage> {
           await FirebaseFirestore.instance.collection('users').get();
 
       List<UserModel> loadedUsers = [];
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         if (doc.exists) {
           loadedUsers.add(UserModel.fromSnapshot(doc));
         }
-      });
+      }
 
       setState(() {
         users = loadedUsers;
@@ -47,10 +47,10 @@ class _SelectContactPageState extends State<SelectContactPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Select Contact"),
+        title: const Text("Select Contact"),
         actions: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
             ),
             onPressed: () {
@@ -58,7 +58,7 @@ class _SelectContactPageState extends State<SelectContactPage> {
             },
           ),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
             ),
             onPressed: () {},
@@ -66,13 +66,13 @@ class _SelectContactPageState extends State<SelectContactPage> {
         ],
       ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           children: [
             _newGroupButtonWidget(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _newContactButtonWidget(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _listContact(),
           ],
         ),
@@ -95,16 +95,16 @@ class _SelectContactPageState extends State<SelectContactPage> {
             Container(
               height: 45,
               width: 45,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Color(0xFF02B099),
                   borderRadius: BorderRadius.all(Radius.circular(40))),
-              child: Icon(
+              child: const Icon(
                 Icons.people,
                 color: Colors.white,
               ),
             ),
-            SizedBox(width: 15),
-            Text(
+            const SizedBox(width: 15),
+            const Text(
               "New Group",
               style: TextStyle(
                 fontSize: 16,
@@ -127,16 +127,16 @@ class _SelectContactPageState extends State<SelectContactPage> {
               Container(
                 height: 45,
                 width: 45,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Color(0xFF02B099),
                     borderRadius: BorderRadius.all(Radius.circular(40))),
-                child: Icon(
+                child: const Icon(
                   Icons.person_add,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(width: 15),
-              Text(
+              const SizedBox(width: 15),
+              const Text(
                 "New contact",
                 style: TextStyle(
                   fontSize: 16,
@@ -145,7 +145,7 @@ class _SelectContactPageState extends State<SelectContactPage> {
               ),
             ],
           ),
-          Icon(
+          const Icon(
             Icons.qr_code,
             color: Color(0xFF02B099),
           )

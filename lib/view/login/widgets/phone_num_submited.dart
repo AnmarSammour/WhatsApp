@@ -41,7 +41,7 @@ class PhoneSubmitWidget extends StatelessWidget {
             SnackBar(
               content: Text(errorMsg),
               backgroundColor: Colors.black,
-              duration: Duration(seconds: 3),
+              duration: const Duration(seconds: 3),
             ),
           );
         }

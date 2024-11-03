@@ -10,7 +10,7 @@ class UserInfoHeader extends StatelessWidget {
       'Profile info',
       style: TextStyle(
         fontSize: 25.sp,
-        color: Color(0xFF02B099),
+        color: const Color(0xFF02B099),
         fontWeight: FontWeight.bold,
       ),
       textAlign: TextAlign.center,

@@ -8,7 +8,7 @@ class ResendCodeText extends StatelessWidget {
   final LoginModel selectedCountry;
   final GlobalKey<FormState> phoneFormKey;
 
-  ResendCodeText({
+  const ResendCodeText({
     Key? key,
     required this.selectedCountry,
     required this.phoneFormKey,

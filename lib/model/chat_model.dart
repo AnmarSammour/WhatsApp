@@ -31,7 +31,7 @@ class ChatModel extends Equatable {
   });
 
   factory ChatModel.fromSnapshot(DocumentSnapshot snapshot) {
-    var data = snapshot.data() as Map<String, dynamic>; 
+    var data = snapshot.data() as Map<String, dynamic>;
     return ChatModel(
       senderName: data['senderName'],
       senderUID: data['senderUID'],

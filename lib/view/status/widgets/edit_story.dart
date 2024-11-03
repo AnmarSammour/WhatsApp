@@ -34,7 +34,9 @@ class _EditStoryState extends State<EditStory> {
   @override
   void dispose() {
     _pageController.dispose();
-    _textControllers.forEach((controller) => controller.dispose());
+    for (var controller in _textControllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -111,7 +113,7 @@ class _EditStoryState extends State<EditStory> {
                     },
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: 50,
                   right: 10,
                   child: Row(
@@ -132,7 +134,7 @@ class _EditStoryState extends State<EditStory> {
           if (_selectedImages.length > 1)
             Container(
               height: 70,
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               alignment: Alignment.center,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -141,7 +143,7 @@ class _EditStoryState extends State<EditStory> {
                   return Stack(
                     children: [
                       Container(
-                        margin: EdgeInsets.all(4),
+                        margin: const EdgeInsets.all(4),
                         width: 50,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -157,11 +159,11 @@ class _EditStoryState extends State<EditStory> {
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
                               color: Colors.black.withOpacity(0.5),
-                              margin: EdgeInsets.all(4),
+                              margin: const EdgeInsets.all(4),
                               child: Center(
                                 child: GestureDetector(
                                   onTap: () => _removeImage(index),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.delete_forever_outlined,
                                     color: Colors.white,
                                     size: 20,
@@ -177,14 +179,14 @@ class _EditStoryState extends State<EditStory> {
               ),
             ),
           Container(
-            margin: EdgeInsets.only(bottom: 10, left: 4, right: 4),
+            margin: const EdgeInsets.only(bottom: 10, left: 4, right: 4),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(80)),
+              borderRadius: const BorderRadius.all(Radius.circular(80)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(.2),
-                  offset: Offset(0.0, 0.50),
+                  offset: const Offset(0.0, 0.50),
                   spreadRadius: 1,
                   blurRadius: 1,
                 ),
@@ -193,18 +195,18 @@ class _EditStoryState extends State<EditStory> {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.add_photo_alternate_outlined),
+                  icon: const Icon(Icons.add_photo_alternate_outlined),
                   onPressed: _pickMoreImages,
                 ),
                 Expanded(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 60),
+                    constraints: const BoxConstraints(maxHeight: 60),
                     child: Scrollbar(
                       child: TextField(
                         maxLines: null,
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                         controller: _textControllers[_currentPage],
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "Add a caption...",
                         ),
@@ -226,11 +228,11 @@ class _EditStoryState extends State<EditStory> {
                     child: Container(
                       height: 45,
                       width: 45,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFF02B099),
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.send,
                         color: Colors.white,
                       ),

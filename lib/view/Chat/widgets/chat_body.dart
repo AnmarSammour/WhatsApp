@@ -103,7 +103,7 @@ class _ChatBodyState extends State<ChatBody> {
       ),
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Image.asset(
               "assets/img/defaultwallpaper.png",
@@ -122,7 +122,7 @@ class _ChatBodyState extends State<ChatBody> {
                         imageUrl: widget.imageUrl,
                       );
                     }
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   },
@@ -149,13 +149,13 @@ class _ChatBodyState extends State<ChatBody> {
                         onEmojiSelected: (category, emoji) {
                           _onEmojiSelected(emoji);
                         },
-                        config: Config(
+                        config: const Config(
                           columns: 7,
                           emojiSizeMax: 32.0,
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ],
           ),
         ],
@@ -182,7 +182,7 @@ class _ChatBodyState extends State<ChatBody> {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
             _scrollController.position.minScrollExtent,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         }

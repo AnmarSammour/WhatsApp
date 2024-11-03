@@ -38,7 +38,7 @@ void showGroupDialog(
                           : Colors.transparent,
                     ),
                     child: groupChatModel.groupPic.isEmpty
-                        ? Center(
+                        ? const Center(
                             child: Icon(Icons.group,
                                 size: 100, color: Colors.white))
                         : null,
@@ -48,7 +48,7 @@ void showGroupDialog(
                     left: 0,
                     right: 0,
                     child: Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       color: Colors.black.withOpacity(0.5),
                       child: Text(
                         groupChatModel.name,
@@ -98,7 +98,7 @@ void showGroupDialog(
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
           ),
         ),

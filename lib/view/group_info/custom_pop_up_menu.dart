@@ -8,7 +8,7 @@ class CustomPopupMenu extends StatefulWidget {
   final String groupId;
   final String initialGroupName;
 
-  CustomPopupMenu({
+  const CustomPopupMenu({
     Key? key,
     required this.userInfo,
     required this.groupId,
@@ -32,25 +32,25 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
       position: RelativeRect.fromLTRB(
           position.dx, position.dy + renderBox.size.height, position.dx, 0),
       items: [
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'Add members',
           child: Text('Add members', style: TextStyle(color: Colors.black)),
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'Change group name',
           child:
               Text('Change group name', style: TextStyle(color: Colors.black)),
         ),
-        PopupMenuItem<String>(
+        const PopupMenuItem<String>(
           value: 'Group permissions',
           child:
               Text('Group permissions', style: TextStyle(color: Colors.black)),
         ),
       ],
       elevation: 10,
-      color: Color(0xffEEF0F1),
+      color: const Color(0xffEEF0F1),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         side: BorderSide(color: Colors.black.withOpacity(0.1)),
       ),
     ).then((value) {
@@ -80,7 +80,7 @@ class _CustomPopupMenuState extends State<CustomPopupMenu> {
   Widget build(BuildContext context) {
     return IconButton(
       key: _menuKey,
-      icon: Icon(Icons.more_vert),
+      icon: const Icon(Icons.more_vert),
       onPressed: _showPopupMenu,
     );
   }

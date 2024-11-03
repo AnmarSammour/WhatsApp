@@ -5,12 +5,13 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../../controller/cubit/phone_auth/phone_auth_cubit.dart';
 
 class OTPTxtField extends StatefulWidget {
+  const OTPTxtField({super.key});
+
   @override
   _OTPTxtFieldState createState() => _OTPTxtFieldState();
 }
 
 class _OTPTxtFieldState extends State<OTPTxtField> {
-
   @override
   void initState() {
     super.initState();

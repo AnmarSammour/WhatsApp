@@ -77,7 +77,7 @@ class _ChatBubbleState extends State<ChatBubble> {
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +100,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -115,7 +116,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                               widget.message.message.split('\n').first,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
-                                  Text('Error loading image'),
+                                  const Text('Error loading image'),
                             ),
                           ),
                         if (widget.message.messageType == MessageType.image &&
@@ -125,7 +126,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                                 .split('\n')
                                 .sublist(1)
                                 .join('\n'),
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             textAlign: TextAlign.right,
                           ),
                         if (widget.message.messageType == MessageType.audio)
@@ -160,7 +161,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                                   builder: (context) => FullScreenVideo(
                                     videoUrl: widget.message.message
                                         .split('\n')
-                                        .first, 
+                                        .first,
                                   ),
                                 ),
                               );
@@ -200,7 +201,8 @@ class _ChatBubbleState extends State<ChatBubble> {
                                           .split('\n')
                                           .sublist(1)
                                           .join('\n'),
-                                      style: TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -212,15 +214,15 @@ class _ChatBubbleState extends State<ChatBubble> {
                             widget.message.messageType != MessageType.video)
                           Text(
                             widget.message.message,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             textAlign: TextAlign.right,
                           ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
                           DateFormat('hh:mm a')
                               .format(widget.message.time.toDate()),
-                          style:
-                              TextStyle(color: Color(0xff606D75), fontSize: 12),
+                          style: const TextStyle(
+                              color: Color(0xff606D75), fontSize: 12),
                           textAlign: TextAlign.right,
                         ),
                       ],

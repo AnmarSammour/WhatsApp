@@ -31,10 +31,10 @@ class UserCubit extends Cubit<UserState> {
           );
           emit(UserLoaded([userModel]));
         } else {
-          emit(UserError('User document does not exist'));
+          emit(const UserError('User document does not exist'));
         }
       } else {
-        emit(UserError('No user logged in'));
+        emit(const UserError('No user logged in'));
       }
     } catch (error) {
       emit(UserError(error.toString()));

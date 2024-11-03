@@ -78,7 +78,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,8 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                     }
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -116,7 +117,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                               widget.message.message.split('\n').first,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
-                                  Text('Error loading image'),
+                                  const Text('Error loading image'),
                             ),
                           ),
                         if (widget.message.messageType == MessageType.image &&
@@ -126,7 +127,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                                 .split('\n')
                                 .sublist(1)
                                 .join('\n'),
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             textAlign: TextAlign.left,
                           ),
                         if (widget.message.messageType == MessageType.audio)
@@ -161,7 +162,7 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                                   builder: (context) => FullScreenVideo(
                                     videoUrl: widget.message.message
                                         .split('\n')
-                                        .first, 
+                                        .first,
                                   ),
                                 ),
                               );
@@ -201,7 +202,8 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                                           .split('\n')
                                           .sublist(1)
                                           .join('\n'),
-                                      style: TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                       textAlign: TextAlign.right,
                                     ),
                                   ),
@@ -213,15 +215,15 @@ class _ChatBubbleForFriendState extends State<ChatBubbleForFriend> {
                             widget.message.messageType != MessageType.video)
                           Text(
                             widget.message.message,
-                            style: TextStyle(color: Colors.black),
+                            style: const TextStyle(color: Colors.black),
                             textAlign: TextAlign.left,
                           ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
                           DateFormat('hh:mm a')
                               .format(widget.message.time.toDate()),
-                          style:
-                              TextStyle(color: Color(0xff606D75), fontSize: 12),
+                          style: const TextStyle(
+                              color: Color(0xff606D75), fontSize: 12),
                           textAlign: TextAlign.left,
                         ),
                       ],

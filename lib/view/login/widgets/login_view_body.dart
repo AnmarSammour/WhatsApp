@@ -10,6 +10,8 @@ import 'phone_input_field.dart';
 import 'phone_num_submited.dart';
 
 class LoginViewBody extends StatefulWidget {
+  const LoginViewBody({super.key});
+
   @override
   _LoginViewBodyState createState() => _LoginViewBodyState();
 }

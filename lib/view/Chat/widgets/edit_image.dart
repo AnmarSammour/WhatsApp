@@ -44,7 +44,9 @@ class _EditImageState extends State<EditImage> {
 
   bool _isVideo(File file) {
     final extension = file.path.split('.').last.toLowerCase();
-    return extension == 'mp4' || extension == 'mov' || extension == 'avi'; // يمكنك إضافة المزيد من التنسيقات إذا لزم الأمر
+    return extension == 'mp4' ||
+        extension == 'mov' ||
+        extension == 'avi'; // يمكنك إضافة المزيد من التنسيقات إذا لزم الأمر
   }
 
   @override
@@ -91,7 +93,7 @@ class _EditImageState extends State<EditImage> {
     final List<File>? selectedFiles = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GalleryScreen(),
+        builder: (context) => const GalleryScreen(),
       ),
     );
     if (selectedFiles != null && selectedFiles.isNotEmpty) {
@@ -132,10 +134,11 @@ class _EditImageState extends State<EditImage> {
                     if (_isVideo(file)) {
                       // إذا كان الملف فيديو
                       final videoController = _videoControllers[index];
-                      if (videoController != null && videoController.value.isInitialized) {
+                      if (videoController != null &&
+                          videoController.value.isInitialized) {
                         return VideoPlayer(videoController);
                       }
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else {
                       // إذا كان الملف صورة
                       return PhotoView(
@@ -177,7 +180,7 @@ class _EditImageState extends State<EditImage> {
           if (_selectedFiles.length > 1)
             Container(
               height: 70,
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               alignment: Alignment.center,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -186,12 +189,13 @@ class _EditImageState extends State<EditImage> {
                   return Stack(
                     children: [
                       Container(
-                        margin: EdgeInsets.all(4),
+                        margin: const EdgeInsets.all(4),
                         width: 50,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: _isVideo(_selectedFiles[index])
-                              ? Icon(Icons.videocam, color: Colors.white) // عرض أيقونة الفيديو
+                              ? const Icon(Icons.videocam,
+                                  color: Colors.white) // عرض أيقونة الفيديو
                               : Image.file(
                                   _selectedFiles[index],
                                   fit: BoxFit.fill,
@@ -204,11 +208,11 @@ class _EditImageState extends State<EditImage> {
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
                               color: Colors.black.withOpacity(0.5),
-                              margin: EdgeInsets.all(4),
+                              margin: const EdgeInsets.all(4),
                               child: Center(
                                 child: GestureDetector(
                                   onTap: () => _removeFile(index),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.delete_forever_outlined,
                                     color: Colors.white,
                                     size: 20,
@@ -224,14 +228,14 @@ class _EditImageState extends State<EditImage> {
               ),
             ),
           Container(
-            margin: EdgeInsets.only(bottom: 10, left: 4, right: 4),
+            margin: const EdgeInsets.only(bottom: 10, left: 4, right: 4),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(80)),
+              borderRadius: const BorderRadius.all(Radius.circular(80)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(.2),
-                  offset: Offset(0.0, 0.50),
+                  offset: const Offset(0.0, 0.50),
                   spreadRadius: 1,
                   blurRadius: 1,
                 ),
@@ -240,20 +244,20 @@ class _EditImageState extends State<EditImage> {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.add_photo_alternate_outlined),
+                  icon: const Icon(Icons.add_photo_alternate_outlined),
                   onPressed: _pickMoreFiles,
                 ),
                 Expanded(
                   child: ConstrainedBox(
-                    constraints: BoxConstraints(
+                    constraints: const BoxConstraints(
                       maxHeight: 60,
                     ),
                     child: Scrollbar(
                       child: TextField(
                         maxLines: null,
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                         controller: _textControllers[_currentPage],
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "Add a caption...",
                         ),
@@ -275,11 +279,11 @@ class _EditImageState extends State<EditImage> {
                     child: Container(
                       height: 45,
                       width: 45,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFF02B099),
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.send,
                         color: Colors.white,
                       ),

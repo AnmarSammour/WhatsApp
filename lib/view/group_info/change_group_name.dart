@@ -62,11 +62,12 @@ class _ChangeGroupNameState extends State<ChangeGroupName> {
                   ),
                 ),
                 hintText: 'Group name ',
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: const TextStyle(color: Colors.grey),
                 counterText: '',
                 suffixText: ' $_remainingChars',
-                suffixStyle: TextStyle(fontSize: 16, color: Colors.grey),
-                suffixIcon: Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
+                suffixStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+                suffixIcon: const Icon(Icons.emoji_emotions_outlined,
+                    color: Colors.grey),
               ),
               style: const TextStyle(fontSize: 20),
               textAlign: TextAlign.right,
@@ -97,7 +98,8 @@ class _ChangeGroupNameState extends State<ChangeGroupName> {
                       },
                       child: const Text(
                         'Cancel',
-                        style: TextStyle(color:  Color(0xFF02B099), fontSize: 16),
+                        style:
+                            TextStyle(color: Color(0xFF02B099), fontSize: 16),
                       ),
                     ),
                   ),
@@ -108,22 +110,23 @@ class _ChangeGroupNameState extends State<ChangeGroupName> {
                   ),
                   Expanded(
                     child: TextButton(
-                      onPressed: _groupNameController.text.isEmpty ? null : () {
-                        context.read<GroupChatCubit>().updateGroupName(
-                              groupId: widget.groupId,
-                              newGroupName: _groupNameController.text,
-                            );
-                        Navigator.of(context).pop();
-                      },
+                      onPressed: _groupNameController.text.isEmpty
+                          ? null
+                          : () {
+                              context.read<GroupChatCubit>().updateGroupName(
+                                    groupId: widget.groupId,
+                                    newGroupName: _groupNameController.text,
+                                  );
+                              Navigator.of(context).pop();
+                            },
+                      style: TextButton.styleFrom(
+                        foregroundColor: _groupNameController.text.isEmpty
+                            ? Colors.grey
+                            : const Color(0xFF02B099),
+                      ),
                       child: const Text(
                         'OK',
                         style: TextStyle(fontSize: 16),
-                      ),
-                      style: TextButton.styleFrom(
-                        foregroundColor: _groupNameController.text.isEmpty
-                            ? Colors.grey 
-                            : const Color(0xFF02B099), 
-                      
                       ),
                     ),
                   ),

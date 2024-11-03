@@ -43,12 +43,12 @@ class _EditGroupImageScreenState extends State<EditGroupImageScreen> {
           );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Group image updated successfully')),
+        const SnackBar(content: Text('Group image updated successfully')),
       );
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update group image')),
+        const SnackBar(content: Text('Failed to update group image')),
       );
     }
   }
@@ -80,17 +80,17 @@ class _EditGroupImageScreenState extends State<EditGroupImageScreen> {
                       Navigator.pop(context);
                     },
                     child:
-                        Text('Cancel', style: TextStyle(color: Colors.white)),
+                        const Text('Cancel', style: TextStyle(color: Colors.white)),
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.rotate_right, color: Colors.white, size: 30),
+                  icon: const Icon(Icons.rotate_right, color: Colors.white, size: 30),
                   onPressed: _rotateImage,
                 ),
                 Expanded(
                   child: TextButton(
                     onPressed: () => _saveImage(context),
-                    child: Text('Done', style: TextStyle(color: Colors.white)),
+                    child: const Text('Done', style: TextStyle(color: Colors.white)),
                   ),
                 ),
               ],

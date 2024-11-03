@@ -16,15 +16,15 @@ class UserStatus extends StatelessWidget {
       future: getUserStatus(phoneNumber),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          return const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: ListTile(
               title: Text('Loading...'),
             ),
           );
         } else if (snapshot.hasError) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          return const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: ListTile(
               title: Text('Error fetching status'),
             ),

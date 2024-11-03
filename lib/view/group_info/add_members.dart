@@ -81,15 +81,15 @@ class _AddMembersState extends State<AddMembers> {
             ? TextField(
                 controller: searchController,
                 autofocus: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Search name or number...",
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.grey),
                 ),
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: const TextStyle(color: Colors.black, fontSize: 16),
                 onChanged: (query) => _filterUsers(query),
               )
-            : Text("Add members"),
+            : const Text("Add members"),
         actions: [
           IconButton(
             icon: Icon(isSearching ? Icons.close : Icons.search),
@@ -108,7 +108,7 @@ class _AddMembersState extends State<AddMembers> {
       body: BlocBuilder<GroupChatCubit, GroupChatState>(
         builder: (context, state) {
           if (state is GroupChatLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state is GroupChatUsersLoaded) {
             users = state.users;
             filteredUsers = state.users.where((user) => !currentGroupMembers.contains(user)).toList();
@@ -118,7 +118,7 @@ class _AddMembersState extends State<AddMembers> {
                 if (selectedContacts.isNotEmpty)
                   Container(
                     height: 90,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: selectedContacts.length,
@@ -127,7 +127,7 @@ class _AddMembersState extends State<AddMembers> {
                         return Stack(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(right: 10),
+                              margin: const EdgeInsets.only(right: 10),
                               child: Column(
                                 children: [
                                   CircleAvatar(
@@ -139,10 +139,10 @@ class _AddMembersState extends State<AddMembers> {
                                             size: 30, color: Colors.white)
                                         : null,
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
                                     user.name,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500),
                                   ),
@@ -154,7 +154,7 @@ class _AddMembersState extends State<AddMembers> {
                               right: 0,
                               child: GestureDetector(
                                 onTap: () => _removeContact(user),
-                                child: CircleAvatar(
+                                child: const CircleAvatar(
                                   radius: 10,
                                   backgroundColor: Colors.grey,
                                   child: Icon(Icons.close,

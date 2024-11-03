@@ -16,13 +16,13 @@ class GroupSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'No groups in common',
             style: TextStyle(color: Colors.grey, fontSize: 14),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           ListTile(
-            leading: CircleAvatar(
+            leading: const CircleAvatar(
               backgroundColor: Colors.green,
               child: Icon(Icons.group_add, color: Colors.white),
             ),
@@ -31,7 +31,7 @@ class GroupSection extends StatelessWidget {
                 children: [
                   TextSpan(
                     text: 'Create group with ${user.name}',
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   ),
                 ],
               ),

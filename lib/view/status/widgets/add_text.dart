@@ -54,7 +54,7 @@ class _AddTextState extends State<AddText> {
             top: 50,
             left: 10,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               color: Colors.white,
               onPressed: () {
                 Navigator.pop(context);
@@ -67,19 +67,19 @@ class _AddTextState extends State<AddText> {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.emoji_emotions_outlined),
+                  icon: const Icon(Icons.emoji_emotions_outlined),
                   color: Colors.white,
                   onPressed: () {},
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: Icon(Icons.title),
+                  icon: const Icon(Icons.title),
                   color: Colors.white,
                   onPressed: () {},
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  icon: Icon(Icons.color_lens_outlined),
+                  icon: const Icon(Icons.color_lens_outlined),
                   color: Colors.white,
                   onPressed: () {
                     setState(() {
@@ -116,7 +116,7 @@ class _AddTextState extends State<AddText> {
                               Status(
                                 statusId: statusesId,
                                 userId: widget.userId,
-                                imageUrls: [],
+                                imageUrls: const [],
                                 timestamp: DateTime.now(),
                                 isText: true,
                                 text: _textController.text,

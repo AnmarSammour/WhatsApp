@@ -79,7 +79,7 @@ class StatusViewBody extends StatelessWidget {
               icon: Icons.edit,
               heroTag: 'edit_button_hero',
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             CustomFAB(
               onPressed: () async {
                 XFile? pickedFile =
@@ -115,7 +115,7 @@ class StatusViewBody extends StatelessWidget {
                   Status(
                     statusId: statusesId,
                     userId: userInfo.id,
-                    imageUrls: [],
+                    imageUrls: const [],
                     timestamp: DateTime.now(),
                     isText: false,
                     text: item['caption'],

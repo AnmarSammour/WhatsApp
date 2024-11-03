@@ -16,22 +16,20 @@ class ActionButtons extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: Icon(Icons.favorite_border_outlined),
-            title: Text('Add to Favorites'),
-            onTap: () {
-            },
+            leading: const Icon(Icons.favorite_border_outlined),
+            title: const Text('Add to Favorites'),
+            onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.block, color: Colors.red),
+            leading: const Icon(Icons.block, color: Colors.red),
             title: Text('Block ${user.name}'),
-            onTap: () {
-            },
+            onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.thumb_down_alt_outlined, color: Colors.red),
+            leading:
+                const Icon(Icons.thumb_down_alt_outlined, color: Colors.red),
             title: Text('Report ${user.name}'),
-            onTap: () {
-            },
+            onTap: () {},
           ),
         ],
       ),

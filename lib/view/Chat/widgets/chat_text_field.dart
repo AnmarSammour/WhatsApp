@@ -117,7 +117,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.only(bottom: 10, left: 4, right: 4),
+          margin: const EdgeInsets.only(bottom: 10, left: 4, right: 4),
           child: Column(
             children: [
               Row(
@@ -126,11 +126,12 @@ class _ChatTextFieldState extends State<ChatTextField> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: const Color(0XFFF7F7F8),
-                        borderRadius: BorderRadius.all(Radius.circular(80)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(80)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(.2),
-                            offset: Offset(0.0, 0.50),
+                            offset: const Offset(0.0, 0.50),
                             spreadRadius: 1,
                             blurRadius: 1,
                           ),
@@ -138,7 +139,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
                       ),
                       child: Row(
                         children: [
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           IconButton(
                             icon: Icon(
                               widget.isEmojiVisible
@@ -148,19 +149,19 @@ class _ChatTextFieldState extends State<ChatTextField> {
                             color: Colors.grey,
                             onPressed: widget.toggleEmojiPicker,
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: ConstrainedBox(
-                              constraints: BoxConstraints(
+                              constraints: const BoxConstraints(
                                 maxHeight: 60,
                               ),
                               child: Scrollbar(
                                 child: TextField(
                                   focusNode: widget.focusNode,
                                   maxLines: null,
-                                  style: TextStyle(fontSize: 14),
+                                  style: const TextStyle(fontSize: 14),
                                   controller: widget.textMessageController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Message",
                                   ),
@@ -187,7 +188,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
                               ),
                               widget.textMessageController.text.isEmpty
                                   ? IconButton(
-                                      icon: Icon(Icons.camera_alt),
+                                      icon: const Icon(Icons.camera_alt),
                                       color: Colors.grey,
                                       onPressed: () async {
                                         List<Map<String, dynamic>>
@@ -209,15 +210,15 @@ class _ChatTextFieldState extends State<ChatTextField> {
                                             selectedMediaWithCaptions);
                                       },
                                     )
-                                  : Text(""),
+                                  : const Text(""),
                             ],
                           ),
-                          SizedBox(width: 15),
+                          const SizedBox(width: 15),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   InkWell(
                     onTap: widget.textMessageController.text.isEmpty
                         ? null
@@ -225,13 +226,13 @@ class _ChatTextFieldState extends State<ChatTextField> {
                     child: Container(
                       height: 45,
                       width: 45,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFF02B099),
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                       ),
                       child: widget.textMessageController.text.isEmpty
                           ? AudioRecorder(onAudioRecorded: _handleAudioRecorded)
-                          : Icon(Icons.send, color: Colors.white),
+                          : const Icon(Icons.send, color: Colors.white),
                     ),
                   ),
                 ],
@@ -244,7 +245,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
           ),
         ),
         if (isAttachFileVisible)
-          Container(
+          SizedBox(
             height: 300.0,
             child: AddAttachFile(
               onImagesSelected: (List<Map<String, dynamic>> selectedMedia) {},

@@ -101,7 +101,7 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
             _scrollController.position.minScrollExtent,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         }
@@ -118,7 +118,7 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
       ),
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             child: Image.asset(
               "assets/img/defaultwallpaper.png",
@@ -136,7 +136,7 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(
+                            return const Center(
                               child: CircularProgressIndicator(),
                             );
                           } else if (snapshot.hasError) {
@@ -153,14 +153,14 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                               senderName: senderName,
                             );
                           } else {
-                            return Center(
+                            return const Center(
                               child: Text('No data available'),
                             );
                           }
                         },
                       );
                     }
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   },
@@ -170,7 +170,7 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                 future: _senderNameFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   } else if (snapshot.hasError) {
@@ -201,13 +201,13 @@ class _ChatBodyGroupState extends State<ChatBodyGroup> {
                         onEmojiSelected: (category, emoji) {
                           _onEmojiSelected(emoji);
                         },
-                        config: Config(
+                        config: const Config(
                           columns: 7,
                           emojiSizeMax: 32.0,
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
             ],
           ),
         ],

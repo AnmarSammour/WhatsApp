@@ -9,17 +9,18 @@ class CustomTabBarView extends StatelessWidget {
   final TabController tabController;
   final UserModel userInfo;
 
-  const CustomTabBarView({required this.tabController, required this.userInfo});
+  const CustomTabBarView(
+      {super.key, required this.tabController, required this.userInfo});
 
   @override
   Widget build(BuildContext context) {
     return TabBarView(
       controller: tabController,
       children: [
-        CommunitiesView(),
+        const CommunitiesView(),
         ChatView(userInfo: userInfo),
         StatusView(userInfo: userInfo),
-        CallView(),
+        const CallView(),
       ],
     );
   }

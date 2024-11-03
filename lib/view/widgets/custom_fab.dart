@@ -5,7 +5,8 @@ class CustomFAB extends StatelessWidget {
   final IconData icon;
   final Object? heroTag;
 
-  CustomFAB({
+  const CustomFAB({
+    super.key,
     required this.onPressed,
     required this.icon,
     this.heroTag,
