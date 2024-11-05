@@ -1,28 +1,29 @@
-part of 'chat_cubit.dart';
+import 'package:equatable/equatable.dart';
+import 'package:whatsapp/model/chat_model.dart';
+import 'package:whatsapp/model/group_chat.dart';
 
 abstract class ChatState extends Equatable {
   const ChatState();
-}
 
-class ChatInitial extends ChatState {
   @override
   List<Object> get props => [];
 }
 
+class ChatInitial extends ChatState {}
+
+class ChatLoading extends ChatState {}
+
 class ChatLoaded extends ChatState {
   final List<ChatModel> chatModel;
+  final List<GroupChatModel> groupChats;
 
-  ChatLoaded({required this.chatModel});
-
-  @override
-  List<Object> get props => [chatModel];
-}
-
-class ChatError extends ChatState {
-  final String message;
-
-  ChatError({required this.message});
+  const ChatLoaded({
+    required this.chatModel,
+    required this.groupChats,
+  });
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [chatModel, groupChats];
 }
+
+class ChatFailure extends ChatState {}

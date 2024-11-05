@@ -86,11 +86,42 @@ class _SelectContactPageState extends State<SelectContactPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => NewGroup(userInfo: widget.userInfo)),
+              builder: (context) => NewGroup(
+                    userInfo: widget.userInfo,
+                  )),
         );
       },
-      child: Container(
-        child: Row(
+      child: Row(
+        children: [
+          Container(
+            height: 45,
+            width: 45,
+            decoration: const BoxDecoration(
+                color: Color(0xFF02B099),
+                borderRadius: BorderRadius.all(Radius.circular(40))),
+            child: const Icon(
+              Icons.people,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(width: 15),
+          const Text(
+            "New Group",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _newContactButtonWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
           children: [
             Container(
               height: 45,
@@ -99,13 +130,13 @@ class _SelectContactPageState extends State<SelectContactPage> {
                   color: Color(0xFF02B099),
                   borderRadius: BorderRadius.all(Radius.circular(40))),
               child: const Icon(
-                Icons.people,
+                Icons.person_add,
                 color: Colors.white,
               ),
             ),
             const SizedBox(width: 15),
             const Text(
-              "New Group",
+              "New contact",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -113,44 +144,11 @@ class _SelectContactPageState extends State<SelectContactPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _newContactButtonWidget() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                height: 45,
-                width: 45,
-                decoration: const BoxDecoration(
-                    color: Color(0xFF02B099),
-                    borderRadius: BorderRadius.all(Radius.circular(40))),
-                child: const Icon(
-                  Icons.person_add,
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(width: 15),
-              const Text(
-                "New contact",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          const Icon(
-            Icons.qr_code,
-            color: Color(0xFF02B099),
-          )
-        ],
-      ),
+        const Icon(
+          Icons.qr_code,
+          color: Color(0xFF02B099),
+        )
+      ],
     );
   }
 

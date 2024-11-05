@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:equatable/equatable.dart';
+import 'package:whatsapp/Controller/cubit/chat/chat_state.dart';
 import 'package:whatsapp/model/chat_model.dart';
-
-part 'chat_state.dart';
+import 'package:whatsapp/model/group_chat.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final FirebaseFirestore firestore;
@@ -12,21 +10,41 @@ class ChatCubit extends Cubit<ChatState> {
   ChatCubit({required this.firestore}) : super(ChatInitial());
 
   Future<void> getChat({required String uid}) async {
+    emit(ChatLoading());
+
     try {
-      final myChatStreamData = firestore
-          .collection('my_chats')
-          .where('senderUID', isEqualTo: uid)
-          .snapshots()
-          .map((querySnapshot) => querySnapshot.docs
-              .map((doc) => ChatModel.fromSnapshot(doc))
-              .toList());
-      myChatStreamData.listen((myChatData) {
-        emit(ChatLoaded(chatModel: myChatData));
-      });
-    } on SocketException catch (_) {
-      emit(ChatError(message: 'SocketException occurred'));
-    } catch (_) {
-      emit(ChatError(message: 'An error occurred'));
+      List<ChatModel> individualChats = await _fetchIndividualChats(uid);
+      List<GroupChatModel> groupChats = await _fetchGroupChats(uid);
+
+      individualChats.sort((a, b) => b.time.compareTo(a.time));
+
+      groupChats.sort((a, b) => b.timeSent.compareTo(a.timeSent));
+
+      emit(ChatLoaded(chatModel: individualChats, groupChats: groupChats));
+    } catch (e) {
+      emit(ChatFailure());
     }
+  }
+
+  Future<List<ChatModel>> _fetchIndividualChats(String uid) async {
+    QuerySnapshot snapshot = await firestore
+        .collection('myChats')
+        .doc(uid)
+        .collection('chats')
+        .get();
+
+    return snapshot.docs.map((doc) => ChatModel.fromSnapshot(doc)).toList();
+  }
+
+  Future<List<GroupChatModel>> _fetchGroupChats(String uid) async {
+    QuerySnapshot snapshot = await firestore
+        .collection('myChats')
+        .doc(uid)
+        .collection('groups')
+        .get();
+
+    return snapshot.docs
+        .map((doc) => GroupChatModel.fromSnapshot(doc))
+        .toList();
   }
 }
