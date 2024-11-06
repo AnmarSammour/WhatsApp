@@ -13,7 +13,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: LoginViewBody(),
     );

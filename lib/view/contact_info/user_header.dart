@@ -51,7 +51,8 @@ class UserHeader extends StatelessWidget {
                         backgroundColor: Colors.grey.withOpacity(0.3),
                         radius: 15,
                         child: user.imageUrl.isEmpty
-                            ? Icon(Icons.person, size: 20, color: Colors.white)
+                            ? const Icon(Icons.person,
+                                size: 20, color: Colors.white)
                             : null,
                       ),
                       const SizedBox(width: 10),

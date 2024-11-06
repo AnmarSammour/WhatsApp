@@ -34,10 +34,10 @@ class LoginVerifyingBody extends StatelessWidget {
             phoneNumber: phoneNumber,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-          OTPTxtField(),
-          PhoneVerificationListener(),
+          const OTPTxtField(),
+          const PhoneVerificationListener(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          CodeDescriptionText(),
+          const CodeDescriptionText(),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           ResendCodeText(
             selectedCountry: selectedCountry,

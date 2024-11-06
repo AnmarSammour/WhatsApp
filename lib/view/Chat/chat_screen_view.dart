@@ -70,8 +70,8 @@ class _ChatViewState extends State<ChatView> {
           height: 150,
           width: 150,
           decoration: BoxDecoration(
-            color: Color(0xFF02B099).withOpacity(.5),
-            borderRadius: BorderRadius.all(Radius.circular(100)),
+            color: const Color(0xFF02B099).withOpacity(.5),
+            borderRadius: const BorderRadius.all(Radius.circular(100)),
           ),
           child: Icon(
             Icons.message,
@@ -157,7 +157,7 @@ class _ChatViewState extends State<ChatView> {
               senderName: chat.senderName,
               isCurrentUser: widget.userInfo.id == chat.senderId,
               groupId: chat.groupId,
-              members: [],
+              members: const [],
               currentUser: widget.userInfo,
             ),
           );

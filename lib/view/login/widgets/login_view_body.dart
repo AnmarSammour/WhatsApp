@@ -53,7 +53,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                   const LoginHeader(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.067),
-                  WhatsMynum(),
+                  const WhatsMynum(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.067),
                   PhoneInputField(
                     selectedCountry: selectedCountry.value,

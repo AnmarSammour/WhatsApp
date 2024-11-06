@@ -11,10 +11,10 @@ class UserCubit extends Cubit<UserState> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   UserCubit() : super(UserInitial()) {
-    _loadUser();
+    loadUser();
   }
 
-  Future<void> _loadUser() async {
+  Future<void> loadUser() async {
     try {
       User? user = auth.currentUser;
       if (user != null) {
@@ -28,6 +28,7 @@ class UserCubit extends Cubit<UserState> {
             phoneNumber: user.phoneNumber!,
             active: true,
             lastSeen: DateTime.now(),
+            status: userDoc['status'],
           );
           emit(UserLoaded([userModel]));
         } else {
@@ -43,8 +44,7 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> updateUser(UserModel newUser, File? imageFile) async {
     try {
-      // Upload image to Firebase Storage
-      String imageUrl = '';
+      String imageUrl = newUser.imageUrl;
       if (imageFile != null) {
         TaskSnapshot snapshot = await FirebaseStorage.instance
             .ref()
@@ -53,11 +53,10 @@ class UserCubit extends Cubit<UserState> {
         imageUrl = await snapshot.ref.getDownloadURL();
       }
 
-      // Update user data in Firestore
       await firestore.collection('users').doc(newUser.id).set({
         'uid': newUser.id,
         'name': newUser.name,
-        'imageUrl': imageUrl.isEmpty ? newUser.imageUrl : imageUrl,
+        'imageUrl': imageUrl,
         'phone': newUser.phoneNumber,
         'active': newUser.active,
         'lastSeen': newUser.lastSeen,
@@ -67,20 +66,6 @@ class UserCubit extends Cubit<UserState> {
       emit(UserLoaded([newUser]));
     } catch (error) {
       emit(UserError(error.toString()));
-    }
-  }
-
-  Future<void> createChatChannel(
-      {required String uid, required String otherUid}) async {
-    try {
-      await firestore.collection('chats').add({
-        'uid': [uid, otherUid],
-        'lastMessage': null,
-      });
-    } on SocketException catch (_) {
-      emit(UserFailure());
-    } catch (_) {
-      emit(UserFailure());
     }
   }
 }
