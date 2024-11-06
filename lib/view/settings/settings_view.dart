@@ -6,6 +6,7 @@ import 'package:whatsapp/model/user.dart';
 import 'package:whatsapp/view/settings/widgets/meta_option.dart';
 import 'package:whatsapp/view/settings/widgets/profile_settings.dart';
 import 'package:whatsapp/view/settings/widgets/settings_option.dart';
+import 'package:whatsapp/view/settings/widgets/search_bar.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -17,6 +18,7 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   bool isSearching = false;
   TextEditingController searchController = TextEditingController();
+
   List<Map<String, dynamic>> settingsOptions = [
     {
       'icon': Icons.key,
@@ -72,8 +74,14 @@ class _SettingsViewState extends State<SettingsView> {
     return Scaffold(
       appBar: AppBar(
         title: isSearching
-            ? SearchBar(
+            ? Searchbar(
                 controller: searchController,
+                onBack: () {
+                  setState(() {
+                    isSearching = false;
+                    searchController.clear();
+                  });
+                },
                 onChanged: (value) {
                   setState(() {});
                 },
@@ -90,6 +98,15 @@ class _SettingsViewState extends State<SettingsView> {
               },
             ),
         ],
+        leading: isSearching
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+        automaticallyImplyLeading: !isSearching,
       ),
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
@@ -146,9 +163,10 @@ class _SettingsViewState extends State<SettingsView> {
                   return true;
                 }).map((option) {
                   return SettingsOption(
-                      icon: option['icon'],
-                      title: option['title'],
-                      subtitle: option['subtitle']);
+                    icon: option['icon'],
+                    title: option['title'],
+                    subtitle: option['subtitle'],
+                  );
                 }).toList(),
                 const Divider(),
                 const MetaOption(icon: Icons.camera, title: 'Open Instagram'),
