@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp/model/user.dart';
 import 'package:whatsapp/view/home/widgets/Custom_search_delegate.dart';
+import 'package:whatsapp/view/home/widgets/custom_pop_up_menu_button.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController tabController;
@@ -23,7 +24,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false,
       backgroundColor: const Color(0xFF02B099),
       title: const Text('WhatsApp', style: TextStyle(color: Color(0xffEEF0F1))),
       actions: [
@@ -37,9 +37,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             showSearchPage(context);
           },
         ),
-        IconButton(
-          icon: const Icon(Icons.more_vert, color: Color(0xffEEF0F1)),
-          onPressed: () {},
+        CustomPopupMenuButton(
+          currentUser: currentUser,
         ),
       ],
       bottom: TabBar(
