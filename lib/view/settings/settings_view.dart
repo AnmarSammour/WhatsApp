@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:whatsapp/controller/cubit/user/user_cubit.dart';
 import 'package:whatsapp/controller/cubit/user/user_state.dart';
 import 'package:whatsapp/model/user.dart';
+import 'package:whatsapp/view/settings/widgets/meta_option.dart';
 import 'package:whatsapp/view/settings/widgets/profile_settings.dart';
+import 'package:whatsapp/view/settings/widgets/settings_option.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -69,7 +71,14 @@ class _SettingsViewState extends State<SettingsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: isSearching ? _buildSearchBar() : const Text('Settings'),
+        title: isSearching
+            ? SearchBar(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {});
+                },
+              )
+            : const Text('Settings'),
         actions: [
           if (!isSearching)
             IconButton(
@@ -136,12 +145,14 @@ class _SettingsViewState extends State<SettingsView> {
                   }
                   return true;
                 }).map((option) {
-                  return _buildSettingsOption(
-                      option['icon'], option['title'], option['subtitle']);
+                  return SettingsOption(
+                      icon: option['icon'],
+                      title: option['title'],
+                      subtitle: option['subtitle']);
                 }).toList(),
                 const Divider(),
-                _buildMetaOption(Icons.camera, 'Open Instagram'),
-                _buildMetaOption(Icons.facebook, 'Open Facebook'),
+                const MetaOption(icon: Icons.camera, title: 'Open Instagram'),
+                const MetaOption(icon: Icons.facebook, title: 'Open Facebook'),
               ],
             );
           } else if (state is UserError) {
@@ -151,36 +162,6 @@ class _SettingsViewState extends State<SettingsView> {
           }
         },
       ),
-    );
-  }
-
-  Widget _buildSearchBar() {
-    return TextField(
-      controller: searchController,
-      decoration: const InputDecoration(
-        hintText: 'Search...',
-        border: InputBorder.none,
-      ),
-      onChanged: (value) {
-        setState(() {});
-      },
-    );
-  }
-
-  Widget _buildSettingsOption(IconData icon, String title, String subtitle) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      subtitle: subtitle.isNotEmpty ? Text(subtitle) : null,
-      onTap: () {},
-    );
-  }
-
-  Widget _buildMetaOption(IconData icon, String title) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      onTap: () {},
     );
   }
 }
