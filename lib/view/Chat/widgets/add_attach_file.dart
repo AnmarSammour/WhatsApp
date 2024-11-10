@@ -1,12 +1,75 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:whatsapp/view/Chat/widgets/add_image.dart';
 import 'package:whatsapp/view/Chat/widgets/attach_file_option.dart';
 import 'package:whatsapp/view/Chat/widgets/gallery_screen.dart';
+import 'package:whatsapp/view/Chat/widgets/edit_file.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AddAttachFile extends StatelessWidget {
   final Function(List<Map<String, dynamic>>) onImagesSelected;
 
   const AddAttachFile({super.key, required this.onImagesSelected});
+
+  Future<void> _selectDocument(BuildContext context) async {
+    PermissionStatus status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      FilePickerResult? result =
+          await FilePicker.platform.pickFiles(allowMultiple: true);
+
+      if (result != null && result.files.isNotEmpty) {
+        List<String> selectedFiles =
+            result.files.map((file) => file.path ?? '').toList();
+
+        if (selectedFiles.length == 1) {
+          Navigator.pop(context);
+
+          File selectedFile = File(selectedFiles.first);
+
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditFileScreen(
+                file: selectedFile,
+                filePath: selectedFiles.first,
+                onFileSent: (fileWithCaption) {
+                  print(
+                      'File Sent: ${fileWithCaption['file'].path}, Caption: ${fileWithCaption['caption']}');
+                },
+              ),
+            ),
+          );
+        } else if (selectedFiles.length > 1) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Confirm"),
+                content: Text(
+                    "Send ${selectedFiles.length} documents to the recipient?"),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text("Cancel"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Send"),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      }
+    } else {
+      print("Permission denied");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +127,7 @@ class AddAttachFile extends StatelessWidget {
             icon: Icons.insert_drive_file,
             color: Colors.purple,
             label: 'Document',
-            onTap: () {},
+            onTap: () => _selectDocument(context),
           ),
           AttachFileOption(
             icon: Icons.headset,

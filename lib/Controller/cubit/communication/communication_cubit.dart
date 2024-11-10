@@ -325,4 +325,66 @@ class CommunicationCubit extends Cubit<CommunicationState> {
     final snapshot = await uploadTask;
     return await snapshot.ref.getDownloadURL();
   }
+
+  Future<void> sendFileMessage({
+    required String senderName,
+    required String senderId,
+    required String recipientId,
+    required String recipientName,
+    required File file,
+    required String recipientPhoneNumber,
+    required String senderPhoneNumber,
+    required String fileUrl,
+    required String fileName,
+  }) async {
+    try {
+      final channelId =
+          await _getOneToOneSingleUserChatChannel(senderId, recipientId);
+
+      final fileDownloadUrl = await _uploadFile(channelId, file, fileName);
+
+      await _sendMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          recipientName: recipientName,
+          recipientUID: recipientId,
+          messageType: MessageType.file,
+          message: fileDownloadUrl,
+          time: Timestamp.now(),
+          membersUid: const [],
+          senderImage: '',
+        ),
+        channelId,
+      );
+
+      await _addToMyChat(ChatModel(
+        time: Timestamp.now(),
+        senderName: senderName,
+        senderUID: senderId,
+        senderPhoneNumber: senderPhoneNumber,
+        recipientName: recipientName,
+        recipientUID: recipientId,
+        recipientPhoneNumber: recipientPhoneNumber,
+        recentTextMessage: "File: $fileName",
+        imageUrl: fileDownloadUrl,
+        isRead: true,
+        isArchived: false,
+        channelId: channelId,
+      ));
+    } catch (e) {
+      emit(CommunicationFailure());
+    }
+  }
+
+  Future<String> _uploadFile(
+      String channelId, File file, String fileName) async {
+    final ref = storage.ref().child(
+        'chat_files/$channelId/${DateTime.now().millisecondsSinceEpoch}_$fileName');
+
+    final uploadTask = ref.putFile(file);
+    final snapshot = await uploadTask;
+
+    return await snapshot.ref.getDownloadURL();
+  }
 }

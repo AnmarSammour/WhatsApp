@@ -98,6 +98,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                         ),
                       );
                     }
+                    if (widget.message.messageType == MessageType.file) {}
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -209,9 +210,28 @@ class _ChatBubbleState extends State<ChatBubble> {
                               ],
                             ),
                           ),
+                        if (widget.message.messageType == MessageType.file)
+                          Row(
+                            children: [
+                              Icon(Icons.insert_drive_file),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  widget.message.message.split('\n').first,
+                                  style: const TextStyle(color: Colors.black),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.download),
+                                onPressed: () {},
+                              ),
+                            ],
+                          ),
                         if (widget.message.messageType != MessageType.image &&
                             widget.message.messageType != MessageType.audio &&
-                            widget.message.messageType != MessageType.video)
+                            widget.message.messageType != MessageType.video &&
+                            widget.message.messageType != MessageType.file)
                           Text(
                             widget.message.message,
                             style: const TextStyle(color: Colors.black),

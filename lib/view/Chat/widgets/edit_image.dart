@@ -44,9 +44,7 @@ class _EditImageState extends State<EditImage> {
 
   bool _isVideo(File file) {
     final extension = file.path.split('.').last.toLowerCase();
-    return extension == 'mp4' ||
-        extension == 'mov' ||
-        extension == 'avi'; // يمكنك إضافة المزيد من التنسيقات إذا لزم الأمر
+    return extension == 'mp4' || extension == 'mov' || extension == 'avi';
   }
 
   @override
@@ -132,7 +130,6 @@ class _EditImageState extends State<EditImage> {
                   itemBuilder: (context, index) {
                     final file = _selectedFiles[index];
                     if (_isVideo(file)) {
-                      // إذا كان الملف فيديو
                       final videoController = _videoControllers[index];
                       if (videoController != null &&
                           videoController.value.isInitialized) {
@@ -140,7 +137,6 @@ class _EditImageState extends State<EditImage> {
                       }
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      // إذا كان الملف صورة
                       return PhotoView(
                         imageProvider: FileImage(file),
                         minScale: PhotoViewComputedScale.contained,
@@ -194,8 +190,7 @@ class _EditImageState extends State<EditImage> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: _isVideo(_selectedFiles[index])
-                              ? const Icon(Icons.videocam,
-                                  color: Colors.white) // عرض أيقونة الفيديو
+                              ? const Icon(Icons.videocam, color: Colors.white)
                               : Image.file(
                                   _selectedFiles[index],
                                   fit: BoxFit.fill,

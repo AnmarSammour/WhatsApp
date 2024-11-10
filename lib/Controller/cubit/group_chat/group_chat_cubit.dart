@@ -556,4 +556,51 @@ class GroupChatCubit extends Cubit<GroupChatState> {
     final snapshot = await uploadTask;
     return await snapshot.ref.getDownloadURL();
   }
+
+  Future<void> sendGroupFileMessage({
+    required String groupId,
+    required File file,
+    required String fileName,
+    required List<String> membersUid,
+  }) async {
+    try {
+      final senderId = auth.currentUser!.uid;
+      final senderName = await getSenderName(senderId);
+      final senderImage = await getSenderImage(senderId);
+
+      final fileUrl = await _uploadFile(groupId, file, fileName);
+
+      await _sendGroupMessage(
+        MessageModel(
+          senderName: senderName,
+          senderUID: senderId,
+          senderImage: senderImage,
+          messageType: MessageType.file,
+          message: fileUrl,
+          time: Timestamp.now(),
+          recipientUID: '',
+          recipientName: '',
+          membersUid: membersUid,
+        ),
+        groupId,
+      );
+      await _updateGroupChat(
+        groupId: groupId,
+        lastMessage: "File",
+        senderName: senderName,
+        senderId: senderId,
+        senderImage: senderImage,
+      );
+    } catch (e) {
+      emit(GroupChatFailure());
+    }
+  }
+
+  Future<String> _uploadFile(String groupId, File file, String fileName) async {
+    final ref = storage.ref().child(
+        'group_files/$groupId/${DateTime.now().millisecondsSinceEpoch}_$fileName');
+    final uploadTask = ref.putFile(file);
+    final snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
+  }
 }
