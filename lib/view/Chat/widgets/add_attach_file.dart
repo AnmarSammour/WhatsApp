@@ -46,19 +46,19 @@ class AddAttachFile extends StatelessWidget {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text("Confirm"),
+                title: const Text("Confirm"),
                 content: Text(
                     "Send ${selectedFiles.length} documents to the recipient?"),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Send"),
+                    child: const Text("Send"),
                   ),
                 ],
               );

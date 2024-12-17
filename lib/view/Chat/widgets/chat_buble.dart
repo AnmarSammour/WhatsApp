@@ -213,7 +213,7 @@ class _ChatBubbleState extends State<ChatBubble> {
                         if (widget.message.messageType == MessageType.file)
                           Row(
                             children: [
-                              Icon(Icons.insert_drive_file),
+                              const Icon(Icons.insert_drive_file),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
